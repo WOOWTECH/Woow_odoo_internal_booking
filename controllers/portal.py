@@ -133,6 +133,10 @@ class BookingPortal(CustomerPortal):
             'selected_date': selected_date,
             'date_from': date_from,
             'date_to': date_to,
+            'date_from_str': date_from.strftime('%b %d'),
+            'date_to_str': date_to.strftime('%b %d, %Y'),
+            'prev_week': (date_from - timedelta(days=7)).strftime('%Y-%m-%d'),
+            'next_week': (date_from + timedelta(days=7)).strftime('%Y-%m-%d'),
             'page_name': 'booking_resource_detail',
         }
 

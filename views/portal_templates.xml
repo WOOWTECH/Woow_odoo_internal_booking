@@ -5,18 +5,22 @@
     <!-- ============================================================ -->
 
     <template id="portal_my_home_booking" name="Show Booking Count" inherit_id="portal.portal_my_home" priority="30">
-        <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
-            <t t-set="portal_client_category_enable" t-value="True"/>
-        </xpath>
-        <div id="portal_client_category" position="inside">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
             <t t-call="portal.portal_docs_entry">
-                <t t-set="icon" t-value="'fa fa-calendar'"/>
+                <t t-set="icon" t-value="'/booking_reservation/static/description/icon.svg'"/>
                 <t t-set="title">My Bookings</t>
                 <t t-set="url" t-value="'/my/bookings'"/>
-                <t t-set="text">View your resource reservations</t>
+                <t t-set="text">View and manage your resource reservations</t>
                 <t t-set="placeholder_count" t-value="'booking_count'"/>
             </t>
-        </div>
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/booking_reservation/static/description/icon.svg'"/>
+                <t t-set="title">Book Resources</t>
+                <t t-set="url" t-value="'/my/booking/resources'"/>
+                <t t-set="text">Browse and book available resources</t>
+                <t t-set="placeholder_count" t-value="'resource_count'"/>
+            </t>
+        </xpath>
     </template>
 
     <!-- ============================================================ -->
@@ -43,7 +47,7 @@
                         <div class="col-md-6 col-lg-4 mb-4">
                             <div class="card h-100 booking-resource-card">
                                 <t t-if="resource.image">
-                                    <img t-att-src="image_data_uri(resource.image)"
+                                    <img t-attf-src="/web/image/booking.resource.type/#{resource.id}/image"
                                          class="card-img-top"
                                          style="height: 180px; object-fit: cover;"
                                          t-att-alt="resource.name"/>
@@ -98,7 +102,7 @@
                 <div class="col-lg-4 mb-4">
                     <div class="card">
                         <t t-if="resource.image">
-                            <img t-att-src="image_data_uri(resource.image)"
+                            <img t-attf-src="/web/image/booking.resource.type/#{resource.id}/image"
                                  class="card-img-top"
                                  t-att-alt="resource.name"/>
                         </t>
@@ -138,14 +142,14 @@
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <span><i class="fa fa-calendar"/> Available Time Slots</span>
                             <div>
-                                <a t-attf-href="/my/booking/resources/#{resource.id}?date=#{(date_from - timedelta(days=7)).strftime('%Y-%m-%d')}"
+                                <a t-attf-href="/my/booking/resources/#{resource.id}?date=#{prev_week}"
                                    class="btn btn-sm btn-outline-secondary">
                                     <i class="fa fa-chevron-left"/>
                                 </a>
                                 <span class="mx-2">
-                                    <t t-esc="date_from.strftime('%b %d')"/> - <t t-esc="date_to.strftime('%b %d, %Y')"/>
+                                    <t t-esc="date_from_str"/> - <t t-esc="date_to_str"/>
                                 </span>
-                                <a t-attf-href="/my/booking/resources/#{resource.id}?date=#{(date_from + timedelta(days=7)).strftime('%Y-%m-%d')}"
+                                <a t-attf-href="/my/booking/resources/#{resource.id}?date=#{next_week}"
                                    class="btn btn-sm btn-outline-secondary">
                                     <i class="fa fa-chevron-right"/>
                                 </a>
@@ -425,7 +429,7 @@
                         </div>
                         <div class="card-body">
                             <t t-if="reservation.resource_type_id.image">
-                                <img t-att-src="image_data_uri(reservation.resource_type_id.image)"
+                                <img t-attf-src="/web/image/booking.resource.type/#{reservation.resource_type_id.id}/image"
                                      class="img-fluid mb-3"
                                      t-att-alt="reservation.resource_type_id.name"/>
                             </t>
@@ -467,7 +471,7 @@
                     <div class="col-md-6 col-lg-4 mb-4">
                         <div class="card h-100">
                             <t t-if="resource.image">
-                                <img t-att-src="image_data_uri(resource.image)"
+                                <img t-attf-src="/web/image/booking.resource.type/#{resource.id}/image"
                                      class="card-img-top"
                                      style="height: 150px; object-fit: cover;"
                                      t-att-alt="resource.name"/>
