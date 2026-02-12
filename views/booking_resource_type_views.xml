@@ -5,7 +5,7 @@
         <field name="name">booking.resource.type.tree</field>
         <field name="model">booking.resource.type</field>
         <field name="arch" type="xml">
-            <tree string="Booking Resources">
+            <list string="Booking Resources">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="location"/>
@@ -14,7 +14,7 @@
                 <field name="share_type"/>
                 <field name="reservation_count" string="Reservations"/>
                 <field name="active" widget="boolean_toggle"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -65,11 +65,11 @@
 
                         <page string="Available Hours" name="availability">
                             <field name="availability_ids" nolabel="1">
-                                <tree string="Availability" editable="bottom">
+                                <list string="Availability" editable="bottom">
                                     <field name="dayofweek"/>
                                     <field name="hour_from" widget="float_time"/>
                                     <field name="hour_to" widget="float_time"/>
-                                </tree>
+                                </list>
                             </field>
                             <div class="alert alert-info" role="alert">
                                 <strong>Tip:</strong> Define the weekly recurring schedule when this resource can be booked.
@@ -129,7 +129,7 @@
     <record id="action_booking_resource_type" model="ir.actions.act_window">
         <field name="name">Booking Resources</field>
         <field name="res_model">booking.resource.type</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="search_view_id" ref="view_booking_resource_type_search"/>
         <field name="context">{'search_default_filter_active': 1}</field>
         <field name="help" type="html">

@@ -24,7 +24,7 @@
         <field name="name">booking.reservation.tree</field>
         <field name="model">booking.reservation</field>
         <field name="arch" type="xml">
-            <tree string="Reservations" decoration-muted="state == 'cancelled'">
+            <list string="Reservations" decoration-muted="state == 'cancelled'">
                 <field name="name"/>
                 <field name="resource_type_id"/>
                 <field name="start_datetime"/>
@@ -34,7 +34,7 @@
                 <field name="state" widget="badge"
                        decoration-success="state == 'confirmed'"
                        decoration-danger="state == 'cancelled'"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -129,7 +129,7 @@
     <record id="action_booking_reservation_calendar" model="ir.actions.act_window">
         <field name="name">Resource Bookings</field>
         <field name="res_model">booking.reservation</field>
-        <field name="view_mode">calendar,tree,form</field>
+        <field name="view_mode">calendar,list,form</field>
         <field name="search_view_id" ref="view_booking_reservation_search"/>
         <field name="context">{'search_default_filter_confirmed': 1}</field>
         <field name="help" type="html">
@@ -146,7 +146,7 @@
     <record id="action_booking_reservation_list" model="ir.actions.act_window">
         <field name="name">All Reservations</field>
         <field name="res_model">booking.reservation</field>
-        <field name="view_mode">tree,form,calendar</field>
+        <field name="view_mode">list,form,calendar</field>
         <field name="search_view_id" ref="view_booking_reservation_search"/>
         <field name="context">{}</field>
     </record>
