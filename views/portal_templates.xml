@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ============================================================ -->
+    <!-- PORTAL HOME - Add Booking Counter -->
+    <!-- ============================================================ -->
+
+    <template id="portal_my_home_booking" name="Show Booking Count" inherit_id="portal.portal_my_home" priority="30">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+            <t t-set="portal_client_category_enable" t-value="True"/>
+        </xpath>
+        <div id="portal_client_category" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'fa fa-calendar'"/>
+                <t t-set="title">My Bookings</t>
+                <t t-set="url" t-value="'/my/bookings'"/>
+                <t t-set="text">View your resource reservations</t>
+                <t t-set="placeholder_count" t-value="'booking_count'"/>
+            </t>
+        </div>
+    </template>
+
+    <!-- ============================================================ -->
+    <!-- RESOURCE LIST PAGE -->
+    <!-- ============================================================ -->
+
+    <template id="portal_my_resources" name="My Booking Resources">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="False"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Available Resources</t>
+            </t>
+
+            <t t-if="not resources">
+                <div class="alert alert-info" role="alert">
+                    <i class="fa fa-info-circle"/> No resources are available for booking at this time.
+                </div>
+            </t>
+
+            <t t-if="resources">
+                <div class="row">
+                    <t t-foreach="resources" t-as="resource">
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card h-100 booking-resource-card">
+                                <t t-if="resource.image">
+                                    <img t-att-src="image_data_uri(resource.image)"
+                                         class="card-img-top"
+                                         style="height: 180px; object-fit: cover;"
+                                         t-att-alt="resource.name"/>
+                                </t>
+                                <t t-else="">
+                                    <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center"
+                                         style="height: 180px;">
+                                        <i class="fa fa-building-o fa-4x text-white"/>
+                                    </div>
+                                </t>
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <t t-esc="resource.name"/>
+                                    </h5>
+                                    <p class="card-text text-muted">
+                                        <t t-if="resource.location">
+                                            <i class="fa fa-map-marker"/> <t t-esc="resource.location"/><br/>
+                                        </t>
+                                        <t t-if="resource.capacity">
+                                            <i class="fa fa-users"/> Capacity: <t t-esc="resource.capacity"/>
+                                        </t>
+                                    </p>
+                                </div>
+                                <div class="card-footer bg-transparent">
+                                    <a t-attf-href="/my/booking/resources/#{resource.id}"
+                                       class="btn btn-primary btn-block">
+                                        <i class="fa fa-calendar-plus-o"/> Book Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- ============================================================ -->
+    <!-- RESOURCE DETAIL PAGE -->
+    <!-- ============================================================ -->
+
+    <template id="portal_resource_detail" name="Resource Detail">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="False"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title" t-value="resource.name"/>
+            </t>
+
+            <div class="row">
+                <!-- Resource Info -->
+                <div class="col-lg-4 mb-4">
+                    <div class="card">
+                        <t t-if="resource.image">
+                            <img t-att-src="image_data_uri(resource.image)"
+                                 class="card-img-top"
+                                 t-att-alt="resource.name"/>
+                        </t>
+                        <div class="card-body">
+                            <h5 class="card-title"><t t-esc="resource.name"/></h5>
+
+                            <dl class="row mb-0">
+                                <t t-if="resource.location">
+                                    <dt class="col-5">Location</dt>
+                                    <dd class="col-7"><t t-esc="resource.location"/></dd>
+                                </t>
+                                <t t-if="resource.capacity">
+                                    <dt class="col-5">Capacity</dt>
+                                    <dd class="col-7"><t t-esc="resource.capacity"/> people</dd>
+                                </t>
+                                <dt class="col-5">Duration</dt>
+                                <dd class="col-7"><t t-esc="resource.slot_duration"/> hour(s)</dd>
+                            </dl>
+
+                            <t t-if="resource.description">
+                                <hr/>
+                                <div t-raw="resource.description"/>
+                            </t>
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <a href="/my/booking/resources" class="btn btn-secondary btn-block">
+                            <i class="fa fa-arrow-left"/> Back to Resources
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Available Slots -->
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span><i class="fa fa-calendar"/> Available Time Slots</span>
+                            <div>
+                                <a t-attf-href="/my/booking/resources/#{resource.id}?date=#{(date_from - timedelta(days=7)).strftime('%Y-%m-%d')}"
+                                   class="btn btn-sm btn-outline-secondary">
+                                    <i class="fa fa-chevron-left"/>
+                                </a>
+                                <span class="mx-2">
+                                    <t t-esc="date_from.strftime('%b %d')"/> - <t t-esc="date_to.strftime('%b %d, %Y')"/>
+                                </span>
+                                <a t-attf-href="/my/booking/resources/#{resource.id}?date=#{(date_from + timedelta(days=7)).strftime('%Y-%m-%d')}"
+                                   class="btn btn-sm btn-outline-secondary">
+                                    <i class="fa fa-chevron-right"/>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <t t-if="not slots">
+                                <div class="alert alert-info">
+                                    No available time slots for this period.
+                                </div>
+                            </t>
+
+                            <t t-foreach="slots_by_date.items()" t-as="date_slots">
+                                <h6 class="mt-3 mb-2 text-muted">
+                                    <t t-esc="date_slots[0]"/>
+                                </h6>
+                                <div class="row">
+                                    <t t-foreach="date_slots[1]" t-as="slot">
+                                        <div class="col-6 col-md-4 col-lg-3 mb-2">
+                                            <t t-if="slot['is_available']">
+                                                <form t-attf-action="/my/bookings/create" method="post" class="d-inline">
+                                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                                    <input type="hidden" name="resource_id" t-att-value="resource.id"/>
+                                                    <input type="hidden" name="start_datetime" t-att-value="slot['start'].strftime('%Y-%m-%d %H:%M:%S')"/>
+                                                    <input type="hidden" name="end_datetime" t-att-value="slot['end'].strftime('%Y-%m-%d %H:%M:%S')"/>
+                                                    <button type="submit" class="btn btn-outline-success btn-sm btn-block slot-btn">
+                                                        <t t-esc="slot['start_str'].split(' ')[1]"/> - <t t-esc="slot['end_str']"/>
+                                                    </button>
+                                                </form>
+                                            </t>
+                                            <t t-elif="slot['is_mine']">
+                                                <a t-attf-href="/my/bookings/#{slot['reservation_id']}"
+                                                   class="btn btn-info btn-sm btn-block slot-btn">
+                                                    <t t-esc="slot['start_str'].split(' ')[1]"/> - <t t-esc="slot['end_str']"/>
+                                                    <br/><small>Your booking</small>
+                                                </a>
+                                            </t>
+                                            <t t-else="">
+                                                <button class="btn btn-secondary btn-sm btn-block slot-btn" disabled="disabled">
+                                                    <t t-esc="slot['start_str'].split(' ')[1]"/> - <t t-esc="slot['end_str']"/>
+                                                    <br/><small>Booked</small>
+                                                </button>
+                                            </t>
+                                        </div>
+                                    </t>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- ============================================================ -->
+    <!-- MY BOOKINGS LIST -->
+    <!-- ============================================================ -->
+
+    <template id="portal_my_bookings" name="My Bookings">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">My Bookings</t>
+            </t>
+
+            <!-- Actions Bar -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <a href="/my/booking/resources" class="btn btn-primary">
+                        <i class="fa fa-plus"/> New Booking
+                    </a>
+                </div>
+                <div class="d-flex gap-2">
+                    <!-- Filter Dropdown -->
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fa fa-filter"/> <t t-esc="filter_options[filterby]['label']"/>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <t t-foreach="filter_options.items()" t-as="option">
+                                <li>
+                                    <a class="dropdown-item"
+                                       t-att-class="'active' if filterby == option[0] else ''"
+                                       t-attf-href="/my/bookings?filterby=#{option[0]}&amp;sortby=#{sortby}">
+                                        <t t-esc="option[1]['label']"/>
+                                    </a>
+                                </li>
+                            </t>
+                        </ul>
+                    </div>
+
+                    <!-- Sort Dropdown -->
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fa fa-sort"/> <t t-esc="sort_options[sortby]['label']"/>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <t t-foreach="sort_options.items()" t-as="option">
+                                <li>
+                                    <a class="dropdown-item"
+                                       t-att-class="'active' if sortby == option[0] else ''"
+                                       t-attf-href="/my/bookings?sortby=#{option[0]}&amp;filterby=#{filterby}">
+                                        <t t-esc="option[1]['label']"/>
+                                    </a>
+                                </li>
+                            </t>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bookings Table -->
+            <t t-if="not reservations">
+                <div class="alert alert-info" role="alert">
+                    <i class="fa fa-info-circle"/> You don't have any bookings yet.
+                    <a href="/my/booking/resources">Browse available resources</a> to make a booking.
+                </div>
+            </t>
+
+            <t t-if="reservations">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Resource</th>
+                                <th>Date &amp; Time</th>
+                                <th>Duration</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="reservations" t-as="res">
+                                <tr t-att-class="'text-muted' if res.state == 'cancelled' else ''">
+                                    <td>
+                                        <a t-attf-href="/my/bookings/#{res.id}">
+                                            <t t-esc="res.resource_type_id.name"/>
+                                        </a>
+                                        <t t-if="res.resource_location">
+                                            <br/>
+                                            <small class="text-muted">
+                                                <i class="fa fa-map-marker"/> <t t-esc="res.resource_location"/>
+                                            </small>
+                                        </t>
+                                    </td>
+                                    <td>
+                                        <t t-esc="res.start_datetime" t-options="{'widget': 'datetime', 'format': 'MMM dd, yyyy HH:mm'}"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="'%.1f' % res.duration"/> hour(s)
+                                    </td>
+                                    <td>
+                                        <t t-if="res.state == 'confirmed'">
+                                            <span class="badge bg-success">Confirmed</span>
+                                        </t>
+                                        <t t-if="res.state == 'cancelled'">
+                                            <span class="badge bg-danger">Cancelled</span>
+                                        </t>
+                                    </td>
+                                    <td class="text-end">
+                                        <a t-attf-href="/my/bookings/#{res.id}" class="btn btn-sm btn-outline-primary">
+                                            <i class="fa fa-eye"/> View
+                                        </a>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pager -->
+                <div class="d-flex justify-content-center">
+                    <t t-call="portal.pager"/>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- ============================================================ -->
+    <!-- BOOKING DETAIL PAGE -->
+    <!-- ============================================================ -->
+
+    <template id="portal_booking_detail" name="Booking Detail">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="False"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Booking Details</t>
+            </t>
+
+            <!-- Success/Error Messages -->
+            <t t-if="success == 'created'">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fa fa-check-circle"/> Your booking has been confirmed!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"/>
+                </div>
+            </t>
+            <t t-if="success == 'cancelled'">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <i class="fa fa-times-circle"/> Your booking has been cancelled.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"/>
+                </div>
+            </t>
+            <t t-if="error">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fa fa-exclamation-circle"/> <t t-esc="error"/>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"/>
+                </div>
+            </t>
+
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class="fa fa-calendar-check-o"/> Booking #<t t-esc="reservation.id"/>
+                            </span>
+                            <t t-if="reservation.state == 'confirmed'">
+                                <span class="badge bg-success">Confirmed</span>
+                            </t>
+                            <t t-if="reservation.state == 'cancelled'">
+                                <span class="badge bg-danger">Cancelled</span>
+                            </t>
+                        </div>
+                        <div class="card-body">
+                            <h4><t t-esc="reservation.resource_type_id.name"/></h4>
+
+                            <dl class="row">
+                                <dt class="col-sm-4">Date &amp; Time</dt>
+                                <dd class="col-sm-8">
+                                    <t t-esc="reservation.start_datetime" t-options="{'widget': 'datetime', 'format': 'EEEE, MMMM d, yyyy'}"/>
+                                    <br/>
+                                    <t t-esc="reservation.start_datetime" t-options="{'widget': 'datetime', 'format': 'HH:mm'}"/>
+                                    -
+                                    <t t-esc="reservation.end_datetime" t-options="{'widget': 'datetime', 'format': 'HH:mm'}"/>
+                                </dd>
+
+                                <dt class="col-sm-4">Duration</dt>
+                                <dd class="col-sm-8"><t t-esc="'%.1f' % reservation.duration"/> hour(s)</dd>
+
+                                <t t-if="reservation.resource_location">
+                                    <dt class="col-sm-4">Location</dt>
+                                    <dd class="col-sm-8"><t t-esc="reservation.resource_location"/></dd>
+                                </t>
+
+                                <t t-if="reservation.note">
+                                    <dt class="col-sm-4">Notes</dt>
+                                    <dd class="col-sm-8"><t t-esc="reservation.note"/></dd>
+                                </t>
+                            </dl>
+                        </div>
+                        <div class="card-footer">
+                            <div class="d-flex justify-content-between">
+                                <a href="/my/bookings" class="btn btn-secondary">
+                                    <i class="fa fa-arrow-left"/> Back to My Bookings
+                                </a>
+                                <t t-if="reservation.state == 'confirmed'">
+                                    <form t-attf-action="/my/bookings/#{reservation.id}/cancel" method="post" class="d-inline">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <button type="submit" class="btn btn-danger"
+                                                onclick="return confirm('Are you sure you want to cancel this booking?');">
+                                            <i class="fa fa-times"/> Cancel Booking
+                                        </button>
+                                    </form>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resource Info Sidebar -->
+                <div class="col-lg-4 mt-4 mt-lg-0">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fa fa-info-circle"/> Resource Info
+                        </div>
+                        <div class="card-body">
+                            <t t-if="reservation.resource_type_id.image">
+                                <img t-att-src="image_data_uri(reservation.resource_type_id.image)"
+                                     class="img-fluid mb-3"
+                                     t-att-alt="reservation.resource_type_id.name"/>
+                            </t>
+                            <h6><t t-esc="reservation.resource_type_id.name"/></h6>
+                            <t t-if="reservation.resource_type_id.description">
+                                <div t-raw="reservation.resource_type_id.description"/>
+                            </t>
+                        </div>
+                        <div class="card-footer">
+                            <a t-attf-href="/my/booking/resources/#{reservation.resource_type_id.id}"
+                               class="btn btn-outline-primary btn-sm btn-block">
+                                <i class="fa fa-calendar"/> Book Again
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- ============================================================ -->
+    <!-- NEW BOOKING PAGE (Select Resource) -->
+    <!-- ============================================================ -->
+
+    <template id="portal_new_booking" name="New Booking">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="False"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">New Booking</t>
+            </t>
+
+            <div class="alert alert-info" role="alert">
+                <i class="fa fa-info-circle"/> Select a resource below to view available time slots and make a booking.
+            </div>
+
+            <div class="row">
+                <t t-foreach="resources" t-as="resource">
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card h-100">
+                            <t t-if="resource.image">
+                                <img t-att-src="image_data_uri(resource.image)"
+                                     class="card-img-top"
+                                     style="height: 150px; object-fit: cover;"
+                                     t-att-alt="resource.name"/>
+                            </t>
+                            <div class="card-body">
+                                <h5 class="card-title"><t t-esc="resource.name"/></h5>
+                                <p class="card-text text-muted small">
+                                    <t t-if="resource.location">
+                                        <i class="fa fa-map-marker"/> <t t-esc="resource.location"/><br/>
+                                    </t>
+                                    <i class="fa fa-clock-o"/> <t t-esc="resource.slot_duration"/> hour slots
+                                </p>
+                            </div>
+                            <div class="card-footer bg-transparent">
+                                <a t-attf-href="/my/booking/resources/#{resource.id}" class="btn btn-primary btn-sm btn-block">
+                                    Select &amp; Book
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </div>
+
+            <div class="mt-3">
+                <a href="/my/bookings" class="btn btn-secondary">
+                    <i class="fa fa-arrow-left"/> Back to My Bookings
+                </a>
+            </div>
+        </t>
+    </template>
+
+    <!-- ============================================================ -->
+    <!-- NO RESOURCES AVAILABLE -->
+    <!-- ============================================================ -->
+
+    <template id="portal_no_resources" name="No Resources Available">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="False"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">No Resources Available</t>
+            </t>
+
+            <div class="alert alert-warning" role="alert">
+                <h4 class="alert-heading"><i class="fa fa-exclamation-triangle"/> No Resources Available</h4>
+                <p>There are currently no resources available for you to book.</p>
+                <hr/>
+                <p class="mb-0">Please contact the administrator if you believe you should have access to booking resources.</p>
+            </div>
+
+            <a href="/my" class="btn btn-secondary">
+                <i class="fa fa-arrow-left"/> Back to Portal
+            </a>
+        </t>
+    </template>
+</odoo>
