@@ -10,6 +10,7 @@
                       date_stop="end_datetime"
                       color="resource_type_id"
                       mode="week"
+                      create="1"
                       event_open_popup="true"
                       quick_create="true"
                       quick_create_view_id="%(view_booking_reservation_form)d">
@@ -127,6 +128,7 @@
         <field name="name">Resource Bookings</field>
         <field name="res_model">booking.reservation</field>
         <field name="view_mode">calendar,list,form</field>
+        <field name="view_id" ref="view_booking_reservation_calendar"/>
         <field name="search_view_id" ref="view_booking_reservation_search"/>
         <field name="context">{'search_default_filter_confirmed': 1}</field>
         <field name="help" type="html">
