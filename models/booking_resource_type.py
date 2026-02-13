@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 class BookingResourceType(models.Model):
     _name = 'booking.resource.type'
     _description = 'Booking Resource Type'
-    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherit = ['mail.thread']
     _order = 'sequence, name'
 
     # Basic Information

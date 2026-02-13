@@ -6,7 +6,7 @@ from odoo.tools.translate import _
 class BookingReservation(models.Model):
     _name = 'booking.reservation'
     _description = 'Resource Reservation'
-    _inherit = ['mail.thread', 'mail.activity.mixin', 'portal.mixin']
+    _inherit = ['mail.thread', 'portal.mixin']
     _order = 'start_datetime desc'
 
     name = fields.Char(
