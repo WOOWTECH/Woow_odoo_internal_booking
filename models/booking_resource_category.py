@@ -8,7 +8,6 @@ class BookingResourceCategory(models.Model):
     """
     _name = 'booking.resource.category'
     _description = 'Booking Resource Category'
-    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'sequence, name'
 
     name = fields.Char(
@@ -23,6 +22,11 @@ class BookingResourceCategory(models.Model):
     active = fields.Boolean(
         string='Active',
         default=True,
+    )
+
+    # Properties definition for this category
+    resource_properties_definition = fields.PropertiesDefinition(
+        string='Resource Properties',
     )
 
     # Related resources

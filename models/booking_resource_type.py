@@ -95,12 +95,20 @@ class BookingResourceType(models.Model):
         help='Select contacts (Portal users) who can book this resource. Only applies when Access Type is "Specific Contacts".',
     )
 
-    # Category (optional grouping)
+    # Category for Properties definition
     category_id = fields.Many2one(
         'booking.resource.category',
         string='Category',
         ondelete='set null',
         index=True,
+    )
+
+    # Dynamic Properties (Odoo 18 native feature)
+    # Properties field stores custom attributes defined by users
+    resource_properties = fields.Properties(
+        string='Properties',
+        definition='category_id.resource_properties_definition',
+        copy=True,
     )
 
     # Related Reservations
