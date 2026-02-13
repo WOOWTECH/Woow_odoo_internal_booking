@@ -38,7 +38,7 @@ Features:
     ],
     'assets': {
         'web.assets_frontend': [
-            'booking_reservation/static/src/css/portal.css',
+            'odoo_booking_reservation/static/src/css/portal.css',
         ],
     },
     'installable': True,
