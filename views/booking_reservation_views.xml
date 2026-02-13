@@ -6,6 +6,7 @@
         <field name="model">booking.reservation</field>
         <field name="arch" type="xml">
             <calendar string="Resource Bookings"
+                      js_class="booking_calendar"
                       date_start="start_datetime"
                       date_stop="end_datetime"
                       color="resource_type_id"

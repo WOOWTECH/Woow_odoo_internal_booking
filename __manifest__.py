@@ -38,6 +38,9 @@ Features:
         'views/portal_templates.xml',
     ],
     'assets': {
+        'web.assets_backend': [
+            'odoo_booking_reservation/static/src/views/**/*',
+        ],
         'web.assets_frontend': [
             'odoo_booking_reservation/static/src/css/portal.css',
         ],
