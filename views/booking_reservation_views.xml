@@ -10,8 +10,9 @@
                       date_stop="end_datetime"
                       color="resource_type_id"
                       mode="week"
-                      quick_create="0"
-                      event_open_popup="1">
+                      event_open_popup="true"
+                      quick_create="true"
+                      quick_create_view_id="%(view_booking_reservation_form)d">
                 <field name="resource_type_id" filters="1"/>
                 <field name="partner_id"/>
                 <field name="state"/>
