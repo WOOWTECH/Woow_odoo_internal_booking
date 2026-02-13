@@ -23,4 +23,10 @@
               parent="calendar.calendar_menu_config"
               action="action_booking_resource_type"
               sequence="20"/>
+
+    <menuitem id="menu_booking_resource_category"
+              name="Resource Categories"
+              parent="calendar.calendar_menu_config"
+              action="action_booking_resource_category"
+              sequence="25"/>
 </odoo>
