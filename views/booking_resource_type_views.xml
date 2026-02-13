@@ -47,6 +47,7 @@
 
                     <group>
                         <group string="Basic Information">
+                            <field name="category_id" placeholder="Select or create a category..."/>
                             <field name="location" placeholder="e.g., Building A, Floor 2"/>
                             <field name="capacity"/>
                             <field name="active"/>
@@ -88,6 +89,14 @@
                             </group>
                             <div class="alert alert-warning" role="alert" invisible="share_type != 'all'">
                                 <strong>Note:</strong> All Portal users will be able to book this resource.
+                            </div>
+                        </page>
+
+                        <page string="Properties" name="properties">
+                            <field name="resource_properties" columns="2"/>
+                            <div class="alert alert-info" role="alert">
+                                <strong>Tip:</strong> Click the "+" button to add custom properties for this resource.
+                                Properties can be text, numbers, dates, checkboxes, or selection lists.
                             </div>
                         </page>
                     </notebook>
