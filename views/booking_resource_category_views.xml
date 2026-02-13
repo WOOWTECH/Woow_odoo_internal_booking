@@ -37,12 +37,6 @@
                     </group>
 
                     <notebook>
-                        <page string="Properties Definition" name="properties">
-                            <field name="resource_properties_definition"/>
-                            <div class="alert alert-info" role="alert">
-                                <strong>Tip:</strong> Define custom properties here. All resources in this category will inherit these properties.
-                            </div>
-                        </page>
                         <page string="Resources" name="resources">
                             <field name="resource_ids" nolabel="1">
                                 <list string="Resources">

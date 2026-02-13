@@ -92,12 +92,6 @@
                             </div>
                         </page>
 
-                        <page string="Properties" name="properties">
-                            <field name="resource_properties" columns="2"/>
-                            <div class="alert alert-info" role="alert">
-                                <strong>Tip:</strong> Properties are defined in the category. Select a category to see and fill in properties.
-                            </div>
-                        </page>
                     </notebook>
                 </sheet>
 

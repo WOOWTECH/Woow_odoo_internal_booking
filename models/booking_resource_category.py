@@ -25,11 +25,6 @@ class BookingResourceCategory(models.Model):
         default=True,
     )
 
-    # Properties definition for this category
-    resource_properties_definition = fields.PropertiesDefinition(
-        string='Resource Properties',
-    )
-
     # Related resources
     resource_ids = fields.One2many(
         'booking.resource.type',
