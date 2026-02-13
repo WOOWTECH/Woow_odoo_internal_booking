@@ -30,7 +30,6 @@ Features:
         'security/booking_groups.xml',
         'security/ir.model.access.csv',
         # Views
-        'views/booking_resource_category_views.xml',
         'views/booking_resource_type_views.xml',
         'views/booking_reservation_views.xml',
         'views/booking_menus.xml',
