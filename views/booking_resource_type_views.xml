@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_booking_resource_type_tree" model="ir.ui.view">
+        <field name="name">booking.resource.type.tree</field>
+        <field name="model">booking.resource.type</field>
+        <field name="arch" type="xml">
+            <list string="Booking Resources">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="location"/>
+                <field name="capacity"/>
+                <field name="slot_duration"/>
+                <field name="share_type"/>
+                <field name="reservation_count" string="Reservations"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_booking_resource_type_form" model="ir.ui.view">
+        <field name="name">booking.resource.type.form</field>
+        <field name="model">booking.resource.type</field>
+        <field name="arch" type="xml">
+            <form string="Booking Resource">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_reservations"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-calendar">
+                            <field name="reservation_count" widget="statinfo" string="Reservations"/>
+                        </button>
+                    </div>
+
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+
+                    <field name="image" widget="image" class="oe_avatar" options="{'preview_image': 'image'}"/>
+
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Resource Name"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Basic Information">
+                            <field name="category_id" placeholder="Select or create a category..."/>
+                            <field name="location" placeholder="e.g., Building A, Floor 2"/>
+                            <field name="capacity"/>
+                            <field name="active"/>
+                        </group>
+                        <group string="Booking Settings">
+                            <field name="slot_duration" widget="float_time"/>
+                            <field name="slot_interval" widget="float_time"/>
+                            <field name="advance_days"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Description" name="description">
+                            <field name="description" placeholder="Describe this resource..."/>
+                        </page>
+
+                        <page string="Available Hours" name="availability">
+                            <field name="availability_ids" nolabel="1">
+                                <list string="Availability" editable="bottom">
+                                    <field name="dayofweek"/>
+                                    <field name="hour_from" widget="float_time"/>
+                                    <field name="hour_to" widget="float_time"/>
+                                </list>
+                            </field>
+                            <div class="alert alert-info" role="alert">
+                                <strong>Tip:</strong> Define the weekly recurring schedule when this resource can be booked.
+                                The system will generate available time slots based on the slot duration and interval settings.
+                            </div>
+                        </page>
+
+                        <page string="Access Control" name="access">
+                            <group>
+                                <field name="share_type" widget="radio"/>
+                            </group>
+                            <group invisible="share_type != 'specific'">
+                                <field name="allowed_partner_ids" widget="many2many_tags"
+                                       placeholder="Select contacts who can book this resource..."
+                                       options="{'no_create': True}"/>
+                            </group>
+                            <div class="alert alert-warning" role="alert" invisible="share_type != 'all'">
+                                <strong>Note:</strong> All Portal users will be able to book this resource.
+                            </div>
+                        </page>
+
+                        <page string="Properties" name="properties">
+                            <field name="resource_properties" columns="2"/>
+                            <div class="alert alert-info" role="alert">
+                                <strong>Tip:</strong> Click the "+" button to add custom properties for this resource.
+                                Properties can be text, numbers, dates, checkboxes, or selection lists.
+                            </div>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_booking_resource_type_search" model="ir.ui.view">
+        <field name="name">booking.resource.type.search</field>
+        <field name="model">booking.resource.type</field>
+        <field name="arch" type="xml">
+            <search string="Search Resources">
+                <field name="name"/>
+                <field name="location"/>
+                <separator/>
+                <filter name="filter_active" string="Active" domain="[('active', '=', True)]"/>
+                <filter name="filter_archived" string="Archived" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter name="filter_all_users" string="All Portal Users" domain="[('share_type', '=', 'all')]"/>
+                <filter name="filter_specific" string="Specific Contacts" domain="[('share_type', '=', 'specific')]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter name="group_location" string="Location" context="{'group_by': 'location'}"/>
+                    <filter name="group_share_type" string="Access Type" context="{'group_by': 'share_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_booking_resource_type" model="ir.actions.act_window">
+        <field name="name">Booking Resources</field>
+        <field name="res_model">booking.resource.type</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_booking_resource_type_search"/>
+        <field name="context">{'search_default_filter_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first booking resource
+            </p>
+            <p>
+                Define resources that can be booked by Portal users, such as meeting rooms, equipment, or facilities.
+            </p>
+        </field>
+    </record>
+</odoo>

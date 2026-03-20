@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_booking_resource_category_tree" model="ir.ui.view">
+        <field name="name">booking.resource.category.tree</field>
+        <field name="model">booking.resource.category</field>
+        <field name="arch" type="xml">
+            <list string="Resource Categories">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="resource_count" string="Resources"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_booking_resource_category_form" model="ir.ui.view">
+        <field name="name">booking.resource.category.form</field>
+        <field name="model">booking.resource.category</field>
+        <field name="arch" type="xml">
+            <form string="Resource Category">
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Category Name"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="active"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Properties Definition" name="properties">
+                            <field name="resource_properties_definition"/>
+                            <div class="alert alert-info" role="alert">
+                                <strong>Tip:</strong> Define custom properties here that will be available for all resources in this category.
+                                Click the "+" button to add properties. Available types: text, number, date, checkbox, selection, tags, many2one.
+                            </div>
+                        </page>
+
+                        <page string="Resources" name="resources">
+                            <field name="resource_ids" nolabel="1">
+                                <list string="Resources">
+                                    <field name="name"/>
+                                    <field name="location"/>
+                                    <field name="capacity"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_booking_resource_category" model="ir.actions.act_window">
+        <field name="name">Resource Categories</field>
+        <field name="res_model">booking.resource.category</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first resource category
+            </p>
+            <p>
+                Categories allow you to define custom properties that apply to all resources within the category.
+            </p>
+        </field>
+    </record>
+</odoo>

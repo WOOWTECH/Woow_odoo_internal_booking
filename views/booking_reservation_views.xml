@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form View (must be defined before calendar view which references it) -->
+    <record id="view_booking_reservation_form" model="ir.ui.view">
+        <field name="name">booking.reservation.form</field>
+        <field name="model">booking.reservation</field>
+        <field name="arch" type="xml">
+            <form string="Reservation">
+                <header>
+                    <button name="action_confirm"
+                            string="Confirm"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'cancelled'"/>
+                    <button name="action_cancel"
+                            string="Cancel"
+                            type="object"
+                            class="btn-secondary"
+                            invisible="state != 'confirmed'"
+                            confirm="Are you sure you want to cancel this reservation?"/>
+                    <field name="state" widget="statusbar" statusbar_visible="confirmed,cancelled"/>
+                </header>
+
+                <sheet>
+                    <div class="oe_title">
+                        <label for="resource_type_id"/>
+                        <h1>
+                            <field name="resource_type_id" placeholder="Select Resource" options="{'no_create': True}"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Booking Details">
+                            <field name="start_datetime"/>
+                            <field name="end_datetime"/>
+                            <field name="duration" widget="float_time"/>
+                            <field name="resource_location" invisible="not resource_location"/>
+                        </group>
+                        <group string="Contact">
+                            <field name="partner_id" options="{'no_create': True}"/>
+                        </group>
+                    </group>
+
+                    <group string="Notes">
+                        <field name="note" nolabel="1" placeholder="Additional notes or requirements..."/>
+                    </group>
+                </sheet>
+
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Calendar View -->
+    <record id="view_booking_reservation_calendar" model="ir.ui.view">
+        <field name="name">booking.reservation.calendar</field>
+        <field name="model">booking.reservation</field>
+        <field name="arch" type="xml">
+            <calendar string="Resource Bookings"
+                      js_class="booking_calendar"
+                      date_start="start_datetime"
+                      date_stop="end_datetime"
+                      color="resource_type_id"
+                      mode="week"
+                      create="1"
+                      event_open_popup="true"
+                      quick_create="true"
+                      quick_create_view_id="%(view_booking_reservation_form)d">
+                <field name="resource_type_id" filters="1"/>
+                <field name="partner_id"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_booking_reservation_tree" model="ir.ui.view">
+        <field name="name">booking.reservation.tree</field>
+        <field name="model">booking.reservation</field>
+        <field name="arch" type="xml">
+            <list string="Reservations" decoration-muted="state == 'cancelled'">
+                <field name="name"/>
+                <field name="resource_type_id"/>
+                <field name="start_datetime"/>
+                <field name="end_datetime"/>
+                <field name="duration" widget="float_time"/>
+                <field name="partner_id"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'confirmed'"
+                       decoration-danger="state == 'cancelled'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_booking_reservation_search" model="ir.ui.view">
+        <field name="name">booking.reservation.search</field>
+        <field name="model">booking.reservation</field>
+        <field name="arch" type="xml">
+            <search string="Search Reservations">
+                <field name="name"/>
+                <field name="resource_type_id"/>
+                <field name="partner_id"/>
+                <separator/>
+                <filter name="filter_confirmed" string="Confirmed" domain="[('state', '=', 'confirmed')]"/>
+                <filter name="filter_cancelled" string="Cancelled" domain="[('state', '=', 'cancelled')]"/>
+                <separator/>
+                <filter name="filter_today" string="Today"
+                        domain="[('start_datetime', '&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0))),
+                                 ('start_datetime', '&lt;', datetime.datetime.combine(context_today() + datetime.timedelta(days=1), datetime.time(0,0,0)))]"/>
+                <filter name="filter_this_week" string="This Week"
+                        domain="[('start_datetime', '&gt;=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d')),
+                                 ('start_datetime', '&lt;', (context_today() + datetime.timedelta(days=7-context_today().weekday())).strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_upcoming" string="Upcoming" domain="[('start_datetime', '&gt;=', context_today())]"/>
+                <filter name="filter_past" string="Past" domain="[('start_datetime', '&lt;', context_today())]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter name="group_resource" string="Resource" context="{'group_by': 'resource_type_id'}"/>
+                    <filter name="group_partner" string="Booked By" context="{'group_by': 'partner_id'}"/>
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="group_date" string="Date" context="{'group_by': 'start_datetime:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Calendar Action -->
+    <record id="action_booking_reservation_calendar" model="ir.actions.act_window">
+        <field name="name">Resource Bookings</field>
+        <field name="res_model">booking.reservation</field>
+        <field name="view_mode">calendar,list,form</field>
+        <field name="view_id" ref="view_booking_reservation_calendar"/>
+        <field name="search_view_id" ref="view_booking_reservation_search"/>
+        <field name="context">{'search_default_filter_confirmed': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No reservations yet
+            </p>
+            <p>
+                Click the "New" button to create a reservation, or let Portal users book resources themselves.
+            </p>
+        </field>
+    </record>
+
+    <!-- Tree Action (for settings menu if needed) -->
+    <record id="action_booking_reservation_list" model="ir.actions.act_window">
+        <field name="name">All Reservations</field>
+        <field name="res_model">booking.reservation</field>
+        <field name="view_mode">list,form,calendar</field>
+        <field name="search_view_id" ref="view_booking_reservation_search"/>
+        <field name="context">{}</field>
+    </record>
+</odoo>

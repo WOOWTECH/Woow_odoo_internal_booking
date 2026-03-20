@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_booking_resource_category_user,booking.resource.category user,model_booking_resource_category,group_booking_user,1,0,0,0
+access_booking_resource_category_manager,booking.resource.category manager,model_booking_resource_category,group_booking_manager,1,1,1,1
+access_booking_resource_type_user,booking.resource.type user,model_booking_resource_type,group_booking_user,1,0,0,0
+access_booking_resource_type_manager,booking.resource.type manager,model_booking_resource_type,group_booking_manager,1,1,1,1
+access_booking_resource_availability_user,booking.resource.availability user,model_booking_resource_availability,group_booking_user,1,0,0,0
+access_booking_resource_availability_manager,booking.resource.availability manager,model_booking_resource_availability,group_booking_manager,1,1,1,1
+access_booking_reservation_user,booking.reservation user,model_booking_reservation,group_booking_user,1,1,1,0
+access_booking_reservation_manager,booking.reservation manager,model_booking_reservation,group_booking_manager,1,1,1,1
+access_booking_resource_category_portal,booking.resource.category portal,model_booking_resource_category,base.group_portal,1,0,0,0
+access_booking_resource_type_portal,booking.resource.type portal,model_booking_resource_type,base.group_portal,1,0,0,0
+access_booking_resource_availability_portal,booking.resource.availability portal,model_booking_resource_availability,base.group_portal,1,0,0,0
+access_booking_reservation_portal,booking.reservation portal,model_booking_reservation,base.group_portal,1,1,1,0

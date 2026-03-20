@@ -1,0 +1,116 @@
+/*
+ * Booking Reservation Portal Styles
+ */
+
+/* Resource Cards */
+.booking-resource-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.booking-resource-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Slot Buttons */
+.slot-btn {
+    min-width: 100%;
+    white-space: nowrap;
+    font-size: 0.85rem;
+    padding: 0.5rem 0.25rem;
+}
+
+.slot-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Slot availability colors */
+.slot-btn.btn-outline-success:hover {
+    background-color: #28a745;
+    color: white;
+}
+
+.slot-btn.btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    color: white;
+}
+
+.slot-btn.btn-secondary:disabled {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+    color: #6c757d;
+}
+
+/* Booking table */
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+/* Status badges */
+.badge.bg-success {
+    background-color: #28a745 !important;
+}
+
+.badge.bg-danger {
+    background-color: #dc3545 !important;
+}
+
+/* Card improvements */
+.card-footer.bg-transparent {
+    background-color: transparent !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+/* Alert styling */
+.alert-info {
+    background-color: #e7f3ff;
+    border-color: #b6d4fe;
+    color: #084298;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    .slot-btn {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.2rem;
+    }
+
+    .slot-btn small {
+        font-size: 0.65rem;
+    }
+}
+
+/* Date navigation */
+.card-header .btn-outline-secondary {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* Booking detail page */
+.card-header .badge {
+    font-size: 0.9rem;
+}
+
+/* Dropdown menus */
+.dropdown-item.active {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Button block for Bootstrap 5 compatibility */
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+/* Gap utility for older Bootstrap */
+.gap-2 {
+    gap: 0.5rem;
+}
+
+/* Ensure proper spacing in portal */
+.o_portal .container {
+    max-width: 1200px;
+}

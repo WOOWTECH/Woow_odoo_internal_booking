@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Menu Structure:
+        Calendar (calendar.mail_menu_calendar)
+        ├── Calendar (existing)
+        ├── Resource Bookings (new)
+        └── Configuration
+            ├── Settings (existing)
+            └── Booking Resources (new)
+    -->
+
+    <!-- Main Menu Item under Calendar -->
+    <menuitem id="menu_booking_reservation"
+              name="Resource Bookings"
+              parent="calendar.mail_menu_calendar"
+              action="action_booking_reservation_calendar"
+              sequence="20"/>
+
+    <!-- Configuration Menu (under Calendar > Configuration) -->
+    <menuitem id="menu_booking_resource_type"
+              name="Booking Resources"
+              parent="calendar.calendar_menu_config"
+              action="action_booking_resource_type"
+              sequence="20"/>
+
+    <menuitem id="menu_booking_resource_category"
+              name="Resource Categories"
+              parent="calendar.calendar_menu_config"
+              action="action_booking_resource_category"
+              sequence="25"/>
+</odoo>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Module Category -->
+    <record id="module_category_booking" model="ir.module.category">
+        <field name="name">Booking</field>
+        <field name="description">Resource Booking and Reservation Management</field>
+        <field name="sequence">50</field>
+    </record>
+
+    <!-- User Group -->
+    <record id="group_booking_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="module_category_booking"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">Can view resources and create reservations</field>
+    </record>
+
+    <!-- Manager Group -->
+    <record id="group_booking_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="module_category_booking"/>
+        <field name="implied_ids" eval="[(4, ref('group_booking_user'))]"/>
+        <field name="comment">Full access to booking resources and reservations</field>
+    </record>
+</odoo>

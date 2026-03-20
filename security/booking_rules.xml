@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Portal users can only read/write their own reservations -->
+    <record id="booking_reservation_portal_rule" model="ir.rule">
+        <field name="name">Portal: own reservations only</field>
+        <field name="model_id" ref="model_booking_reservation"/>
+        <field name="domain_force">[('partner_id', '=', user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+    </record>
+
+    <!-- Booking Manager: full access to all reservations -->
+    <record id="booking_reservation_manager_rule" model="ir.rule">
+        <field name="name">Booking Manager: full access</field>
+        <field name="model_id" ref="model_booking_reservation"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_booking_manager'))]"/>
+    </record>
+
+    <!-- Booking User: can read all reservations -->
+    <record id="booking_reservation_user_read_rule" model="ir.rule">
+        <field name="name">Booking User: read all reservations</field>
+        <field name="model_id" ref="model_booking_reservation"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_booking_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Booking User: can only create/write own reservations -->
+    <record id="booking_reservation_user_write_rule" model="ir.rule">
+        <field name="name">Booking User: write own reservations only</field>
+        <field name="model_id" ref="model_booking_reservation"/>
+        <field name="domain_force">[('partner_id', '=', user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('group_booking_user'))]"/>
+        <field name="perm_read" eval="False"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+</odoo>

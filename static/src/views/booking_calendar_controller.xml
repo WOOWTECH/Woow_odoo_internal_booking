@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="booking_reservation.BookingCalendarController" t-inherit="web.CalendarController" t-inherit-mode="primary">
+        <xpath expr="//Layout" position="attributes">
+            <attribute name="t-slot-scope">scope</attribute>
+        </xpath>
+        <xpath expr="//Layout" position="inside">
+            <t t-set-slot="control-panel-create-button">
+                <button type="button" class="btn btn-primary o-calendar-button-new me-1" t-on-click="onClickAddButton">
+                    New
+                </button>
+            </t>
+        </xpath>
+    </t>
+</templates>
