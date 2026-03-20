@@ -1,0 +1,67 @@
+{
+  "users": {
+    "admin": {
+      "id": 2,
+      "role": "Booking Manager (admin)"
+    },
+    "test_manager": {
+      "id": 6,
+      "role": "Booking Manager"
+    },
+    "test_user": {
+      "id": 7,
+      "role": "Booking User"
+    },
+    "portal1": {
+      "id": 8,
+      "role": "Portal User",
+      "partner_id": 9
+    },
+    "portal2": {
+      "id": 9,
+      "role": "Portal User",
+      "partner_id": 10
+    },
+    "portal3": {
+      "id": 10,
+      "role": "Portal User (Limited)",
+      "partner_id": 11
+    }
+  },
+  "resources": {
+    "Conference Room A": {
+      "id": 2,
+      "share": "all",
+      "slot": "1h"
+    },
+    "Small Meeting Room B": {
+      "id": 3,
+      "share": "all",
+      "slot": "30min"
+    },
+    "VIP Room C": {
+      "id": 4,
+      "share": "specific",
+      "slot": "2h"
+    },
+    "Projector": {
+      "id": 5,
+      "share": "all",
+      "slot": "1h"
+    },
+    "Phone Booth": {
+      "id": 6,
+      "share": "all",
+      "slot": "15min"
+    }
+  },
+  "categories": {
+    "Meeting Rooms": 1,
+    "Equipment": 2
+  },
+  "groups": {
+    "booking_manager": 18,
+    "booking_user": 17,
+    "portal": 10
+  }
+}
