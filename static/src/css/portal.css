@@ -1,76 +1,577 @@
 /*
- * Booking Reservation Portal Styles
+ * Woowtech Smart Space Solution — Booking Reservation Portal
+ * Brand Design System
+ *
+ * Color Ratio: White 50% / Gray 20% / Deep Gray 10% / Blue 10% / Accent 5% / Black 5%
  */
 
-/* Resource Cards */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&display=swap');
+
+/* ============================================================
+   CSS VARIABLES
+   ============================================================ */
+:root {
+    --ws-primary: #6183FC;
+    --ws-primary-hover: #4a6de0;
+    --ws-primary-light: rgba(97, 131, 252, 0.08);
+    --ws-white: #FFFFFF;
+    --ws-light-gray: #EFF1F5;
+    --ws-gray: #646262;
+    --ws-deep-gray: #212121;
+    --ws-cyan: #7BDBE0;
+    --ws-cyan-hover: #5cc8ce;
+    --ws-green: #8CD37F;
+    --ws-coral: #F45D6D;
+    --ws-coral-hover: #e04455;
+    --ws-yellow: #F8D158;
+    --ws-font: 'Outfit', 'UD Digi Kyokasho', 'Noto Sans TC', sans-serif;
+    --ws-radius: 8px;
+    --ws-radius-pill: 12px;
+    --ws-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --ws-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+    --ws-transition: 0.2s ease;
+}
+
+/* ============================================================
+   TYPOGRAPHY — Module Content Area Only
+   ============================================================ */
+.o_portal .o_portal_my_home,
+.o_portal .o_portal_wrap .container {
+    font-family: var(--ws-font);
+    color: var(--ws-gray);
+}
+
+.o_portal .o_portal_wrap h3 {
+    font-family: var(--ws-font);
+    font-weight: 700;
+    font-size: 1.75rem;
+    color: var(--ws-deep-gray);
+}
+
+.o_portal .o_portal_wrap h4 {
+    font-family: var(--ws-font);
+    font-weight: 500;
+    font-size: 1.1rem;
+    color: var(--ws-deep-gray);
+}
+
+.o_portal .o_portal_wrap h5,
+.o_portal .o_portal_wrap .card-title {
+    font-family: var(--ws-font);
+    font-weight: 500;
+    color: var(--ws-deep-gray);
+}
+
+.o_portal .o_portal_wrap h6 {
+    font-family: var(--ws-font);
+    font-weight: 500;
+    color: var(--ws-deep-gray);
+}
+
+.o_portal .o_portal_wrap .card-text,
+.o_portal .o_portal_wrap p {
+    font-family: var(--ws-font);
+    font-weight: 400;
+    color: var(--ws-gray);
+}
+
+.o_portal .o_portal_wrap small,
+.o_portal .o_portal_wrap .text-muted {
+    font-family: var(--ws-font);
+    color: var(--ws-gray) !important;
+}
+
+.o_portal .o_portal_wrap dl dt {
+    font-family: var(--ws-font);
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--ws-gray);
+}
+
+.o_portal .o_portal_wrap dl dd {
+    font-family: var(--ws-font);
+    font-weight: 400;
+    font-size: 0.9rem;
+    color: var(--ws-deep-gray);
+}
+
+/* ============================================================
+   BUTTONS — Primary
+   ============================================================ */
+.o_portal .o_portal_wrap .btn-primary {
+    background-color: var(--ws-primary);
+    border-color: var(--ws-primary);
+    border-radius: var(--ws-radius);
+    font-family: var(--ws-font);
+    font-weight: 500;
+    transition: all var(--ws-transition);
+}
+
+.o_portal .o_portal_wrap .btn-primary:hover,
+.o_portal .o_portal_wrap .btn-primary:focus {
+    background-color: var(--ws-primary-hover);
+    border-color: var(--ws-primary-hover);
+    box-shadow: 0 0 0 0.2rem rgba(97, 131, 252, 0.25);
+}
+
+/* Buttons — Secondary (brand outline style) */
+.o_portal .o_portal_wrap .btn-secondary {
+    background-color: var(--ws-white);
+    border: 1px solid var(--ws-light-gray);
+    color: var(--ws-gray);
+    border-radius: var(--ws-radius);
+    font-family: var(--ws-font);
+    font-weight: 400;
+    transition: all var(--ws-transition);
+}
+
+.o_portal .o_portal_wrap .btn-secondary:hover,
+.o_portal .o_portal_wrap .btn-secondary:focus {
+    background-color: var(--ws-light-gray);
+    border-color: var(--ws-gray);
+    color: var(--ws-deep-gray);
+}
+
+/* Buttons — Outline Primary */
+.o_portal .o_portal_wrap .btn-outline-primary {
+    color: var(--ws-primary);
+    border-color: var(--ws-primary);
+    border-radius: var(--ws-radius);
+    font-family: var(--ws-font);
+    font-weight: 500;
+    transition: all var(--ws-transition);
+}
+
+.o_portal .o_portal_wrap .btn-outline-primary:hover,
+.o_portal .o_portal_wrap .btn-outline-primary:focus {
+    background-color: var(--ws-primary);
+    border-color: var(--ws-primary);
+    color: var(--ws-white);
+}
+
+/* Buttons — Danger (Coral) */
+.o_portal .o_portal_wrap .btn-danger {
+    background-color: var(--ws-coral);
+    border-color: var(--ws-coral);
+    border-radius: var(--ws-radius);
+    font-family: var(--ws-font);
+    font-weight: 500;
+    transition: all var(--ws-transition);
+}
+
+.o_portal .o_portal_wrap .btn-danger:hover,
+.o_portal .o_portal_wrap .btn-danger:focus {
+    background-color: var(--ws-coral-hover);
+    border-color: var(--ws-coral-hover);
+    box-shadow: 0 0 0 0.2rem rgba(244, 93, 109, 0.25);
+}
+
+/* ============================================================
+   CARDS — Brand Styling
+   ============================================================ */
+.o_portal .o_portal_wrap .card {
+    border: 1px solid var(--ws-light-gray);
+    border-radius: var(--ws-radius);
+    box-shadow: var(--ws-shadow-sm);
+    overflow: hidden;
+}
+
+.o_portal .o_portal_wrap .card-header {
+    background-color: var(--ws-white);
+    border-bottom: 1px solid var(--ws-light-gray);
+    font-family: var(--ws-font);
+    font-weight: 500;
+    color: var(--ws-deep-gray);
+}
+
+.o_portal .o_portal_wrap .card-footer {
+    background-color: var(--ws-white);
+    border-top: 1px solid var(--ws-light-gray);
+}
+
+.o_portal .o_portal_wrap .card-footer.bg-transparent {
+    background-color: transparent !important;
+    border-top: 1px solid var(--ws-light-gray);
+}
+
+/* ============================================================
+   RESOURCE CARDS — Hover Effect
+   ============================================================ */
 .booking-resource-card {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform var(--ws-transition), box-shadow var(--ws-transition), border-color var(--ws-transition);
 }
 
 .booking-resource-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+    box-shadow: var(--ws-shadow-md);
+    border-bottom: 3px solid var(--ws-primary);
 }
 
-/* Slot Buttons */
+/* Resource card placeholder icon */
+.booking-resource-card .bg-secondary {
+    background-color: var(--ws-light-gray) !important;
+}
+
+.booking-resource-card .bg-secondary i {
+    color: var(--ws-primary) !important;
+}
+
+/* ============================================================
+   RESOURCE DETAIL — Info Card with Blue Top Line
+   ============================================================ */
+.ws-card-accent {
+    border-top: 3px solid var(--ws-primary);
+}
+
+/* ============================================================
+   SLOT BUTTONS
+   ============================================================ */
 .slot-btn {
     min-width: 100%;
     white-space: nowrap;
+    font-family: var(--ws-font);
     font-size: 0.85rem;
+    font-weight: 400;
     padding: 0.5rem 0.25rem;
+    border-radius: 6px;
+    transition: all var(--ws-transition);
 }
 
 .slot-btn:disabled {
-    opacity: 0.6;
+    opacity: 0.7;
     cursor: not-allowed;
 }
 
-/* Slot availability colors */
+/* Available slots — Brand Blue outline */
+.slot-btn.btn-outline-success {
+    color: var(--ws-primary);
+    border-color: var(--ws-primary);
+    background-color: var(--ws-white);
+}
+
 .slot-btn.btn-outline-success:hover {
-    background-color: #28a745;
-    color: white;
+    background-color: var(--ws-primary);
+    border-color: var(--ws-primary);
+    color: var(--ws-white);
+    box-shadow: 0 2px 8px rgba(97, 131, 252, 0.3);
 }
 
+/* My booking slots — Cyan */
 .slot-btn.btn-info {
-    background-color: #17a2b8;
-    border-color: #17a2b8;
-    color: white;
+    background-color: var(--ws-cyan);
+    border-color: var(--ws-cyan);
+    color: var(--ws-white);
 }
 
+.slot-btn.btn-info:hover {
+    background-color: var(--ws-cyan-hover);
+    border-color: var(--ws-cyan-hover);
+    color: var(--ws-white);
+}
+
+/* Booked slots — Light Gray disabled */
 .slot-btn.btn-secondary:disabled {
-    background-color: #e9ecef;
-    border-color: #dee2e6;
-    color: #6c757d;
+    background-color: var(--ws-light-gray);
+    border-color: var(--ws-light-gray);
+    color: var(--ws-gray);
 }
 
-/* Booking table */
-.table-hover tbody tr:hover {
-    background-color: rgba(0, 123, 255, 0.05);
+/* ============================================================
+   TIME SLOTS CARD HEADER — Blue bottom line
+   ============================================================ */
+.ws-slots-header {
+    background-color: var(--ws-white);
+    border-bottom: 2px solid var(--ws-primary);
 }
 
-/* Status badges */
-.badge.bg-success {
-    background-color: #28a745 !important;
+/* Date navigation arrows */
+.ws-nav-btn {
+    color: var(--ws-primary);
+    border-color: var(--ws-light-gray);
+    background-color: var(--ws-white);
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    border-radius: 6px;
+    transition: all var(--ws-transition);
 }
 
-.badge.bg-danger {
-    background-color: #dc3545 !important;
+.ws-nav-btn:hover {
+    background-color: var(--ws-light-gray);
+    color: var(--ws-primary-hover);
+    border-color: var(--ws-primary);
 }
 
-/* Card improvements */
-.card-footer.bg-transparent {
-    background-color: transparent !important;
-    border-top: 1px solid rgba(0, 0, 0, 0.125);
+.ws-nav-btn.disabled {
+    color: var(--ws-gray);
+    opacity: 0.4;
 }
 
-/* Alert styling */
-.alert-info {
-    background-color: #e7f3ff;
-    border-color: #b6d4fe;
-    color: #084298;
+/* Date range text */
+.ws-date-range {
+    font-family: var(--ws-font);
+    font-weight: 500;
+    font-size: 0.85rem;
+    color: var(--ws-deep-gray);
 }
 
-/* Responsive improvements */
+/* Date group headers */
+.ws-date-heading {
+    font-family: var(--ws-font);
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--ws-deep-gray);
+}
+
+/* ============================================================
+   STATUS BADGES — Pill Style with Accent Colors
+   ============================================================ */
+.badge.bg-success,
+.ws-badge-confirmed {
+    background-color: var(--ws-green) !important;
+    color: var(--ws-white) !important;
+    border-radius: var(--ws-radius-pill);
+    font-family: var(--ws-font);
+    font-weight: 500;
+    font-size: 0.75rem;
+    padding: 0.35em 0.75em;
+}
+
+.badge.bg-danger,
+.ws-badge-cancelled {
+    background-color: var(--ws-coral) !important;
+    color: var(--ws-white) !important;
+    border-radius: var(--ws-radius-pill);
+    font-family: var(--ws-font);
+    font-weight: 500;
+    font-size: 0.75rem;
+    padding: 0.35em 0.75em;
+}
+
+.ws-badge-pending {
+    background-color: var(--ws-yellow) !important;
+    color: var(--ws-deep-gray) !important;
+    border-radius: var(--ws-radius-pill);
+    font-family: var(--ws-font);
+    font-weight: 500;
+    font-size: 0.75rem;
+    padding: 0.35em 0.75em;
+}
+
+/* Card header badge size */
+.card-header .badge {
+    font-size: 0.85rem;
+}
+
+/* ============================================================
+   BOOKING TABLE — Desktop
+   ============================================================ */
+.o_portal .o_portal_wrap .table thead th {
+    background-color: var(--ws-light-gray);
+    font-family: var(--ws-font);
+    font-weight: 500;
+    color: var(--ws-gray);
+    border-bottom: 2px solid var(--ws-light-gray);
+    font-size: 0.9rem;
+}
+
+.o_portal .o_portal_wrap .table-hover tbody tr:hover {
+    background-color: var(--ws-primary-light);
+}
+
+.o_portal .o_portal_wrap .table td a {
+    color: var(--ws-primary);
+    font-weight: 500;
+}
+
+.o_portal .o_portal_wrap .table td a:hover {
+    color: var(--ws-primary-hover);
+}
+
+/* ============================================================
+   MOBILE BOOKING CARDS — Color Strip
+   ============================================================ */
+.ws-booking-card {
+    border: 1px solid var(--ws-light-gray);
+    border-radius: var(--ws-radius);
+    overflow: hidden;
+    transition: box-shadow var(--ws-transition);
+}
+
+.ws-booking-card:hover {
+    box-shadow: var(--ws-shadow-sm);
+}
+
+.ws-booking-card-confirmed {
+    border-left: 3px solid var(--ws-green);
+}
+
+.ws-booking-card-cancelled {
+    border-left: 3px solid var(--ws-coral);
+    opacity: 0.75;
+}
+
+.ws-booking-card .ws-resource-name {
+    font-family: var(--ws-font);
+    font-weight: 500;
+    color: var(--ws-deep-gray);
+}
+
+/* ============================================================
+   DETAIL / CONFIRM — Card Header with Blue Left Border
+   ============================================================ */
+.ws-card-header-accent {
+    background-color: var(--ws-white);
+    border-bottom: 1px solid var(--ws-light-gray);
+    border-left: 4px solid var(--ws-primary);
+    font-family: var(--ws-font);
+    font-weight: 500;
+    color: var(--ws-deep-gray);
+}
+
+/* ============================================================
+   CONFIRM BUTTON — Larger padding
+   ============================================================ */
+.ws-btn-confirm {
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+    border-radius: var(--ws-radius);
+}
+
+/* ============================================================
+   ALERTS — Brand styled with left border
+   ============================================================ */
+.o_portal .o_portal_wrap .alert-success {
+    background-color: var(--ws-light-gray);
+    border: 1px solid var(--ws-light-gray);
+    border-left: 4px solid var(--ws-green);
+    color: var(--ws-deep-gray);
+    border-radius: var(--ws-radius);
+}
+
+.o_portal .o_portal_wrap .alert-warning {
+    background-color: var(--ws-light-gray);
+    border: 1px solid var(--ws-light-gray);
+    border-left: 4px solid var(--ws-yellow);
+    color: var(--ws-deep-gray);
+    border-radius: var(--ws-radius);
+}
+
+.o_portal .o_portal_wrap .alert-danger {
+    background-color: var(--ws-light-gray);
+    border: 1px solid var(--ws-light-gray);
+    border-left: 4px solid var(--ws-coral);
+    color: var(--ws-deep-gray);
+    border-radius: var(--ws-radius);
+}
+
+.o_portal .o_portal_wrap .alert-info {
+    background-color: var(--ws-light-gray);
+    border: 1px solid var(--ws-light-gray);
+    border-left: 4px solid var(--ws-cyan);
+    color: var(--ws-deep-gray);
+    border-radius: var(--ws-radius);
+}
+
+/* ============================================================
+   FORM ELEMENTS
+   ============================================================ */
+.o_portal .o_portal_wrap .form-control:focus {
+    border-color: var(--ws-primary);
+    box-shadow: 0 0 0 0.2rem rgba(97, 131, 252, 0.15);
+}
+
+.o_portal .o_portal_wrap .form-label {
+    font-family: var(--ws-font);
+    font-weight: 500;
+    color: var(--ws-deep-gray);
+}
+
+.o_portal .o_portal_wrap textarea.form-control {
+    border: 1px solid var(--ws-light-gray);
+    border-radius: var(--ws-radius);
+    font-family: var(--ws-font);
+}
+
+/* ============================================================
+   DROPDOWN MENUS
+   ============================================================ */
+.o_portal .o_portal_wrap .dropdown-menu {
+    border: 1px solid var(--ws-light-gray);
+    border-radius: var(--ws-radius);
+    box-shadow: var(--ws-shadow-md);
+}
+
+.o_portal .o_portal_wrap .dropdown-item {
+    font-family: var(--ws-font);
+    color: var(--ws-gray);
+}
+
+.o_portal .o_portal_wrap .dropdown-item.active,
+.o_portal .o_portal_wrap .dropdown-item:active {
+    background-color: var(--ws-primary);
+    color: var(--ws-white);
+}
+
+.o_portal .o_portal_wrap .dropdown-item:hover {
+    background-color: var(--ws-primary-light);
+    color: var(--ws-deep-gray);
+}
+
+/* ============================================================
+   PAGINATION — Active page brand blue
+   ============================================================ */
+.o_portal .o_portal_wrap .pagination .page-item.active .page-link {
+    background-color: var(--ws-primary);
+    border-color: var(--ws-primary);
+}
+
+.o_portal .o_portal_wrap .pagination .page-link {
+    color: var(--ws-primary);
+    font-family: var(--ws-font);
+}
+
+.o_portal .o_portal_wrap .pagination .page-link:hover {
+    color: var(--ws-primary-hover);
+    background-color: var(--ws-primary-light);
+}
+
+/* ============================================================
+   PORTAL HOME CARDS — Brand icons
+   ============================================================ */
+.o_portal .o_portal_my_home .card .card-title i {
+    color: var(--ws-primary);
+}
+
+/* ============================================================
+   LINKS
+   ============================================================ */
+.o_portal .o_portal_wrap a:not(.btn) {
+    color: var(--ws-primary);
+}
+
+.o_portal .o_portal_wrap a:not(.btn):hover {
+    color: var(--ws-primary-hover);
+}
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+.gap-2 {
+    gap: 0.5rem;
+}
+
+.o_portal .container {
+    max-width: 1200px;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
 @media (max-width: 768px) {
     .slot-btn {
         font-size: 0.75rem;
@@ -80,37 +581,8 @@
     .slot-btn small {
         font-size: 0.65rem;
     }
-}
 
-/* Date navigation */
-.card-header .btn-outline-secondary {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.875rem;
-}
-
-/* Booking detail page */
-.card-header .badge {
-    font-size: 0.9rem;
-}
-
-/* Dropdown menus */
-.dropdown-item.active {
-    background-color: #007bff;
-    color: white;
-}
-
-/* Button block for Bootstrap 5 compatibility */
-.btn-block {
-    display: block;
-    width: 100%;
-}
-
-/* Gap utility for older Bootstrap */
-.gap-2 {
-    gap: 0.5rem;
-}
-
-/* Ensure proper spacing in portal */
-.o_portal .container {
-    max-width: 1200px;
+    .o_portal .o_portal_wrap h3 {
+        font-size: 1.4rem;
+    }
 }
