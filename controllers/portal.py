@@ -4,6 +4,7 @@ from odoo.addons.portal.controllers.portal import CustomerPortal, pager as porta
 from odoo.exceptions import AccessError, MissingError
 from datetime import datetime, timedelta
 import json
+import pytz
 
 
 class BookingPortal(CustomerPortal):
@@ -11,6 +12,15 @@ class BookingPortal(CustomerPortal):
     Portal Controller for Resource Booking.
     Does not depend on website module - uses portal.portal_layout template.
     """
+
+    def _get_local_now(self):
+        """Get current datetime in the user's timezone (naive, for comparison with slot times)."""
+        tz_name = request.env.user.tz or request.env.context.get('tz') or 'UTC'
+        try:
+            user_tz = pytz.timezone(tz_name)
+        except pytz.UnknownTimeZoneError:
+            user_tz = pytz.UTC
+        return datetime.now(pytz.UTC).astimezone(user_tz).replace(tzinfo=None)
 
     def _prepare_home_portal_values(self, counters):
         """Add booking counts to portal home."""
@@ -103,8 +113,9 @@ class BookingPortal(CustomerPortal):
         if not self._check_resource_access(resource, partner):
             raise AccessError(_("You don't have access to this resource."))
 
-        # Date range for slots
-        today = datetime.now().date()
+        # Date range for slots (use local timezone so "today" matches user's wall clock)
+        local_now = self._get_local_now()
+        today = local_now.date()
         max_date = today + timedelta(days=resource.advance_days)
 
         if date:
@@ -166,7 +177,7 @@ class BookingPortal(CustomerPortal):
         if date_from:
             date_from = datetime.strptime(date_from, '%Y-%m-%d').date()
         else:
-            date_from = datetime.now().date()
+            date_from = self._get_local_now().date()
 
         if date_to:
             date_to = datetime.strptime(date_to, '%Y-%m-%d').date()
@@ -237,12 +248,13 @@ class BookingPortal(CustomerPortal):
         except (ValueError, TypeError):
             return request.redirect('/my/booking/resources/%s?error=invalid_datetime' % resource_id)
 
-        # Reject past bookings
-        if start_dt < datetime.now():
+        # Reject past bookings (compare in user's local timezone since slot times are local)
+        local_now = self._get_local_now()
+        if start_dt < local_now:
             return request.redirect('/my/booking/resources/%s?error=past_slot' % resource_id)
 
         # Reject bookings beyond advance_days
-        max_date = datetime.now() + timedelta(days=resource.advance_days)
+        max_date = local_now + timedelta(days=resource.advance_days)
         if start_dt > max_date:
             return request.redirect('/my/booking/resources/%s?error=too_far_ahead' % resource_id)
 
@@ -281,12 +293,13 @@ class BookingPortal(CustomerPortal):
             if not self._check_resource_access(resource, partner):
                 return request.redirect('/my/bookings/new?error=unauthorized')
 
-            # Reject past or too-far-ahead bookings
+            # Reject past or too-far-ahead bookings (use local timezone)
             try:
                 start_dt = datetime.strptime(start_datetime, '%Y-%m-%d %H:%M:%S')
-                if start_dt < datetime.now():
+                local_now = self._get_local_now()
+                if start_dt < local_now:
                     return request.redirect('/my/booking/resources/%s?error=past_slot' % resource_id)
-                max_date = datetime.now() + timedelta(days=resource.advance_days)
+                max_date = local_now + timedelta(days=resource.advance_days)
                 if start_dt > max_date:
                     return request.redirect('/my/booking/resources/%s?error=too_far_ahead' % resource_id)
             except (ValueError, TypeError):
