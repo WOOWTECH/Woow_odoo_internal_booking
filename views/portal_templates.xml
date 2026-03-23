@@ -674,4 +674,15 @@
             </a>
         </t>
     </template>
+
+    <!-- ============================================================ -->
+    <!-- INJECT GOOGLE FONTS INTO HEAD -->
+    <!-- ============================================================ -->
+    <template id="booking_google_fonts" name="Booking Google Fonts" inherit_id="web.frontend_layout">
+        <xpath expr="//head/link[1]" position="before">
+            <link rel="preconnect" href="https://fonts.googleapis.com"/>
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+            <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+        </xpath>
+    </template>
 </odoo>
