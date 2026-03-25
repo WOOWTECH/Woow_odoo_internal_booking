@@ -1,8 +1,8 @@
 /*
  * Woowtech Smart Space Solution — Booking Reservation Portal
- * Brand Design System
+ * Brand Design System — follows Odoo default purple theme
  *
- * Color Ratio: White 50% / Gray 20% / Deep Gray 10% / Blue 10% / Accent 5% / Black 5%
+ * Color Ratio: White 50% / Gray 20% / Deep Gray 10% / Purple 10% / Accent 5% / Black 5%
  */
 
 /* Google Fonts loaded via <link> tag in portal_templates.xml to avoid Odoo CSS minifier breaking the URL */
@@ -11,9 +11,9 @@
    CSS VARIABLES
    ============================================================ */
 :root {
-    --ws-primary: #6183FC;
-    --ws-primary-hover: #4a6de0;
-    --ws-primary-light: rgba(97, 131, 252, 0.08);
+    --ws-primary: #714B67;
+    --ws-primary-hover: #5a3c52;
+    --ws-primary-light: rgba(113, 75, 103, 0.08);
     --ws-white: #FFFFFF;
     --ws-light-gray: #EFF1F5;
     --ws-gray: #646262;
@@ -111,7 +111,7 @@
 .o_portal .o_portal_wrap .btn-primary:focus {
     background-color: var(--ws-primary-hover);
     border-color: var(--ws-primary-hover);
-    box-shadow: 0 0 0 0.2rem rgba(97, 131, 252, 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(113, 75, 103, 0.25);
 }
 
 /* Buttons — Secondary (brand outline style) */
@@ -217,7 +217,7 @@
 }
 
 /* ============================================================
-   RESOURCE DETAIL — Info Card with Blue Top Line
+   RESOURCE DETAIL — Info Card with Purple Top Line
    ============================================================ */
 .ws-card-accent {
     border-top: 3px solid var(--ws-primary);
@@ -242,7 +242,7 @@
     cursor: not-allowed;
 }
 
-/* Available slots — Brand Blue outline */
+/* Available slots — Brand Purple outline */
 .slot-btn.btn-outline-success {
     color: var(--ws-primary);
     border-color: var(--ws-primary);
@@ -253,7 +253,7 @@
     background-color: var(--ws-primary);
     border-color: var(--ws-primary);
     color: var(--ws-white);
-    box-shadow: 0 2px 8px rgba(97, 131, 252, 0.3);
+    box-shadow: 0 2px 8px rgba(113, 75, 103, 0.3);
 }
 
 /* My booking slots — Cyan */
@@ -277,7 +277,7 @@
 }
 
 /* ============================================================
-   TIME SLOTS CARD HEADER — Blue bottom line
+   TIME SLOTS CARD HEADER — Purple bottom line
    ============================================================ */
 .ws-slots-header {
     background-color: var(--ws-white);
@@ -417,7 +417,7 @@
 }
 
 /* ============================================================
-   DETAIL / CONFIRM — Card Header with Blue Left Border
+   DETAIL / CONFIRM — Card Header with Purple Left Border
    ============================================================ */
 .ws-card-header-accent {
     background-color: var(--ws-white);
@@ -477,7 +477,7 @@
    ============================================================ */
 .o_portal .o_portal_wrap .form-control:focus {
     border-color: var(--ws-primary);
-    box-shadow: 0 0 0 0.2rem rgba(97, 131, 252, 0.15);
+    box-shadow: 0 0 0 0.2rem rgba(113, 75, 103, 0.15);
 }
 
 .o_portal .o_portal_wrap .form-label {
@@ -518,7 +518,7 @@
 }
 
 /* ============================================================
-   PAGINATION — Active page brand blue
+   PAGINATION — Active page brand purple
    ============================================================ */
 .o_portal .o_portal_wrap .pagination .page-item.active .page-link {
     background-color: var(--ws-primary);
