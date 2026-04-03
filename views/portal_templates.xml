@@ -430,31 +430,89 @@
                             </t>
                         </div>
                         <div class="card-body">
-                            <h4><t t-esc="reservation.resource_type_id.name"/></h4>
+                            <!-- Subject or Resource Name as title -->
+                            <h4>
+                                <t t-if="reservation.subject" t-esc="reservation.subject"/>
+                                <t t-else="" t-esc="reservation.resource_type_id.name"/>
+                            </h4>
 
+                            <!-- Resource Info -->
                             <dl class="row">
-                                <dt class="col-5 col-sm-4">Date &amp; Time</dt>
-                                <dd class="col-7 col-sm-8">
-                                    <t t-esc="reservation.start_datetime" t-options="{'widget': 'datetime', 'format': 'EEEE, MMMM d, yyyy'}"/>
-                                    <br/>
-                                    <t t-esc="reservation.start_datetime" t-options="{'widget': 'datetime', 'format': 'HH:mm'}"/>
-                                    -
-                                    <t t-esc="reservation.end_datetime" t-options="{'widget': 'datetime', 'format': 'HH:mm'}"/>
-                                </dd>
-
-                                <dt class="col-5 col-sm-4">Duration</dt>
-                                <dd class="col-7 col-sm-8"><t t-esc="'%.1f' % reservation.duration"/> hour(s)</dd>
+                                <dt class="col-5 col-sm-4">Resource</dt>
+                                <dd class="col-7 col-sm-8"><t t-esc="reservation.resource_type_id.name"/></dd>
 
                                 <t t-if="reservation.resource_location">
                                     <dt class="col-5 col-sm-4">Location</dt>
                                     <dd class="col-7 col-sm-8"><t t-esc="reservation.resource_location"/></dd>
                                 </t>
+                            </dl>
 
-                                <t t-if="reservation.note">
-                                    <dt class="col-5 col-sm-4">Notes</dt>
-                                    <dd class="col-7 col-sm-8"><t t-esc="reservation.note"/></dd>
+                            <hr/>
+
+                            <!-- Time -->
+                            <dl class="row">
+                                <dt class="col-5 col-sm-4">Start</dt>
+                                <dd class="col-7 col-sm-8">
+                                    <t t-esc="reservation.start_datetime" t-options="{'widget': 'datetime', 'format': 'EEEE, MMMM d, yyyy HH:mm'}"/>
+                                </dd>
+
+                                <dt class="col-5 col-sm-4">End</dt>
+                                <dd class="col-7 col-sm-8">
+                                    <t t-esc="reservation.end_datetime" t-options="{'widget': 'datetime', 'format': 'EEEE, MMMM d, yyyy HH:mm'}"/>
+                                </dd>
+
+                                <dt class="col-5 col-sm-4">Duration</dt>
+                                <dd class="col-7 col-sm-8"><t t-esc="'%.1f' % reservation.duration"/> hour(s)</dd>
+                            </dl>
+
+                            <hr/>
+
+                            <!-- People -->
+                            <dl class="row">
+                                <t t-if="reservation.organizer_id">
+                                    <dt class="col-5 col-sm-4">Organizer</dt>
+                                    <dd class="col-7 col-sm-8"><t t-esc="reservation.organizer_id.name"/></dd>
+                                </t>
+
+                                <dt class="col-5 col-sm-4">Booked By</dt>
+                                <dd class="col-7 col-sm-8"><t t-esc="reservation.partner_id.name"/></dd>
+
+                                <t t-if="reservation.attendee_ids">
+                                    <dt class="col-5 col-sm-4">Attendees</dt>
+                                    <dd class="col-7 col-sm-8">
+                                        <t t-foreach="reservation.attendee_ids" t-as="att">
+                                            <span class="badge bg-secondary me-1"><t t-esc="att.name"/></span>
+                                        </t>
+                                    </dd>
                                 </t>
                             </dl>
+
+                            <!-- Discussion Channel -->
+                            <t t-if="reservation.channel_id">
+                                <hr/>
+                                <dl class="row">
+                                    <dt class="col-5 col-sm-4">Discussion</dt>
+                                    <dd class="col-7 col-sm-8">
+                                        <a t-attf-href="/discuss/channel/#{reservation.channel_id.id}?discussions=1">
+                                            <i class="fa fa-comments"/> <t t-esc="reservation.channel_id.name"/>
+                                        </a>
+                                    </dd>
+                                </dl>
+                            </t>
+
+                            <!-- Description -->
+                            <t t-if="reservation.description">
+                                <hr/>
+                                <h6 class="text-muted">Description</h6>
+                                <div t-raw="reservation.description"/>
+                            </t>
+
+                            <!-- Legacy notes -->
+                            <t t-if="reservation.note">
+                                <hr/>
+                                <h6 class="text-muted">Notes</h6>
+                                <p><t t-esc="reservation.note"/></p>
+                            </t>
                         </div>
                         <div class="card-footer">
                             <div class="d-flex flex-column-reverse flex-sm-row justify-content-between gap-2">
@@ -567,53 +625,94 @@
 
             <div class="row">
                 <div class="col-lg-8">
-                    <div class="card">
-                        <div class="card-header ws-card-header-accent">
-                            <span>
-                                <i class="fa fa-calendar-check-o"/> Booking Summary
-                            </span>
-                        </div>
-                        <div class="card-body">
-                            <h4 class="mb-3"><t t-esc="resource.name"/></h4>
+                    <form id="confirm-booking-form" action="/my/bookings/create" method="post">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <input type="hidden" name="resource_id" t-att-value="resource.id"/>
+                        <input type="hidden" name="start_datetime" t-att-value="start_datetime"/>
+                        <input type="hidden" name="end_datetime" t-att-value="end_datetime"/>
 
-                            <dl class="row">
-                                <dt class="col-5 col-sm-4">Date &amp; Time</dt>
-                                <dd class="col-7 col-sm-8">
-                                    <t t-esc="start_dt.strftime('%A, %B %d, %Y')"/>
-                                    <br/>
-                                    <t t-esc="start_dt.strftime('%H:%M')"/>
-                                    -
-                                    <t t-esc="end_dt.strftime('%H:%M')"/>
-                                </dd>
-
-                                <dt class="col-5 col-sm-4">Duration</dt>
-                                <dd class="col-7 col-sm-8"><t t-esc="'%.1f' % duration"/> hour(s)</dd>
-
-                                <t t-if="resource.location">
-                                    <dt class="col-5 col-sm-4">Location</dt>
-                                    <dd class="col-7 col-sm-8"><t t-esc="resource.location"/></dd>
-                                </t>
-
-                                <t t-if="resource.capacity">
-                                    <dt class="col-5 col-sm-4">Capacity</dt>
-                                    <dd class="col-7 col-sm-8"><t t-esc="resource.capacity"/> people</dd>
-                                </t>
-                            </dl>
-
-                            <!-- Note textarea -->
-                            <div class="mt-3">
-                                <label for="note" class="form-label fw-bold">Note (optional)</label>
-                                <textarea name="note" id="note" class="form-control"
-                                          rows="3" form="confirm-booking-form"
-                                          placeholder="Add any notes or special requests..."/>
+                        <div class="card">
+                            <div class="card-header ws-card-header-accent">
+                                <span>
+                                    <i class="fa fa-calendar-check-o"/> Booking Summary
+                                </span>
                             </div>
-                        </div>
-                        <div class="card-footer">
-                            <form id="confirm-booking-form" action="/my/bookings/create" method="post">
-                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                                <input type="hidden" name="resource_id" t-att-value="resource.id"/>
-                                <input type="hidden" name="start_datetime" t-att-value="start_datetime"/>
-                                <input type="hidden" name="end_datetime" t-att-value="end_datetime"/>
+                            <div class="card-body">
+                                <!-- Subject input -->
+                                <div class="mb-3">
+                                    <label for="subject" class="form-label fw-bold">Subject (optional)</label>
+                                    <input type="text" name="subject" id="subject" class="form-control"
+                                           placeholder="e.g. Department Weekly Meeting"/>
+                                </div>
+
+                                <!-- Resource Info -->
+                                <h6 class="text-muted mb-2">Resource Info</h6>
+                                <dl class="row">
+                                    <dt class="col-5 col-sm-4">Resource</dt>
+                                    <dd class="col-7 col-sm-8"><t t-esc="resource.name"/></dd>
+
+                                    <t t-if="resource.location">
+                                        <dt class="col-5 col-sm-4">Location</dt>
+                                        <dd class="col-7 col-sm-8"><t t-esc="resource.location"/></dd>
+                                    </t>
+
+                                    <t t-if="resource.capacity">
+                                        <dt class="col-5 col-sm-4">Capacity</dt>
+                                        <dd class="col-7 col-sm-8"><t t-esc="resource.capacity"/> people</dd>
+                                    </t>
+                                </dl>
+
+                                <hr/>
+
+                                <!-- Time Info -->
+                                <h6 class="text-muted mb-2">Time</h6>
+                                <dl class="row">
+                                    <dt class="col-5 col-sm-4">Start</dt>
+                                    <dd class="col-7 col-sm-8">
+                                        <t t-esc="start_dt.strftime('%A, %B %d, %Y %H:%M')"/>
+                                    </dd>
+
+                                    <dt class="col-5 col-sm-4">End</dt>
+                                    <dd class="col-7 col-sm-8">
+                                        <t t-esc="end_dt.strftime('%A, %B %d, %Y %H:%M')"/>
+                                    </dd>
+
+                                    <dt class="col-5 col-sm-4">Duration</dt>
+                                    <dd class="col-7 col-sm-8"><t t-esc="'%.1f' % duration"/> hour(s)</dd>
+                                </dl>
+
+                                <hr/>
+
+                                <!-- Organizer (read-only) -->
+                                <h6 class="text-muted mb-2">People</h6>
+                                <dl class="row">
+                                    <dt class="col-5 col-sm-4">Organizer</dt>
+                                    <dd class="col-7 col-sm-8"><t t-esc="partner.name"/></dd>
+                                </dl>
+
+                                <!-- Discussion Channel Option (only if resource allows) -->
+                                <t t-if="resource.enable_discussion">
+                                    <hr/>
+                                    <div class="form-check mb-3">
+                                        <input type="checkbox" name="enable_discussion" id="enable_discussion"
+                                               class="form-check-input"/>
+                                        <label for="enable_discussion" class="form-check-label">
+                                            Enable Discussion Channel
+                                        </label>
+                                        <div class="form-text">Create a discussion channel for this booking to collaborate with attendees.</div>
+                                    </div>
+                                </t>
+
+                                <!-- Description textarea -->
+                                <hr/>
+                                <div class="mb-0">
+                                    <label for="description" class="form-label fw-bold">Description (optional)</label>
+                                    <textarea name="description" id="description" class="form-control"
+                                              rows="3"
+                                              placeholder="Add a description or notes..."/>
+                                </div>
+                            </div>
+                            <div class="card-footer">
                                 <div class="d-flex flex-column-reverse flex-sm-row justify-content-between gap-2">
                                     <a t-attf-href="/my/booking/resources/#{resource.id}"
                                        class="btn btn-secondary">
@@ -623,9 +722,9 @@
                                         <i class="fa fa-check"/> Confirm Booking
                                     </button>
                                 </div>
-                            </form>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
 
                 <!-- Resource Info Sidebar -->

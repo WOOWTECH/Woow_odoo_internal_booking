@@ -267,6 +267,7 @@ class BookingPortal(CustomerPortal):
             'start_dt': start_dt,
             'end_dt': end_dt,
             'duration': duration_hours,
+            'partner': partner,
             'page_name': 'booking_confirm',
         }
         return request.render('odoo_booking_reservation.portal_booking_confirm', values)
@@ -280,7 +281,9 @@ class BookingPortal(CustomerPortal):
             resource_id = int(post.get('resource_id', 0))
             start_datetime = post.get('start_datetime')
             end_datetime = post.get('end_datetime')
-            note = post.get('note', '')
+            subject = post.get('subject', '').strip()
+            description = post.get('description', '').strip()
+            enable_discussion = post.get('enable_discussion') == 'on'
 
             if not resource_id or not start_datetime or not end_datetime:
                 return request.redirect('/my/bookings/new?error=missing_fields')
@@ -305,15 +308,25 @@ class BookingPortal(CustomerPortal):
             except (ValueError, TypeError):
                 return request.redirect('/my/bookings/new?error=invalid_datetime')
 
-            # Create reservation
-            reservation = request.env['booking.reservation'].sudo().create({
+            # Build reservation vals
+            vals = {
                 'resource_type_id': resource_id,
                 'start_datetime': start_datetime,
                 'end_datetime': end_datetime,
                 'partner_id': partner.id,
-                'note': note,
+                'organizer_id': partner.id,
                 'state': 'confirmed',
-            })
+            }
+
+            if subject:
+                vals['subject'] = subject
+            if description:
+                vals['description'] = description
+            if enable_discussion and resource.enable_discussion:
+                vals['enable_discussion'] = True
+
+            # Create reservation
+            reservation = request.env['booking.reservation'].sudo().create(vals)
 
             return request.redirect(f'/my/bookings/{reservation.id}?success=created')
 

@@ -73,6 +73,13 @@ class BookingResourceType(models.Model):
         help='Define recurring availability windows for each day of the week',
     )
 
+    # Discussion Settings
+    enable_discussion = fields.Boolean(
+        string='Allow Discussion Channel',
+        default=False,
+        help='When enabled, users booking this resource can choose to create a Discussion channel for the reservation.',
+    )
+
     # Access Control
     share_type = fields.Selection(
         selection=[

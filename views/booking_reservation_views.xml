@@ -22,27 +22,69 @@
                 </header>
 
                 <sheet>
+                    <!-- Subject as large title (Calendar-style) -->
                     <div class="oe_title">
-                        <label for="resource_type_id"/>
                         <h1>
-                            <field name="resource_type_id" placeholder="Select Resource" options="{'no_create': True}"/>
+                            <field name="subject" placeholder="e.g. Department Weekly Meeting" nolabel="1"/>
                         </h1>
                     </div>
 
                     <group>
-                        <group string="Booking Details">
-                            <field name="start_datetime"/>
-                            <field name="end_datetime"/>
-                            <field name="duration" widget="float_time"/>
-                            <field name="resource_location" invisible="not resource_location"/>
-                        </group>
-                        <group string="Contact">
-                            <field name="partner_id" options="{'no_create': True}"/>
+                        <group>
+                            <field name="resource_type_id" placeholder="Select Resource" options="{'no_create': True}"/>
                         </group>
                     </group>
 
-                    <group string="Notes">
-                        <field name="note" nolabel="1" placeholder="Additional notes or requirements..."/>
+                    <!-- Resource Info (shown after selecting resource) -->
+                    <div class="alert alert-info" role="alert" invisible="not resource_type_id">
+                        <strong>Resource Info</strong>
+                        <div class="row mt-2">
+                            <div class="col-md-4" invisible="not resource_location">
+                                <i class="fa fa-map-marker" title="Location"/> <strong>Location:</strong>
+                                <field name="resource_location" readonly="1" nolabel="1"/>
+                            </div>
+                            <div class="col-md-4" invisible="resource_capacity == 0">
+                                <i class="fa fa-users" title="Capacity"/> <strong>Capacity:</strong>
+                                <field name="resource_capacity" readonly="1" nolabel="1"/> people
+                            </div>
+                        </div>
+                    </div>
+
+                    <group>
+                        <group string="Time">
+                            <field name="start_datetime"/>
+                            <field name="end_datetime"/>
+                            <field name="duration" widget="float_time"/>
+                        </group>
+                        <group string="People">
+                            <field name="organizer_id" options="{'no_create': True}"/>
+                            <field name="partner_id" options="{'no_create': True}"/>
+                            <field name="attendee_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                        </group>
+                    </group>
+
+                    <!-- Discussion Channel (only when resource allows it) -->
+                    <field name="resource_enable_discussion" invisible="1"/>
+                    <group string="Discussion" invisible="not resource_enable_discussion">
+                        <field name="enable_discussion"/>
+                        <field name="channel_id" readonly="1" invisible="not enable_discussion"/>
+                    </group>
+
+                    <!-- Description -->
+                    <group string="Description">
+                        <field name="description" nolabel="1" placeholder="Add a description..."/>
+                    </group>
+
+                    <!-- Reminder -->
+                    <group string="Reminder">
+                        <field name="reminder_type"/>
+                        <field name="reminder_time" invisible="reminder_type == 'none'"
+                               string="Minutes before"/>
+                    </group>
+
+                    <!-- Legacy notes (hidden if empty, for backward compat) -->
+                    <group string="Notes" invisible="not note">
+                        <field name="note" nolabel="1" readonly="1"/>
                     </group>
                 </sheet>
 
@@ -80,10 +122,12 @@
         <field name="arch" type="xml">
             <list string="Reservations" decoration-muted="state == 'cancelled'">
                 <field name="name"/>
+                <field name="subject" optional="hide"/>
                 <field name="resource_type_id"/>
                 <field name="start_datetime"/>
                 <field name="end_datetime"/>
                 <field name="duration" widget="float_time"/>
+                <field name="organizer_id" optional="hide"/>
                 <field name="partner_id"/>
                 <field name="state" widget="badge"
                        decoration-success="state == 'confirmed'"
@@ -99,8 +143,10 @@
         <field name="arch" type="xml">
             <search string="Search Reservations">
                 <field name="name"/>
+                <field name="subject"/>
                 <field name="resource_type_id"/>
                 <field name="partner_id"/>
+                <field name="organizer_id"/>
                 <separator/>
                 <filter name="filter_confirmed" string="Confirmed" domain="[('state', '=', 'confirmed')]"/>
                 <filter name="filter_cancelled" string="Cancelled" domain="[('state', '=', 'cancelled')]"/>

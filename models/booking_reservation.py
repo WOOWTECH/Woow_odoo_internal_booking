@@ -1,6 +1,10 @@
+import logging
+
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.tools.translate import _
+
+_logger = logging.getLogger(__name__)
 
 
 class BookingReservation(models.Model):
@@ -13,6 +17,11 @@ class BookingReservation(models.Model):
         string='Name',
         compute='_compute_name',
         store=True,
+    )
+
+    subject = fields.Char(
+        string='Subject',
+        tracking=True,
     )
 
     resource_type_id = fields.Many2one(
@@ -38,6 +47,7 @@ class BookingReservation(models.Model):
     duration = fields.Float(
         string='Duration (hours)',
         compute='_compute_duration',
+        inverse='_inverse_duration',
         store=True,
     )
 
@@ -47,6 +57,20 @@ class BookingReservation(models.Model):
         string='Booked By',
         required=True,
         tracking=True,
+    )
+
+    # Organizer & Attendees (Calendar-style)
+    organizer_id = fields.Many2one(
+        'res.partner',
+        string='Organizer',
+        tracking=True,
+    )
+    attendee_ids = fields.Many2many(
+        'res.partner',
+        'booking_reservation_attendee_rel',
+        'reservation_id',
+        'partner_id',
+        string='Attendees',
     )
 
     # State (no approval workflow - direct confirmation)
@@ -60,9 +84,40 @@ class BookingReservation(models.Model):
         tracking=True,
     )
 
-    # Additional Info
+    # Description (Html, replaces note for new data)
+    description = fields.Html(
+        string='Description',
+    )
+
+    # Legacy note field kept for backward compatibility
     note = fields.Text(
         string='Notes',
+    )
+
+    # Discussion Channel
+    enable_discussion = fields.Boolean(
+        string='Enable Discussion',
+        default=False,
+    )
+    channel_id = fields.Many2one(
+        'discuss.channel',
+        string='Discussion Channel',
+        ondelete='set null',
+    )
+
+    # Reminder
+    reminder_type = fields.Selection(
+        selection=[
+            ('none', 'None'),
+            ('notification', 'Notification'),
+            ('email', 'Email'),
+        ],
+        string='Reminder',
+        default='none',
+    )
+    reminder_time = fields.Integer(
+        string='Reminder Time (minutes)',
+        default=15,
     )
 
     # Calendar Event Link
@@ -77,6 +132,18 @@ class BookingReservation(models.Model):
         related='resource_type_id.location',
         string='Location',
     )
+    resource_capacity = fields.Integer(
+        related='resource_type_id.capacity',
+        string='Capacity',
+    )
+    resource_description = fields.Html(
+        related='resource_type_id.description',
+        string='Resource Description',
+    )
+    resource_enable_discussion = fields.Boolean(
+        related='resource_type_id.enable_discussion',
+        string='Resource Allows Discussion',
+    )
 
     _sql_constraints = [
         (
@@ -86,10 +153,12 @@ class BookingReservation(models.Model):
         ),
     ]
 
-    @api.depends('resource_type_id', 'start_datetime')
+    @api.depends('resource_type_id', 'start_datetime', 'subject')
     def _compute_name(self):
         for record in self:
-            if record.resource_type_id and record.start_datetime:
+            if record.subject:
+                record.name = record.subject
+            elif record.resource_type_id and record.start_datetime:
                 start_str = fields.Datetime.to_datetime(record.start_datetime).strftime('%Y-%m-%d %H:%M')
                 record.name = f'{record.resource_type_id.name} - {start_str}'
             else:
@@ -105,6 +174,13 @@ class BookingReservation(models.Model):
                 record.duration = delta.total_seconds() / 3600
             else:
                 record.duration = 0
+
+    def _inverse_duration(self):
+        for record in self:
+            if record.start_datetime and record.duration:
+                from datetime import timedelta
+                start = fields.Datetime.to_datetime(record.start_datetime)
+                record.end_datetime = start + timedelta(hours=record.duration)
 
     @api.constrains('resource_type_id', 'partner_id')
     def _check_partner_access(self):
@@ -157,15 +233,68 @@ class BookingReservation(models.Model):
         for record in self:
             record.access_url = f'/my/bookings/{record.id}'
 
+    def _create_discussion_channel(self):
+        """Create a discuss.channel for this reservation if enabled."""
+        self.ensure_one()
+        if not self.enable_discussion or self.channel_id:
+            return
+
+        # Check if discuss.channel model exists (cs_portal_discuss may not be installed)
+        if 'discuss.channel' not in self.env:
+            return
+
+        channel_name = self.subject or self.name
+        resource_name = self.resource_type_id.name
+        full_name = f'[{resource_name}] {channel_name}'
+
+        # Collect members: organizer + attendees + partner_id
+        members = self.env['res.partner']
+        if self.organizer_id:
+            members |= self.organizer_id
+        if self.attendee_ids:
+            members |= self.attendee_ids
+        if self.partner_id:
+            members |= self.partner_id
+
+        try:
+            channel = self.env['discuss.channel'].sudo().create({
+                'name': full_name,
+                'channel_type': 'channel',
+                'group_public_id': self.env.ref('base.group_portal').id,
+            })
+            # Add members to the channel
+            for partner in members:
+                channel.sudo().add_members(partner.ids)
+
+            self.channel_id = channel
+        except Exception as e:
+            _logger.warning('Failed to create discussion channel for reservation %s: %s', self.id, e)
+
     @api.model_create_multi
     def create(self, vals_list):
-        """Override create to handle any additional logic."""
+        """Override create to handle defaults and discussion channel."""
+        for vals in vals_list:
+            # Default organizer to creator's partner
+            if not vals.get('organizer_id') and not vals.get('partner_id'):
+                pass
+            elif not vals.get('organizer_id'):
+                vals['organizer_id'] = vals.get('partner_id')
+
         reservations = super().create(vals_list)
-        # Could add calendar event creation here if needed
+
+        for reservation in reservations:
+            if reservation.enable_discussion and reservation.resource_enable_discussion:
+                reservation._create_discussion_channel()
+
         return reservations
 
     def write(self, vals):
-        """Override write to handle state changes."""
+        """Override write to handle discussion channel creation."""
         result = super().write(vals)
-        # Could add calendar event update here if needed
+
+        if vals.get('enable_discussion'):
+            for record in self:
+                if record.enable_discussion and record.resource_enable_discussion and not record.channel_id:
+                    record._create_discussion_channel()
+
         return result

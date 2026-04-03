@@ -1,0 +1,618 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* odoo_booking_reservation
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 00:00+0000\n"
+"PO-Revision-Date: 2026-04-03 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: odoo_booking_reservation
+#: model:ir.module.category,name:odoo_booking_reservation.module_category_booking
+msgid "Booking"
+msgstr "資源預定"
+
+#. module: odoo_booking_reservation
+msgid "Confirm"
+msgstr "確認"
+
+#. module: odoo_booking_reservation
+msgid "Cancel"
+msgstr "取消"
+
+#. module: odoo_booking_reservation
+msgid "Are you sure you want to cancel this reservation?"
+msgstr "確定要取消此預定嗎？"
+
+#. module: odoo_booking_reservation
+msgid "Subject"
+msgstr "預定主題"
+
+#. module: odoo_booking_reservation
+msgid "e.g. Department Weekly Meeting"
+msgstr "例如：部門週會"
+
+#. module: odoo_booking_reservation
+msgid "Resource"
+msgstr "資源"
+
+#. module: odoo_booking_reservation
+msgid "Select Resource"
+msgstr "選擇資源"
+
+#. module: odoo_booking_reservation
+msgid "Resource Info"
+msgstr "資源資訊"
+
+#. module: odoo_booking_reservation
+msgid "Location"
+msgstr "地點"
+
+#. module: odoo_booking_reservation
+msgid "Location:"
+msgstr "地點："
+
+#. module: odoo_booking_reservation
+msgid "Capacity"
+msgstr "容量"
+
+#. module: odoo_booking_reservation
+msgid "Capacity:"
+msgstr "容量："
+
+#. module: odoo_booking_reservation
+msgid "people"
+msgstr "人"
+
+#. module: odoo_booking_reservation
+msgid "Start"
+msgstr "開始"
+
+#. module: odoo_booking_reservation
+msgid "End"
+msgstr "結束"
+
+#. module: odoo_booking_reservation
+msgid "Duration (hours)"
+msgstr "時長（小時）"
+
+#. module: odoo_booking_reservation
+msgid "Duration"
+msgstr "時長"
+
+#. module: odoo_booking_reservation
+msgid "Time"
+msgstr "時間"
+
+#. module: odoo_booking_reservation
+msgid "People"
+msgstr "人員"
+
+#. module: odoo_booking_reservation
+msgid "Organizer"
+msgstr "舉辦方"
+
+#. module: odoo_booking_reservation
+msgid "Booked By"
+msgstr "預定者"
+
+#. module: odoo_booking_reservation
+msgid "Attendees"
+msgstr "參加者"
+
+#. module: odoo_booking_reservation
+msgid "Enable Discussion"
+msgstr "開啟討論通道"
+
+#. module: odoo_booking_reservation
+msgid "Discussion Channel"
+msgstr "討論通道"
+
+#. module: odoo_booking_reservation
+msgid "Discussion"
+msgstr "討論"
+
+#. module: odoo_booking_reservation
+msgid "Description"
+msgstr "說明"
+
+#. module: odoo_booking_reservation
+msgid "Add a description..."
+msgstr "新增說明..."
+
+#. module: odoo_booking_reservation
+msgid "Reminder"
+msgstr "提醒"
+
+#. module: odoo_booking_reservation
+msgid "None"
+msgstr "無"
+
+#. module: odoo_booking_reservation
+msgid "Notification"
+msgstr "通知"
+
+#. module: odoo_booking_reservation
+msgid "Email"
+msgstr "電子郵件"
+
+#. module: odoo_booking_reservation
+msgid "Reminder Time (minutes)"
+msgstr "提醒時間（分鐘）"
+
+#. module: odoo_booking_reservation
+msgid "Minutes before"
+msgstr "分鐘前"
+
+#. module: odoo_booking_reservation
+msgid "Notes"
+msgstr "備註"
+
+#. module: odoo_booking_reservation
+msgid "Status"
+msgstr "狀態"
+
+#. module: odoo_booking_reservation
+msgid "Confirmed"
+msgstr "已確認"
+
+#. module: odoo_booking_reservation
+msgid "Cancelled"
+msgstr "已取消"
+
+#. module: odoo_booking_reservation
+msgid "Name"
+msgstr "名稱"
+
+#. module: odoo_booking_reservation
+msgid "New Reservation"
+msgstr "新預定"
+
+#. module: odoo_booking_reservation
+msgid "Contact \"%s\" is not authorized to book resource \"%s\"."
+msgstr "聯絡人「%s」無權預定資源「%s」。"
+
+#. module: odoo_booking_reservation
+msgid "This time slot is already booked for resource \"%s\". Please select a different time."
+msgstr "資源「%s」的此時段已被預定，請選擇其他時間。"
+
+#. module: odoo_booking_reservation
+msgid "Slot Duration (hours)"
+msgstr "時段長度（小時）"
+
+#. module: odoo_booking_reservation
+msgid "Slot Interval (hours)"
+msgstr "時段間隔（小時）"
+
+#. module: odoo_booking_reservation
+msgid "Days Available in Advance"
+msgstr "可提前預定天數"
+
+#. module: odoo_booking_reservation
+msgid "Access Type"
+msgstr "存取類型"
+
+#. module: odoo_booking_reservation
+msgid "All Portal Users"
+msgstr "所有 Portal 使用者"
+
+#. module: odoo_booking_reservation
+msgid "Specific Contacts"
+msgstr "指定聯絡人"
+
+#. module: odoo_booking_reservation
+msgid "Allowed Contacts"
+msgstr "允許的聯絡人"
+
+#. module: odoo_booking_reservation
+msgid "Allow Discussion Channel"
+msgstr "允許討論通道"
+
+#. module: odoo_booking_reservation
+msgid "Active"
+msgstr "啟用"
+
+#. module: odoo_booking_reservation
+msgid "Reservation Count"
+msgstr "預定數量"
+
+#. module: odoo_booking_reservation
+msgid "Slot duration must be a positive number."
+msgstr "時段長度必須為正數。"
+
+#. module: odoo_booking_reservation
+msgid "Slot interval must be a positive number."
+msgstr "時段間隔必須為正數。"
+
+#. module: odoo_booking_reservation
+msgid "Advance booking days must be at least 1."
+msgstr "可提前預定天數至少為 1 天。"
+
+#. module: odoo_booking_reservation
+msgid "Reservations"
+msgstr "預定"
+
+#. module: odoo_booking_reservation
+msgid "Start hour must be between 0 and 24."
+msgstr "開始時間必須在 0 到 24 之間。"
+
+#. module: odoo_booking_reservation
+msgid "End hour must be between 0 and 24."
+msgstr "結束時間必須在 0 到 24 之間。"
+
+#. module: odoo_booking_reservation
+msgid "Start time must be before end time."
+msgstr "開始時間必須早於結束時間。"
+
+#. module: odoo_booking_reservation
+msgid "Basic Information"
+msgstr "基本資訊"
+
+#. module: odoo_booking_reservation
+msgid "Booking Settings"
+msgstr "預定設定"
+
+#. module: odoo_booking_reservation
+msgid "Available Hours"
+msgstr "可用時段"
+
+#. module: odoo_booking_reservation
+msgid "Availability"
+msgstr "可用性"
+
+#. module: odoo_booking_reservation
+msgid "Access Control"
+msgstr "存取控制"
+
+#. module: odoo_booking_reservation
+msgid "Advanced Settings"
+msgstr "進階設定"
+
+#. module: odoo_booking_reservation
+msgid "Properties"
+msgstr "屬性"
+
+#. module: odoo_booking_reservation
+msgid "Archived"
+msgstr "已封存"
+
+#. module: odoo_booking_reservation
+msgid "Resource Name"
+msgstr "資源名稱"
+
+#. module: odoo_booking_reservation
+msgid "Select or create a category..."
+msgstr "選擇或建立分類..."
+
+#. module: odoo_booking_reservation
+msgid "e.g., Building A, Floor 2"
+msgstr "例如：A 棟, 2 樓"
+
+#. module: odoo_booking_reservation
+msgid "Describe this resource..."
+msgstr "描述此資源..."
+
+#. module: odoo_booking_reservation
+msgid "Select contacts who can book this resource..."
+msgstr "選擇可以預定此資源的聯絡人..."
+
+#. module: odoo_booking_reservation
+msgid "Search Resources"
+msgstr "搜尋資源"
+
+#. module: odoo_booking_reservation
+msgid "Search Reservations"
+msgstr "搜尋預定"
+
+#. module: odoo_booking_reservation
+msgid "Today"
+msgstr "今天"
+
+#. module: odoo_booking_reservation
+msgid "This Week"
+msgstr "本週"
+
+#. module: odoo_booking_reservation
+msgid "Upcoming"
+msgstr "即將到來"
+
+#. module: odoo_booking_reservation
+msgid "Past"
+msgstr "已過期"
+
+#. module: odoo_booking_reservation
+msgid "Group By"
+msgstr "分組依據"
+
+#. module: odoo_booking_reservation
+msgid "Date"
+msgstr "日期"
+
+#. module: odoo_booking_reservation
+msgid "Resource Bookings"
+msgstr "資源預定"
+
+#. module: odoo_booking_reservation
+msgid "All Reservations"
+msgstr "所有預定"
+
+#. module: odoo_booking_reservation
+msgid "Booking Resources"
+msgstr "預定資源"
+
+#. module: odoo_booking_reservation
+msgid "No reservations yet"
+msgstr "目前沒有預定"
+
+#. module: odoo_booking_reservation
+msgid "You don't have access to this resource."
+msgstr "您沒有權限存取此資源。"
+
+#. module: odoo_booking_reservation
+msgid "All"
+msgstr "全部"
+
+#. module: odoo_booking_reservation
+msgid "Date (newest)"
+msgstr "日期（最新）"
+
+#. module: odoo_booking_reservation
+msgid "Date (oldest)"
+msgstr "日期（最舊）"
+
+#. module: odoo_booking_reservation
+msgid "This booking does not exist or you don't have access to it."
+msgstr "此預定不存在或您沒有存取權限。"
+
+#. module: odoo_booking_reservation
+msgid "My Bookings"
+msgstr "我的預定"
+
+#. module: odoo_booking_reservation
+msgid "View and manage your resource reservations"
+msgstr "查看及管理您的資源預定"
+
+#. module: odoo_booking_reservation
+msgid "Book Resources"
+msgstr "預定資源"
+
+#. module: odoo_booking_reservation
+msgid "Browse and book available resources"
+msgstr "瀏覽並預定可用資源"
+
+#. module: odoo_booking_reservation
+msgid "Available Resources"
+msgstr "可用資源"
+
+#. module: odoo_booking_reservation
+msgid "No resources are available for booking at this time."
+msgstr "目前沒有可供預定的資源。"
+
+#. module: odoo_booking_reservation
+msgid "Book Now"
+msgstr "立即預定"
+
+#. module: odoo_booking_reservation
+msgid "Available Time Slots"
+msgstr "可用時段"
+
+#. module: odoo_booking_reservation
+msgid "No available time slots for this period."
+msgstr "此期間沒有可用時段。"
+
+#. module: odoo_booking_reservation
+msgid "Your booking"
+msgstr "您的預定"
+
+#. module: odoo_booking_reservation
+msgid "Booked"
+msgstr "已預定"
+
+#. module: odoo_booking_reservation
+msgid "Back to Resources"
+msgstr "返回資源列表"
+
+#. module: odoo_booking_reservation
+msgid "New Booking"
+msgstr "新增預定"
+
+#. module: odoo_booking_reservation
+msgid "You don't have any bookings yet."
+msgstr "您目前沒有任何預定。"
+
+#. module: odoo_booking_reservation
+msgid "Browse available resources"
+msgstr "瀏覽可用資源"
+
+#. module: odoo_booking_reservation
+msgid "Date &amp; Time"
+msgstr "日期與時間"
+
+#. module: odoo_booking_reservation
+msgid "View"
+msgstr "查看"
+
+#. module: odoo_booking_reservation
+msgid "hour(s)"
+msgstr "小時"
+
+#. module: odoo_booking_reservation
+msgid "Booking Details"
+msgstr "預定詳情"
+
+#. module: odoo_booking_reservation
+msgid "Your booking has been confirmed!"
+msgstr "您的預定已確認！"
+
+#. module: odoo_booking_reservation
+msgid "Your booking has been cancelled."
+msgstr "您的預定已取消。"
+
+#. module: odoo_booking_reservation
+msgid "Back"
+msgstr "返回"
+
+#. module: odoo_booking_reservation
+msgid "Cancel Booking"
+msgstr "取消預定"
+
+#. module: odoo_booking_reservation
+msgid "Are you sure you want to cancel this booking?"
+msgstr "確定要取消此預定嗎？"
+
+#. module: odoo_booking_reservation
+msgid "Book Again"
+msgstr "再次預定"
+
+#. module: odoo_booking_reservation
+msgid "Confirm Booking"
+msgstr "確認預定"
+
+#. module: odoo_booking_reservation
+msgid "Booking Summary"
+msgstr "預定摘要"
+
+#. module: odoo_booking_reservation
+msgid "Subject (optional)"
+msgstr "預定主題（選填）"
+
+#. module: odoo_booking_reservation
+msgid "Enable Discussion Channel"
+msgstr "開啟討論通道"
+
+#. module: odoo_booking_reservation
+msgid "Create a discussion channel for this booking to collaborate with attendees."
+msgstr "為此預定建立討論通道，與參加者協作。"
+
+#. module: odoo_booking_reservation
+msgid "Description (optional)"
+msgstr "說明（選填）"
+
+#. module: odoo_booking_reservation
+msgid "Add a description or notes..."
+msgstr "新增說明或備註..."
+
+#. module: odoo_booking_reservation
+msgid "View Available Slots"
+msgstr "查看可用時段"
+
+#. module: odoo_booking_reservation
+msgid "Select a resource below to view available time slots and make a booking."
+msgstr "選擇以下資源來查看可用時段並進行預定。"
+
+#. module: odoo_booking_reservation
+msgid "Back to My Bookings"
+msgstr "返回我的預定"
+
+#. module: odoo_booking_reservation
+msgid "No Resources Available"
+msgstr "目前沒有可用資源"
+
+#. module: odoo_booking_reservation
+msgid "There are currently no resources available for you to book."
+msgstr "目前沒有可供您預定的資源。"
+
+#. module: odoo_booking_reservation
+msgid "Please contact the administrator if you believe you should have access to booking resources."
+msgstr "如果您認為應該有權限預定資源，請聯絡管理員。"
+
+#. module: odoo_booking_reservation
+msgid "Back to Portal"
+msgstr "返回 Portal"
+
+#. module: odoo_booking_reservation
+msgid "Resource Categories"
+msgstr "資源分類"
+
+#. module: odoo_booking_reservation
+msgid "Calendar Event"
+msgstr "日曆事件"
+
+#. module: odoo_booking_reservation
+msgid "Category"
+msgstr "分類"
+
+#. module: odoo_booking_reservation
+msgid "Image"
+msgstr "圖片"
+
+#. module: odoo_booking_reservation
+msgid "Sequence"
+msgstr "排序"
+
+#. module: odoo_booking_reservation
+msgid "Resource Allows Discussion"
+msgstr "資源允許討論"
+
+#. module: odoo_booking_reservation
+msgid "Resource Description"
+msgstr "資源說明"
+
+#. module: odoo_booking_reservation
+msgid "New"
+msgstr "新增"
+
+#. module: odoo_booking_reservation
+msgid "Resource Reservation"
+msgstr "資源預定"
+
+#. module: odoo_booking_reservation
+msgid "Booking Resource Type"
+msgstr "預定資源類型"
+
+#. module: odoo_booking_reservation
+msgid "Resource Availability"
+msgstr "資源可用性"
+
+#. module: odoo_booking_reservation
+msgid "Booking Resource Category"
+msgstr "預定資源分類"
+
+#. module: odoo_booking_reservation
+msgid "Day of Week"
+msgstr "星期"
+
+#. module: odoo_booking_reservation
+msgid "From"
+msgstr "從"
+
+#. module: odoo_booking_reservation
+msgid "To"
+msgstr "到"
+
+#. module: odoo_booking_reservation
+msgid "User"
+msgstr "使用者"
+
+#. module: odoo_booking_reservation
+msgid "Manager"
+msgstr "管理員"
+
+#. module: odoo_booking_reservation
+msgid "When enabled, users booking this resource can choose to create a Discussion channel for the reservation."
+msgstr "啟用後，預定此資源的使用者可以選擇為預定建立討論通道。"
+
+#. module: odoo_booking_reservation
+msgid "Maximum capacity of the resource"
+msgstr "資源的最大容量"
+
+#. module: odoo_booking_reservation
+msgid "Duration of each booking slot in hours"
+msgstr "每個預定時段的長度（小時）"
+
+#. module: odoo_booking_reservation
+msgid "How many days in advance can users book this resource"
+msgstr "使用者可以提前多少天預定此資源"
+
+#. module: odoo_booking_reservation
+msgid "Control who can book this resource"
+msgstr "控制誰可以預定此資源"

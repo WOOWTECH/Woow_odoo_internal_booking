@@ -92,6 +92,17 @@
                             </div>
                         </page>
 
+                        <page string="Advanced Settings" name="advanced">
+                            <group string="Discussion">
+                                <field name="enable_discussion"/>
+                            </group>
+                            <div class="alert alert-info" role="alert" invisible="not enable_discussion">
+                                <strong>Note:</strong> When enabled, users booking this resource can choose to create
+                                a Discussion channel for their reservation. This enables real-time collaboration
+                                between the organizer, attendees, and the booker.
+                            </div>
+                        </page>
+
                         <page string="Properties" name="properties">
                             <field name="resource_properties" columns="2"/>
                             <div class="alert alert-info" role="alert">
