@@ -217,9 +217,22 @@ class BookingReservation(models.Model):
                     )
                 )
 
+    def action_open_discuss_channel(self):
+        """Open the discussion channel in Discuss."""
+        self.ensure_one()
+        if not self.channel_id:
+            return False
+        return {
+            'type': 'ir.actions.act_url',
+            'url': '/odoo/discuss?active_id=discuss.channel_%s' % self.channel_id.id,
+            'target': 'self',
+        }
+
     def action_cancel(self):
         """Cancel the reservation."""
         self.write({'state': 'cancelled'})
+        for record in self:
+            record._send_booking_email('odoo_booking_reservation.mail_template_booking_cancelled')
         return True
 
     def action_confirm(self):
@@ -234,6 +247,17 @@ class BookingReservation(models.Model):
         """Compute portal access URL."""
         for record in self:
             record.access_url = f'/my/bookings/{record.id}'
+
+    def _send_booking_email(self, template_xmlid):
+        """Send a booking email using the given template."""
+        self.ensure_one()
+        template = self.env.ref(template_xmlid, raise_if_not_found=False)
+        if not template:
+            return
+        try:
+            template.send_mail(self.id, force_send=False)
+        except Exception as e:
+            _logger.warning('Failed to send booking email for reservation %s: %s', self.id, e)
 
     def _create_discussion_channel(self):
         """Create a discuss.channel for this reservation if enabled."""
@@ -287,6 +311,7 @@ class BookingReservation(models.Model):
         for reservation in reservations:
             if reservation.enable_discussion and reservation.resource_enable_discussion:
                 reservation._create_discussion_channel()
+            reservation._send_booking_email('odoo_booking_reservation.mail_template_booking_confirmed')
 
         return reservations
 

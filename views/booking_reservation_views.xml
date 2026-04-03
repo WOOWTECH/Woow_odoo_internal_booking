@@ -68,6 +68,9 @@
                     <group string="Discussion" invisible="not resource_enable_discussion">
                         <field name="enable_discussion"/>
                         <field name="channel_id" readonly="1" invisible="not enable_discussion"/>
+                        <button name="action_open_discuss_channel" type="object"
+                                string="Open Discussion Channel" icon="fa-comments"
+                                class="oe_link ps-0" invisible="not channel_id"/>
                     </group>
 
                     <!-- Description -->
@@ -111,6 +114,7 @@
                 <field name="resource_type_id" filters="1"/>
                 <field name="partner_id"/>
                 <field name="state"/>
+                <field name="channel_id"/>
             </calendar>
         </field>
     </record>

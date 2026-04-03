@@ -616,3 +616,61 @@ msgstr "使用者可以提前多少天預定此資源"
 #. module: odoo_booking_reservation
 msgid "Control who can book this resource"
 msgstr "控制誰可以預定此資源"
+
+#. module: odoo_booking_reservation
+msgid "Open Discussion Channel"
+msgstr "開啟討論通道"
+
+#. module: odoo_booking_reservation
+msgid "Open Discussion"
+msgstr "開啟討論"
+
+#. module: odoo_booking_reservation
+msgid "hour slots"
+msgstr "小時時段"
+
+#. module: odoo_booking_reservation
+msgid "Select &amp; Book"
+msgstr "選擇並預定"
+
+#. module: odoo_booking_reservation
+#: model:mail.template,name:odoo_booking_reservation.mail_template_booking_confirmed
+msgid "Booking: Confirmed"
+msgstr "預定：已確認"
+
+#. module: odoo_booking_reservation
+#: model:mail.template,name:odoo_booking_reservation.mail_template_booking_cancelled
+msgid "Booking: Cancelled"
+msgstr "預定：已取消"
+
+#. module: odoo_booking_reservation
+msgid "Your booking has been confirmed. Here are the details:"
+msgstr "您的預定已確認。以下為詳細資訊："
+
+#. module: odoo_booking_reservation
+msgid "Your booking has been cancelled. Here are the details:"
+msgstr "您的預定已取消。以下為詳細資訊："
+
+#. module: odoo_booking_reservation
+msgid "A discussion channel has been created for this booking. You can collaborate with other attendees:"
+msgstr "已為此預定建立討論通道，您可以與其他參加者協作："
+
+#. module: odoo_booking_reservation
+msgid "View Booking Details"
+msgstr "查看預定詳情"
+
+#. module: odoo_booking_reservation
+msgid "This is an automated notification from your booking system."
+msgstr "這是來自預定系統的自動通知。"
+
+#. module: odoo_booking_reservation
+msgid "Booking #"
+msgstr "預定 #"
+
+#. module: odoo_booking_reservation
+msgid "Click the \"New\" button to create a reservation, or let Portal users book resources themselves."
+msgstr "點擊「新增」按鈕來建立預定，或讓 Portal 使用者自行預定資源。"
+
+#. module: odoo_booking_reservation
+msgid "End time must be after start time."
+msgstr "結束時間必須在開始時間之後。"

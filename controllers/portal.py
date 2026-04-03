@@ -428,6 +428,26 @@ class BookingPortal(CustomerPortal):
         return request.render('odoo_booking_reservation.portal_booking_detail', values)
 
     # ============================================================
+    # DISCUSS CHANNEL REDIRECT
+    # ============================================================
+
+    @http.route('/my/bookings/<int:booking_id>/discuss', type='http', auth='user', website=True)
+    def portal_booking_discuss(self, booking_id, **kw):
+        """Redirect to the discussion channel for this booking."""
+        partner = request.env.user.partner_id
+        reservation = request.env['booking.reservation'].sudo().browse(booking_id)
+
+        if not reservation.exists() or not reservation.channel_id:
+            return request.redirect('/my/bookings')
+
+        # Allow access if user is the booker, organizer, or an attendee
+        allowed_partners = reservation.partner_id | reservation.organizer_id | reservation.attendee_ids
+        if partner not in allowed_partners:
+            return request.redirect('/my/bookings')
+
+        return request.redirect('/odoo/discuss?active_id=discuss.channel_%s' % reservation.channel_id.id)
+
+    # ============================================================
     # CANCEL BOOKING
     # ============================================================
 

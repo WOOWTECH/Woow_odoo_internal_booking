@@ -7,7 +7,7 @@
         <xpath expr="//Layout" position="inside">
             <t t-set-slot="control-panel-create-button">
                 <button type="button" class="btn btn-primary o-calendar-button-new me-1" t-on-click="onClickAddButton">
-                    New
+                    <t t-esc="newButtonLabel"/>
                 </button>
             </t>
         </xpath>

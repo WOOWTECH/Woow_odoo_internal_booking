@@ -30,6 +30,8 @@ Features:
         'security/booking_groups.xml',
         'security/ir.model.access.csv',
         'security/booking_rules.xml',
+        # Data
+        'data/mail_template_data.xml',
         # Views
         'views/booking_resource_category_views.xml',
         'views/booking_resource_type_views.xml',

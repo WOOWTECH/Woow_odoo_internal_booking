@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Email Template: Booking Confirmed -->
+    <record id="mail_template_booking_confirmed" model="mail.template">
+        <field name="name">Booking: Confirmed</field>
+        <field name="model_id" ref="model_booking_reservation"/>
+        <field name="subject">{{ object.name }} - Booking Confirmed</field>
+        <field name="email_from">{{ (user.company_id.email_formatted if user.company_id.email else user.email_formatted) }}</field>
+        <field name="email_to">{{ object.partner_id.email_formatted }}</field>
+        <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px; font-size: 14px;">
+    <p style="margin: 0px 0px 16px 0px;">
+        Hello <t t-out="object.partner_id.name or ''">Partner</t>,
+    </p>
+    <p style="margin: 0px 0px 16px 0px;">
+        Your booking has been confirmed. Here are the details:
+    </p>
+
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 16px;">
+        <tr>
+            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; width: 140px; border: 1px solid #dee2e6;">Resource</td>
+            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="object.resource_type_id.name or ''">Resource</t></td>
+        </tr>
+        <t t-if="object.subject">
+        <tr>
+            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;">Subject</td>
+            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="object.subject">Subject</t></td>
+        </tr>
+        </t>
+        <t t-if="object.resource_location">
+        <tr>
+            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;">Location</td>
+            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="object.resource_location">Location</t></td>
+        </tr>
+        </t>
+        <tr>
+            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;">Start</td>
+            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="format_datetime(object.start_datetime)">Start Time</t></td>
+        </tr>
+        <tr>
+            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;">End</td>
+            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="format_datetime(object.end_datetime)">End Time</t></td>
+        </tr>
+        <tr>
+            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;">Organizer</td>
+            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="object.organizer_id.name or object.partner_id.name or ''">Organizer</t></td>
+        </tr>
+    </table>
+
+    <t t-if="object.channel_id">
+    <p style="margin: 0px 0px 16px 0px;">
+        A discussion channel has been created for this booking. You can collaborate with other attendees:
+    </p>
+    <p style="margin: 0px 0px 16px 0px;">
+        <a t-attf-href="{{ object.get_base_url() }}/my/bookings/{{ object.id }}/discuss"
+           style="display: inline-block; padding: 8px 16px; background-color: #714B67; color: #ffffff; text-decoration: none; border-radius: 4px;">
+            <span style="margin-right: 4px;">&#128172;</span> Open Discussion Channel
+        </a>
+    </p>
+    </t>
+
+    <p style="margin: 0px 0px 16px 0px;">
+        <a t-attf-href="{{ object.get_base_url() }}/my/bookings/{{ object.id }}"
+           style="display: inline-block; padding: 8px 16px; background-color: #00A09D; color: #ffffff; text-decoration: none; border-radius: 4px;">
+            View Booking Details
+        </a>
+    </p>
+
+    <p style="margin: 0px; color: #888888; font-size: 12px;">
+        This is an automated notification from your booking system.
+    </p>
+</div>
+        </field>
+    </record>
+
+    <!-- Email Template: Booking Cancelled -->
+    <record id="mail_template_booking_cancelled" model="mail.template">
+        <field name="name">Booking: Cancelled</field>
+        <field name="model_id" ref="model_booking_reservation"/>
+        <field name="subject">{{ object.name }} - Booking Cancelled</field>
+        <field name="email_from">{{ (user.company_id.email_formatted if user.company_id.email else user.email_formatted) }}</field>
+        <field name="email_to">{{ object.partner_id.email_formatted }}</field>
+        <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px; font-size: 14px;">
+    <p style="margin: 0px 0px 16px 0px;">
+        Hello <t t-out="object.partner_id.name or ''">Partner</t>,
+    </p>
+    <p style="margin: 0px 0px 16px 0px;">
+        Your booking has been cancelled. Here are the details:
+    </p>
+
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 16px;">
+        <tr>
+            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; width: 140px; border: 1px solid #dee2e6;">Resource</td>
+            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="object.resource_type_id.name or ''">Resource</t></td>
+        </tr>
+        <t t-if="object.subject">
+        <tr>
+            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;">Subject</td>
+            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="object.subject">Subject</t></td>
+        </tr>
+        </t>
+        <tr>
+            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;">Start</td>
+            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="format_datetime(object.start_datetime)">Start Time</t></td>
+        </tr>
+        <tr>
+            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;">End</td>
+            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="format_datetime(object.end_datetime)">End Time</t></td>
+        </tr>
+        <tr>
+            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;">Status</td>
+            <td style="padding: 8px 12px; border: 1px solid #dee2e6; color: #dc3545; font-weight: bold;">Cancelled</td>
+        </tr>
+    </table>
+
+    <p style="margin: 0px 0px 16px 0px;">
+        <a t-attf-href="{{ object.get_base_url() }}/my/booking/resources/{{ object.resource_type_id.id }}"
+           style="display: inline-block; padding: 8px 16px; background-color: #00A09D; color: #ffffff; text-decoration: none; border-radius: 4px;">
+            Book Again
+        </a>
+    </p>
+
+    <p style="margin: 0px; color: #888888; font-size: 12px;">
+        This is an automated notification from your booking system.
+    </p>
+</div>
+        </field>
+    </record>
+</odoo>
