@@ -111,7 +111,7 @@ class BookingPortal(CustomerPortal):
         resource = request.env['booking.resource.type'].sudo().browse(resource_id)
 
         if not self._check_resource_access(resource, partner):
-            raise AccessError(_("You don't have access to this resource."))
+            raise AccessError(_("您沒有存取此資源的權限。"))
 
         # Date range for slots (use local timezone so "today" matches user's wall clock)
         local_now = self._get_local_now()
@@ -154,8 +154,8 @@ class BookingPortal(CustomerPortal):
             'selected_date': selected_date,
             'date_from': date_from,
             'date_to': date_to,
-            'date_from_str': date_from.strftime('%b %d'),
-            'date_to_str': date_to.strftime('%b %d, %Y'),
+            'date_from_str': date_from.strftime('%m/%d'),
+            'date_to_str': date_to.strftime('%Y/%m/%d'),
             'prev_week': max(today, date_from - timedelta(days=7)).strftime('%Y-%m-%d'),
             'next_week': min(max_date, date_from + timedelta(days=7)).strftime('%Y-%m-%d'),
             'show_prev': date_from > today,
@@ -348,11 +348,11 @@ class BookingPortal(CustomerPortal):
 
         # Filter options
         filter_options = {
-            'all': {'label': _('All'), 'domain': []},
-            'upcoming': {'label': _('Upcoming'), 'domain': [('start_datetime', '>=', fields.Datetime.now()), ('state', '=', 'confirmed')]},
-            'past': {'label': _('Past'), 'domain': [('start_datetime', '<', fields.Datetime.now())]},
-            'confirmed': {'label': _('Confirmed'), 'domain': [('state', '=', 'confirmed')]},
-            'cancelled': {'label': _('Cancelled'), 'domain': [('state', '=', 'cancelled')]},
+            'all': {'label': '全部', 'domain': []},
+            'upcoming': {'label': '即將到來', 'domain': [('start_datetime', '>=', fields.Datetime.now()), ('state', '=', 'confirmed')]},
+            'past': {'label': '已過期', 'domain': [('start_datetime', '<', fields.Datetime.now())]},
+            'confirmed': {'label': '已確認', 'domain': [('state', '=', 'confirmed')]},
+            'cancelled': {'label': '已取消', 'domain': [('state', '=', 'cancelled')]},
         }
 
         if filterby not in filter_options:
@@ -362,9 +362,9 @@ class BookingPortal(CustomerPortal):
 
         # Sort options
         sort_options = {
-            'date_desc': {'label': _('Date (newest)'), 'order': 'start_datetime desc'},
-            'date_asc': {'label': _('Date (oldest)'), 'order': 'start_datetime asc'},
-            'resource': {'label': _('Resource'), 'order': 'resource_type_id, start_datetime desc'},
+            'date_desc': {'label': '日期（最新）', 'order': 'start_datetime desc'},
+            'date_asc': {'label': '日期（最舊）', 'order': 'start_datetime asc'},
+            'resource': {'label': '資源', 'order': 'resource_type_id, start_datetime desc'},
         }
 
         if sortby not in sort_options:
@@ -413,7 +413,7 @@ class BookingPortal(CustomerPortal):
         reservation = request.env['booking.reservation'].sudo().browse(booking_id)
 
         if not reservation.exists() or reservation.partner_id.id != partner.id:
-            raise MissingError(_("This booking does not exist or you don't have access to it."))
+            raise MissingError(_("此預定不存在或您無權存取。"))
 
         success = kw.get('success')
         error = kw.get('error')
@@ -458,7 +458,7 @@ class BookingPortal(CustomerPortal):
         reservation = request.env['booking.reservation'].sudo().browse(booking_id)
 
         if not reservation.exists() or reservation.partner_id.id != partner.id:
-            raise MissingError(_("This booking does not exist or you don't have access to it."))
+            raise MissingError(_("此預定不存在或您無權存取。"))
 
         if reservation.state == 'confirmed':
             reservation.action_cancel()

@@ -12,20 +12,20 @@
 
     <!-- Main Menu Item under Calendar -->
     <menuitem id="menu_booking_reservation"
-              name="Resource Bookings"
+              name="資源預定"
               parent="calendar.mail_menu_calendar"
               action="action_booking_reservation_calendar"
               sequence="20"/>
 
-    <!-- Configuration Menu (under Calendar > Configuration) -->
+    <!-- 設定選單（行事曆 > 設定） -->
     <menuitem id="menu_booking_resource_type"
-              name="Booking Resources"
+              name="預定資源"
               parent="calendar.calendar_menu_config"
               action="action_booking_resource_type"
               sequence="20"/>
 
     <menuitem id="menu_booking_resource_category"
-              name="Resource Categories"
+              name="資源分類"
               parent="calendar.calendar_menu_config"
               action="action_booking_resource_category"
               sequence="25"/>

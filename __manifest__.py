@@ -1,20 +1,20 @@
 {
-    'name': 'Booking Reservation',
+    'name': '資源預定管理',
     'version': '18.0.1.0.0',
     'category': 'Calendar',
     'sequence': 10,
-    'summary': 'Resource Booking and Reservation Management for Portal Users',
+    'summary': 'Portal 使用者資源預定與管理',
     'description': '''
-Odoo 18 Resource Booking & Reservation Module
+Odoo 18 資源預定管理模組
 
-Features:
-- Manage bookable resources (meeting rooms, equipment, etc.)
-- Portal users can book resources from Portal interface
-- Administrators control access by selecting authorized contacts
-- Automatic conflict detection prevents double booking
-- Calendar view integration in backend
-- Dynamic attributes support (native Odoo feature)
-- Does not depend on website module
+功能：
+- 管理可預定資源（會議室、設備等）
+- Portal 使用者可透過入口網站介面預定資源
+- 管理員可選擇授權聯絡人來控制存取
+- 自動衝突偵測，防止重複預定
+- 後台行事曆視圖整合
+- 支援動態屬性（Odoo 原生功能）
+- 不依賴 website 模組
     ''',
     'author': 'WOOWTECH',
     'website': 'https://woowtech.com',

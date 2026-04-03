@@ -2,24 +2,24 @@
 <odoo>
     <!-- Module Category -->
     <record id="module_category_booking" model="ir.module.category">
-        <field name="name">Booking</field>
-        <field name="description">Resource Booking and Reservation Management</field>
+        <field name="name">預定</field>
+        <field name="description">資源預定與管理</field>
         <field name="sequence">50</field>
     </record>
 
-    <!-- User Group -->
+    <!-- 使用者群組 -->
     <record id="group_booking_user" model="res.groups">
-        <field name="name">User</field>
+        <field name="name">使用者</field>
         <field name="category_id" ref="module_category_booking"/>
         <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
-        <field name="comment">Can view resources and create reservations</field>
+        <field name="comment">可檢視資源並建立預定</field>
     </record>
 
-    <!-- Manager Group -->
+    <!-- 管理員群組 -->
     <record id="group_booking_manager" model="res.groups">
-        <field name="name">Manager</field>
+        <field name="name">管理員</field>
         <field name="category_id" ref="module_category_booking"/>
         <field name="implied_ids" eval="[(4, ref('group_booking_user'))]"/>
-        <field name="comment">Full access to booking resources and reservations</field>
+        <field name="comment">完整存取預定資源與預定管理</field>
     </record>
 </odoo>

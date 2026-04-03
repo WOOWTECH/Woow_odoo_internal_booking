@@ -5,19 +5,19 @@
         <field name="name">booking.reservation.form</field>
         <field name="model">booking.reservation</field>
         <field name="arch" type="xml">
-            <form string="Reservation">
+            <form string="預定">
                 <header>
                     <button name="action_confirm"
-                            string="Confirm"
+                            string="確認"
                             type="object"
                             class="btn-primary"
                             invisible="state != 'cancelled'"/>
                     <button name="action_cancel"
-                            string="Cancel"
+                            string="取消"
                             type="object"
                             class="btn-secondary"
                             invisible="state != 'confirmed'"
-                            confirm="Are you sure you want to cancel this reservation?"/>
+                            confirm="確定要取消此預定嗎？"/>
                     <field name="state" widget="statusbar" statusbar_visible="confirmed,cancelled"/>
                 </header>
 
@@ -25,38 +25,38 @@
                     <!-- Subject as large title (Calendar-style) -->
                     <div class="oe_title">
                         <h1>
-                            <field name="subject" placeholder="e.g. Department Weekly Meeting" nolabel="1"/>
+                            <field name="subject" placeholder="例如：部門週會" nolabel="1"/>
                         </h1>
                     </div>
 
                     <group>
                         <group>
-                            <field name="resource_type_id" placeholder="Select Resource" options="{'no_create': True}"/>
+                            <field name="resource_type_id" placeholder="選擇資源" options="{'no_create': True}"/>
                         </group>
                     </group>
 
                     <!-- Resource Info (shown after selecting resource) -->
                     <div class="alert alert-info" role="alert" invisible="not resource_type_id">
-                        <strong>Resource Info</strong>
+                        <strong>資源資訊</strong>
                         <div class="row mt-2">
                             <div class="col-md-4" invisible="not resource_location">
-                                <i class="fa fa-map-marker" title="Location"/> <strong>Location:</strong>
+                                <i class="fa fa-map-marker" title="地點"/> <strong>地點：</strong>
                                 <field name="resource_location" readonly="1" nolabel="1"/>
                             </div>
                             <div class="col-md-4" invisible="resource_capacity == 0">
-                                <i class="fa fa-users" title="Capacity"/> <strong>Capacity:</strong>
-                                <field name="resource_capacity" readonly="1" nolabel="1"/> people
+                                <i class="fa fa-users" title="容量"/> <strong>容量：</strong>
+                                <field name="resource_capacity" readonly="1" nolabel="1"/> 人
                             </div>
                         </div>
                     </div>
 
                     <group>
-                        <group string="Time">
+                        <group string="時間">
                             <field name="start_datetime"/>
                             <field name="end_datetime"/>
                             <field name="duration" widget="float_time"/>
                         </group>
-                        <group string="People">
+                        <group string="人員">
                             <field name="organizer_id" options="{'no_create': True}"/>
                             <field name="partner_id" options="{'no_create': True}"/>
                             <field name="attendee_ids" widget="many2many_tags" options="{'no_create': True}"/>
@@ -65,28 +65,28 @@
 
                     <!-- Discussion Channel (only when resource allows it) -->
                     <field name="resource_enable_discussion" invisible="1"/>
-                    <group string="Discussion" invisible="not resource_enable_discussion">
+                    <group string="討論" invisible="not resource_enable_discussion">
                         <field name="enable_discussion"/>
                         <field name="channel_id" readonly="1" invisible="not enable_discussion"/>
                         <button name="action_open_discuss_channel" type="object"
-                                string="Open Discussion Channel" icon="fa-comments"
+                                string="開啟討論通道" icon="fa-comments"
                                 class="oe_link ps-0" invisible="not channel_id"/>
                     </group>
 
                     <!-- Description -->
-                    <group string="Description">
-                        <field name="description" nolabel="1" placeholder="Add a description..."/>
+                    <group string="說明">
+                        <field name="description" nolabel="1" placeholder="新增說明..."/>
                     </group>
 
-                    <!-- Reminder -->
-                    <group string="Reminder">
+                    <!-- 提醒 -->
+                    <group string="提醒">
                         <field name="reminder_type"/>
                         <field name="reminder_time" invisible="reminder_type == 'none'"
-                               string="Minutes before"/>
+                               string="提前分鐘數"/>
                     </group>
 
-                    <!-- Legacy notes (hidden if empty, for backward compat) -->
-                    <group string="Notes" invisible="not note">
+                    <!-- 舊版備註（為相容性保留，空白時隱藏） -->
+                    <group string="備註" invisible="not note">
                         <field name="note" nolabel="1" readonly="1"/>
                     </group>
                 </sheet>
@@ -101,7 +101,7 @@
         <field name="name">booking.reservation.calendar</field>
         <field name="model">booking.reservation</field>
         <field name="arch" type="xml">
-            <calendar string="Resource Bookings"
+            <calendar string="資源預定"
                       js_class="booking_calendar"
                       date_start="start_datetime"
                       date_stop="end_datetime"
@@ -124,7 +124,7 @@
         <field name="name">booking.reservation.tree</field>
         <field name="model">booking.reservation</field>
         <field name="arch" type="xml">
-            <list string="Reservations" decoration-muted="state == 'cancelled'">
+            <list string="預定" decoration-muted="state == 'cancelled'">
                 <field name="name"/>
                 <field name="subject" optional="hide"/>
                 <field name="resource_type_id"/>
@@ -145,30 +145,30 @@
         <field name="name">booking.reservation.search</field>
         <field name="model">booking.reservation</field>
         <field name="arch" type="xml">
-            <search string="Search Reservations">
+            <search string="搜尋預定">
                 <field name="name"/>
                 <field name="subject"/>
                 <field name="resource_type_id"/>
                 <field name="partner_id"/>
                 <field name="organizer_id"/>
                 <separator/>
-                <filter name="filter_confirmed" string="Confirmed" domain="[('state', '=', 'confirmed')]"/>
-                <filter name="filter_cancelled" string="Cancelled" domain="[('state', '=', 'cancelled')]"/>
+                <filter name="filter_confirmed" string="已確認" domain="[('state', '=', 'confirmed')]"/>
+                <filter name="filter_cancelled" string="已取消" domain="[('state', '=', 'cancelled')]"/>
                 <separator/>
-                <filter name="filter_today" string="Today"
+                <filter name="filter_today" string="今天"
                         domain="[('start_datetime', '&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0))),
                                  ('start_datetime', '&lt;', datetime.datetime.combine(context_today() + datetime.timedelta(days=1), datetime.time(0,0,0)))]"/>
-                <filter name="filter_this_week" string="This Week"
+                <filter name="filter_this_week" string="本週"
                         domain="[('start_datetime', '&gt;=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d')),
                                  ('start_datetime', '&lt;', (context_today() + datetime.timedelta(days=7-context_today().weekday())).strftime('%Y-%m-%d'))]"/>
-                <filter name="filter_upcoming" string="Upcoming" domain="[('start_datetime', '&gt;=', context_today())]"/>
-                <filter name="filter_past" string="Past" domain="[('start_datetime', '&lt;', context_today())]"/>
+                <filter name="filter_upcoming" string="即將到來" domain="[('start_datetime', '&gt;=', context_today())]"/>
+                <filter name="filter_past" string="已過期" domain="[('start_datetime', '&lt;', context_today())]"/>
                 <separator/>
-                <group expand="0" string="Group By">
-                    <filter name="group_resource" string="Resource" context="{'group_by': 'resource_type_id'}"/>
-                    <filter name="group_partner" string="Booked By" context="{'group_by': 'partner_id'}"/>
-                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
-                    <filter name="group_date" string="Date" context="{'group_by': 'start_datetime:day'}"/>
+                <group expand="0" string="分組">
+                    <filter name="group_resource" string="資源" context="{'group_by': 'resource_type_id'}"/>
+                    <filter name="group_partner" string="預定者" context="{'group_by': 'partner_id'}"/>
+                    <filter name="group_state" string="狀態" context="{'group_by': 'state'}"/>
+                    <filter name="group_date" string="日期" context="{'group_by': 'start_datetime:day'}"/>
                 </group>
             </search>
         </field>
@@ -176,7 +176,7 @@
 
     <!-- Calendar Action -->
     <record id="action_booking_reservation_calendar" model="ir.actions.act_window">
-        <field name="name">Resource Bookings</field>
+        <field name="name">資源預定</field>
         <field name="res_model">booking.reservation</field>
         <field name="view_mode">calendar,list,form</field>
         <field name="view_id" ref="view_booking_reservation_calendar"/>
@@ -184,17 +184,17 @@
         <field name="context">{'search_default_filter_confirmed': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                No reservations yet
+                尚無預定
             </p>
             <p>
-                Click the "New" button to create a reservation, or let Portal users book resources themselves.
+                點擊「新增」按鈕建立預定，或讓 Portal 使用者自行預定資源。
             </p>
         </field>
     </record>
 
     <!-- Tree Action (for settings menu if needed) -->
     <record id="action_booking_reservation_list" model="ir.actions.act_window">
-        <field name="name">All Reservations</field>
+        <field name="name">所有預定</field>
         <field name="res_model">booking.reservation</field>
         <field name="view_mode">list,form,calendar</field>
         <field name="search_view_id" ref="view_booking_reservation_search"/>

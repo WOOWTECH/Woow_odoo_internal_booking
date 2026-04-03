@@ -4,32 +4,32 @@
     <!-- PORTAL HOME - Add Booking Counter -->
     <!-- ============================================================ -->
 
-    <template id="portal_my_home_booking" name="Show Booking Count" inherit_id="portal.portal_my_home" priority="30">
+    <template id="portal_my_home_booking" name="顯示預定數量" inherit_id="portal.portal_my_home" priority="30">
         <!-- Add booking cards inside the existing portal_common_category -->
         <xpath expr="//div[@id='portal_common_category']" position="inside">
             <div class="o_portal_index_card col-md-6 order-3">
-                <a href="/my/bookings" title="My Bookings" class="d-flex gap-2 gap-md-3 py-3 pe-2 px-md-3 h-100 rounded text-decoration-none bg-100">
+                <a href="/my/bookings" title="我的預定" class="d-flex gap-2 gap-md-3 py-3 pe-2 px-md-3 h-100 rounded text-decoration-none bg-100">
                     <div class="o_portal_icon d-block align-self-start">
                         <i class="fa fa-calendar fa-2x text-muted"/>
                     </div>
                     <div>
                         <div class="mt-0 mb-1 fs-5 fw-normal lh-1">
-                            <span>My Bookings</span>
+                            <span>我的預定</span>
                         </div>
-                        <div class="opacity-75">View and manage your resource reservations</div>
+                        <div class="opacity-75">查看及管理您的資源預定</div>
                     </div>
                 </a>
             </div>
             <div class="o_portal_index_card col-md-6 order-4">
-                <a href="/my/booking/resources" title="Book Resources" class="d-flex gap-2 gap-md-3 py-3 pe-2 px-md-3 h-100 rounded text-decoration-none bg-100">
+                <a href="/my/booking/resources" title="預定資源" class="d-flex gap-2 gap-md-3 py-3 pe-2 px-md-3 h-100 rounded text-decoration-none bg-100">
                     <div class="o_portal_icon d-block align-self-start">
                         <i class="fa fa-building-o fa-2x text-muted"/>
                     </div>
                     <div>
                         <div class="mt-0 mb-1 fs-5 fw-normal lh-1">
-                            <span>Book Resources</span>
+                            <span>預定資源</span>
                         </div>
-                        <div class="opacity-75">Browse and book available resources</div>
+                        <div class="opacity-75">瀏覽並預定可用資源</div>
                     </div>
                 </a>
             </div>
@@ -40,15 +40,15 @@
     <!-- RESOURCE LIST PAGE -->
     <!-- ============================================================ -->
 
-    <template id="portal_my_resources" name="My Booking Resources">
+    <template id="portal_my_resources" name="預定資源">
         <t t-call="portal.portal_layout">
             <t t-set="breadcrumbs_searchbar" t-value="False"/>
 
-            <h3 class="mb-4">Available Resources</h3>
+            <h3 class="mb-4">可用資源</h3>
 
             <t t-if="not resources">
                 <div class="alert alert-info" role="alert">
-                    <i class="fa fa-info-circle"/> No resources are available for booking at this time.
+                    <i class="fa fa-info-circle"/> 目前沒有可供預定的資源。
                 </div>
             </t>
 
@@ -78,14 +78,14 @@
                                             <i class="fa fa-map-marker"/> <t t-esc="resource.location"/><br/>
                                         </t>
                                         <t t-if="resource.capacity">
-                                            <i class="fa fa-users"/> Capacity: <t t-esc="resource.capacity"/>
+                                            <i class="fa fa-users"/> 容量：<t t-esc="resource.capacity"/> 人
                                         </t>
                                     </p>
                                 </div>
                                 <div class="card-footer bg-transparent">
                                     <a t-attf-href="/my/booking/resources/#{resource.id}"
                                        class="btn btn-primary btn-block">
-                                        <i class="fa fa-calendar-plus-o"/> Book Now
+                                        <i class="fa fa-calendar-plus-o"/> 立即預定
                                     </a>
                                 </div>
                             </div>
@@ -100,7 +100,7 @@
     <!-- RESOURCE DETAIL PAGE -->
     <!-- ============================================================ -->
 
-    <template id="portal_resource_detail" name="Resource Detail">
+    <template id="portal_resource_detail" name="資源詳情">
         <t t-call="portal.portal_layout">
             <t t-set="breadcrumbs_searchbar" t-value="False"/>
 
@@ -120,15 +120,15 @@
 
                             <dl class="row mb-0">
                                 <t t-if="resource.location">
-                                    <dt class="col-4 col-lg-5">Location</dt>
+                                    <dt class="col-4 col-lg-5">地點</dt>
                                     <dd class="col-8 col-lg-7"><t t-esc="resource.location"/></dd>
                                 </t>
                                 <t t-if="resource.capacity">
-                                    <dt class="col-4 col-lg-5">Capacity</dt>
-                                    <dd class="col-8 col-lg-7"><t t-esc="resource.capacity"/> people</dd>
+                                    <dt class="col-4 col-lg-5">容量</dt>
+                                    <dd class="col-8 col-lg-7"><t t-esc="resource.capacity"/> 人</dd>
                                 </t>
-                                <dt class="col-4 col-lg-5">Duration</dt>
-                                <dd class="col-8 col-lg-7"><t t-esc="resource.slot_duration"/> hour(s)</dd>
+                                <dt class="col-4 col-lg-5">時長</dt>
+                                <dd class="col-8 col-lg-7"><t t-esc="resource.slot_duration"/> 小時</dd>
                             </dl>
 
                             <t t-if="resource.description">
@@ -140,7 +140,7 @@
 
                     <div class="mt-3">
                         <a href="/my/booking/resources" class="btn btn-secondary btn-block">
-                            <i class="fa fa-arrow-left"/> Back to Resources
+                            <i class="fa fa-arrow-left"/> 返回資源列表
                         </a>
                     </div>
                 </div>
@@ -150,7 +150,7 @@
                     <div class="card">
                         <div class="card-header ws-slots-header">
                             <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2">
-                                <span><i class="fa fa-calendar"/> Available Time Slots</span>
+                                <span><i class="fa fa-calendar"/> 可用時段</span>
                                 <div class="d-flex align-items-center">
                                     <t t-if="show_prev">
                                         <a t-attf-href="/my/booking/resources/#{resource.id}?date=#{prev_week}"
@@ -183,7 +183,7 @@
                         <div class="card-body">
                             <t t-if="not slots">
                                 <div class="alert alert-info">
-                                    No available time slots for this period.
+                                    此期間沒有可用時段。
                                 </div>
                             </t>
 
@@ -204,13 +204,13 @@
                                                 <a t-attf-href="/my/bookings/#{slot['reservation_id']}"
                                                    class="btn btn-info btn-sm btn-block slot-btn">
                                                     <t t-esc="slot['start_str'].split(' ')[1]"/> - <t t-esc="slot['end_str']"/>
-                                                    <br/><small>Your booking</small>
+                                                    <br/><small>您的預定</small>
                                                 </a>
                                             </t>
                                             <t t-else="">
                                                 <button class="btn btn-secondary btn-sm btn-block slot-btn" disabled="disabled">
                                                     <t t-esc="slot['start_str'].split(' ')[1]"/> - <t t-esc="slot['end_str']"/>
-                                                    <br/><small>Booked</small>
+                                                    <br/><small>已預定</small>
                                                 </button>
                                             </t>
                                         </div>
@@ -228,16 +228,16 @@
     <!-- MY BOOKINGS LIST -->
     <!-- ============================================================ -->
 
-    <template id="portal_my_bookings" name="My Bookings">
+    <template id="portal_my_bookings" name="我的預定">
         <t t-call="portal.portal_layout">
             <t t-set="breadcrumbs_searchbar" t-value="False"/>
 
-            <h3 class="mb-3">My Bookings</h3>
+            <h3 class="mb-3">我的預定</h3>
 
             <!-- Actions Bar: stack vertically on mobile, horizontal on sm+ -->
             <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mb-3">
                 <a href="/my/booking/resources" class="btn btn-primary">
-                    <i class="fa fa-plus"/> New Booking
+                    <i class="fa fa-plus"/> 新增預定
                 </a>
                 <div class="d-flex gap-2">
                     <!-- Filter Dropdown -->
@@ -281,8 +281,8 @@
             <!-- Bookings: card list on mobile, table on md+ -->
             <t t-if="not reservations">
                 <div class="alert alert-info" role="alert">
-                    <i class="fa fa-info-circle"/> You don't have any bookings yet.
-                    <a href="/my/booking/resources">Browse available resources</a> to make a booking.
+                    <i class="fa fa-info-circle"/> 您目前沒有任何預定。
+                    <a href="/my/booking/resources">瀏覽可用資源</a>來進行預定。
                 </div>
             </t>
 
@@ -313,10 +313,10 @@
                                         </div>
                                         <div class="text-end">
                                             <t t-if="res.state == 'confirmed'">
-                                                <span class="badge bg-success">Confirmed</span>
+                                                <span class="badge bg-success">已確認</span>
                                             </t>
                                             <t t-if="res.state == 'cancelled'">
-                                                <span class="badge bg-danger">Cancelled</span>
+                                                <span class="badge bg-danger">已取消</span>
                                             </t>
                                         </div>
                                     </div>
@@ -331,10 +331,10 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>Resource</th>
-                                <th>Date &amp; Time</th>
-                                <th>Duration</th>
-                                <th>Status</th>
+                                <th>資源</th>
+                                <th>日期與時間</th>
+                                <th>時長</th>
+                                <th>狀態</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -356,19 +356,19 @@
                                         <t t-esc="res.start_datetime" t-options="{'widget': 'datetime', 'format': 'MMM dd, yyyy HH:mm'}"/>
                                     </td>
                                     <td>
-                                        <t t-esc="'%.1f' % res.duration"/> hour(s)
+                                        <t t-esc="'%.1f' % res.duration"/> 小時
                                     </td>
                                     <td>
                                         <t t-if="res.state == 'confirmed'">
-                                            <span class="badge bg-success">Confirmed</span>
+                                            <span class="badge bg-success">已確認</span>
                                         </t>
                                         <t t-if="res.state == 'cancelled'">
-                                            <span class="badge bg-danger">Cancelled</span>
+                                            <span class="badge bg-danger">已取消</span>
                                         </t>
                                     </td>
                                     <td class="text-end">
                                         <a t-attf-href="/my/bookings/#{res.id}" class="btn btn-sm btn-outline-primary">
-                                            <i class="fa fa-eye"/> View
+                                            <i class="fa fa-eye"/> 查看
                                         </a>
                                     </td>
                                 </tr>
@@ -389,22 +389,22 @@
     <!-- BOOKING DETAIL PAGE -->
     <!-- ============================================================ -->
 
-    <template id="portal_booking_detail" name="Booking Detail">
+    <template id="portal_booking_detail" name="預定詳情">
         <t t-call="portal.portal_layout">
             <t t-set="breadcrumbs_searchbar" t-value="False"/>
 
-            <h3 class="mb-4">Booking Details</h3>
+            <h3 class="mb-4">預定詳情</h3>
 
             <!-- Success/Error Messages -->
             <t t-if="success == 'created'">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <i class="fa fa-check-circle"/> Your booking has been confirmed!
+                    <i class="fa fa-check-circle"/> 您的預定已確認！
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"/>
                 </div>
             </t>
             <t t-if="success == 'cancelled'">
                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    <i class="fa fa-times-circle"/> Your booking has been cancelled.
+                    <i class="fa fa-times-circle"/> 您的預定已取消。
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"/>
                 </div>
             </t>
@@ -420,13 +420,13 @@
                     <div class="card">
                         <div class="card-header ws-card-header-accent d-flex justify-content-between align-items-center">
                             <span>
-                                <i class="fa fa-calendar-check-o"/> Booking #<t t-esc="reservation.id"/>
+                                <i class="fa fa-calendar-check-o"/> 預定 #<t t-esc="reservation.id"/>
                             </span>
                             <t t-if="reservation.state == 'confirmed'">
-                                <span class="badge bg-success">Confirmed</span>
+                                <span class="badge bg-success">已確認</span>
                             </t>
                             <t t-if="reservation.state == 'cancelled'">
-                                <span class="badge bg-danger">Cancelled</span>
+                                <span class="badge bg-danger">已取消</span>
                             </t>
                         </div>
                         <div class="card-body">
@@ -438,11 +438,11 @@
 
                             <!-- Resource Info -->
                             <dl class="row">
-                                <dt class="col-5 col-sm-4">Resource</dt>
+                                <dt class="col-5 col-sm-4">資源</dt>
                                 <dd class="col-7 col-sm-8"><t t-esc="reservation.resource_type_id.name"/></dd>
 
                                 <t t-if="reservation.resource_location">
-                                    <dt class="col-5 col-sm-4">Location</dt>
+                                    <dt class="col-5 col-sm-4">地點</dt>
                                     <dd class="col-7 col-sm-8"><t t-esc="reservation.resource_location"/></dd>
                                 </t>
                             </dl>
@@ -451,18 +451,18 @@
 
                             <!-- Time -->
                             <dl class="row">
-                                <dt class="col-5 col-sm-4">Start</dt>
+                                <dt class="col-5 col-sm-4">開始</dt>
                                 <dd class="col-7 col-sm-8">
                                     <t t-esc="reservation.start_datetime" t-options="{'widget': 'datetime', 'format': 'EEEE, MMMM d, yyyy HH:mm'}"/>
                                 </dd>
 
-                                <dt class="col-5 col-sm-4">End</dt>
+                                <dt class="col-5 col-sm-4">結束</dt>
                                 <dd class="col-7 col-sm-8">
                                     <t t-esc="reservation.end_datetime" t-options="{'widget': 'datetime', 'format': 'EEEE, MMMM d, yyyy HH:mm'}"/>
                                 </dd>
 
-                                <dt class="col-5 col-sm-4">Duration</dt>
-                                <dd class="col-7 col-sm-8"><t t-esc="'%.1f' % reservation.duration"/> hour(s)</dd>
+                                <dt class="col-5 col-sm-4">時長</dt>
+                                <dd class="col-7 col-sm-8"><t t-esc="'%.1f' % reservation.duration"/> 小時</dd>
                             </dl>
 
                             <hr/>
@@ -470,15 +470,15 @@
                             <!-- People -->
                             <dl class="row">
                                 <t t-if="reservation.organizer_id">
-                                    <dt class="col-5 col-sm-4">Organizer</dt>
+                                    <dt class="col-5 col-sm-4">舉辦方</dt>
                                     <dd class="col-7 col-sm-8"><t t-esc="reservation.organizer_id.name"/></dd>
                                 </t>
 
-                                <dt class="col-5 col-sm-4">Booked By</dt>
+                                <dt class="col-5 col-sm-4">預定者</dt>
                                 <dd class="col-7 col-sm-8"><t t-esc="reservation.partner_id.name"/></dd>
 
                                 <t t-if="reservation.attendee_ids">
-                                    <dt class="col-5 col-sm-4">Attendees</dt>
+                                    <dt class="col-5 col-sm-4">參加者</dt>
                                     <dd class="col-7 col-sm-8">
                                         <t t-foreach="reservation.attendee_ids" t-as="att">
                                             <span class="badge bg-secondary me-1"><t t-esc="att.name"/></span>
@@ -491,7 +491,7 @@
                             <t t-if="reservation.channel_id">
                                 <hr/>
                                 <dl class="row">
-                                    <dt class="col-5 col-sm-4">Discussion</dt>
+                                    <dt class="col-5 col-sm-4">討論</dt>
                                     <dd class="col-7 col-sm-8">
                                         <a t-attf-href="/my/bookings/#{reservation.id}/discuss">
                                             <i class="fa fa-comments"/> <t t-esc="reservation.channel_id.name"/>
@@ -503,28 +503,28 @@
                             <!-- Description -->
                             <t t-if="reservation.description">
                                 <hr/>
-                                <h6 class="text-muted">Description</h6>
+                                <h6 class="text-muted">說明</h6>
                                 <div t-raw="reservation.description"/>
                             </t>
 
                             <!-- Legacy notes -->
                             <t t-if="reservation.note">
                                 <hr/>
-                                <h6 class="text-muted">Notes</h6>
+                                <h6 class="text-muted">備註</h6>
                                 <p><t t-esc="reservation.note"/></p>
                             </t>
                         </div>
                         <div class="card-footer">
                             <div class="d-flex flex-column-reverse flex-sm-row justify-content-between gap-2">
                                 <a href="/my/bookings" class="btn btn-secondary">
-                                    <i class="fa fa-arrow-left"/> Back
+                                    <i class="fa fa-arrow-left"/> 返回
                                 </a>
                                 <t t-if="reservation.state == 'confirmed'">
                                     <form t-attf-action="/my/bookings/#{reservation.id}/cancel" method="post" class="d-inline">
                                         <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                         <button type="submit" class="btn btn-danger w-100 w-sm-auto"
-                                                onclick="return confirm('Are you sure you want to cancel this booking?');">
-                                            <i class="fa fa-times"/> Cancel Booking
+                                                onclick="return confirm('確定要取消此預定嗎？');">
+                                            <i class="fa fa-times"/> 取消預定
                                         </button>
                                     </form>
                                 </t>
@@ -537,7 +537,7 @@
                 <div class="col-lg-4 mt-4 mt-lg-0">
                     <div class="card ws-card-accent">
                         <div class="card-header">
-                            <i class="fa fa-info-circle"/> Resource Info
+                            <i class="fa fa-info-circle"/> 資源資訊
                         </div>
                         <div class="card-body">
                             <t t-if="reservation.resource_type_id.image">
@@ -553,7 +553,7 @@
                         <div class="card-footer">
                             <a t-attf-href="/my/booking/resources/#{reservation.resource_type_id.id}"
                                class="btn btn-outline-primary btn-sm btn-block">
-                                <i class="fa fa-calendar"/> Book Again
+                                <i class="fa fa-calendar"/> 再次預定
                             </a>
                         </div>
                     </div>
@@ -566,14 +566,14 @@
     <!-- NEW BOOKING PAGE (Select Resource) -->
     <!-- ============================================================ -->
 
-    <template id="portal_new_booking" name="New Booking">
+    <template id="portal_new_booking" name="新增預定">
         <t t-call="portal.portal_layout">
             <t t-set="breadcrumbs_searchbar" t-value="False"/>
 
-            <h3 class="mb-4">New Booking</h3>
+            <h3 class="mb-4">新增預定</h3>
 
             <div class="alert alert-info" role="alert">
-                <i class="fa fa-info-circle"/> Select a resource below to view available time slots and make a booking.
+                <i class="fa fa-info-circle"/> 選擇以下資源來查看可用時段並進行預定。
             </div>
 
             <div class="row">
@@ -592,12 +592,12 @@
                                     <t t-if="resource.location">
                                         <i class="fa fa-map-marker"/> <t t-esc="resource.location"/><br/>
                                     </t>
-                                    <i class="fa fa-clock-o"/> <t t-esc="resource.slot_duration"/> hour slots
+                                    <i class="fa fa-clock-o"/> <t t-esc="resource.slot_duration"/> 小時時段
                                 </p>
                             </div>
                             <div class="card-footer bg-transparent">
                                 <a t-attf-href="/my/booking/resources/#{resource.id}" class="btn btn-primary btn-sm btn-block">
-                                    Select &amp; Book
+                                    選擇並預定
                                 </a>
                             </div>
                         </div>
@@ -607,7 +607,7 @@
 
             <div class="mt-3">
                 <a href="/my/bookings" class="btn btn-secondary">
-                    <i class="fa fa-arrow-left"/> Back to My Bookings
+                    <i class="fa fa-arrow-left"/> 返回我的預定
                 </a>
             </div>
         </t>
@@ -617,11 +617,11 @@
     <!-- BOOKING CONFIRMATION PAGE -->
     <!-- ============================================================ -->
 
-    <template id="portal_booking_confirm" name="Booking Confirmation">
+    <template id="portal_booking_confirm" name="確認預定">
         <t t-call="portal.portal_layout">
             <t t-set="breadcrumbs_searchbar" t-value="False"/>
 
-            <h3 class="mb-4">Confirm Booking</h3>
+            <h3 class="mb-4">確認預定</h3>
 
             <div class="row">
                 <div class="col-lg-8">
@@ -634,59 +634,59 @@
                         <div class="card">
                             <div class="card-header ws-card-header-accent">
                                 <span>
-                                    <i class="fa fa-calendar-check-o"/> Booking Summary
+                                    <i class="fa fa-calendar-check-o"/> 預定摘要
                                 </span>
                             </div>
                             <div class="card-body">
                                 <!-- Subject input -->
                                 <div class="mb-3">
-                                    <label for="subject" class="form-label fw-bold">Subject (optional)</label>
+                                    <label for="subject" class="form-label fw-bold">預定主題（選填）</label>
                                     <input type="text" name="subject" id="subject" class="form-control"
-                                           placeholder="e.g. Department Weekly Meeting"/>
+                                           placeholder="例如：部門週會"/>
                                 </div>
 
                                 <!-- Resource Info -->
-                                <h6 class="text-muted mb-2">Resource Info</h6>
+                                <h6 class="text-muted mb-2">資源資訊</h6>
                                 <dl class="row">
-                                    <dt class="col-5 col-sm-4">Resource</dt>
+                                    <dt class="col-5 col-sm-4">資源</dt>
                                     <dd class="col-7 col-sm-8"><t t-esc="resource.name"/></dd>
 
                                     <t t-if="resource.location">
-                                        <dt class="col-5 col-sm-4">Location</dt>
+                                        <dt class="col-5 col-sm-4">地點</dt>
                                         <dd class="col-7 col-sm-8"><t t-esc="resource.location"/></dd>
                                     </t>
 
                                     <t t-if="resource.capacity">
-                                        <dt class="col-5 col-sm-4">Capacity</dt>
-                                        <dd class="col-7 col-sm-8"><t t-esc="resource.capacity"/> people</dd>
+                                        <dt class="col-5 col-sm-4">容量</dt>
+                                        <dd class="col-7 col-sm-8"><t t-esc="resource.capacity"/> 人</dd>
                                     </t>
                                 </dl>
 
                                 <hr/>
 
                                 <!-- Time Info -->
-                                <h6 class="text-muted mb-2">Time</h6>
+                                <h6 class="text-muted mb-2">時間</h6>
                                 <dl class="row">
-                                    <dt class="col-5 col-sm-4">Start</dt>
+                                    <dt class="col-5 col-sm-4">開始</dt>
                                     <dd class="col-7 col-sm-8">
                                         <t t-esc="start_dt.strftime('%A, %B %d, %Y %H:%M')"/>
                                     </dd>
 
-                                    <dt class="col-5 col-sm-4">End</dt>
+                                    <dt class="col-5 col-sm-4">結束</dt>
                                     <dd class="col-7 col-sm-8">
                                         <t t-esc="end_dt.strftime('%A, %B %d, %Y %H:%M')"/>
                                     </dd>
 
-                                    <dt class="col-5 col-sm-4">Duration</dt>
-                                    <dd class="col-7 col-sm-8"><t t-esc="'%.1f' % duration"/> hour(s)</dd>
+                                    <dt class="col-5 col-sm-4">時長</dt>
+                                    <dd class="col-7 col-sm-8"><t t-esc="'%.1f' % duration"/> 小時</dd>
                                 </dl>
 
                                 <hr/>
 
                                 <!-- Organizer (read-only) -->
-                                <h6 class="text-muted mb-2">People</h6>
+                                <h6 class="text-muted mb-2">人員</h6>
                                 <dl class="row">
-                                    <dt class="col-5 col-sm-4">Organizer</dt>
+                                    <dt class="col-5 col-sm-4">舉辦方</dt>
                                     <dd class="col-7 col-sm-8"><t t-esc="partner.name"/></dd>
                                 </dl>
 
@@ -697,29 +697,29 @@
                                         <input type="checkbox" name="enable_discussion" id="enable_discussion"
                                                class="form-check-input"/>
                                         <label for="enable_discussion" class="form-check-label">
-                                            Enable Discussion Channel
+                                            開啟討論通道
                                         </label>
-                                        <div class="form-text">Create a discussion channel for this booking to collaborate with attendees.</div>
+                                        <div class="form-text">為此預定建立討論通道，與參加者協作。</div>
                                     </div>
                                 </t>
 
                                 <!-- Description textarea -->
                                 <hr/>
                                 <div class="mb-0">
-                                    <label for="description" class="form-label fw-bold">Description (optional)</label>
+                                    <label for="description" class="form-label fw-bold">說明（選填）</label>
                                     <textarea name="description" id="description" class="form-control"
                                               rows="3"
-                                              placeholder="Add a description or notes..."/>
+                                              placeholder="新增說明或備註..."/>
                                 </div>
                             </div>
                             <div class="card-footer">
                                 <div class="d-flex flex-column-reverse flex-sm-row justify-content-between gap-2">
                                     <a t-attf-href="/my/booking/resources/#{resource.id}"
                                        class="btn btn-secondary">
-                                        <i class="fa fa-arrow-left"/> Back
+                                        <i class="fa fa-arrow-left"/> 返回
                                     </a>
                                     <button type="submit" class="btn btn-primary ws-btn-confirm">
-                                        <i class="fa fa-check"/> Confirm Booking
+                                        <i class="fa fa-check"/> 確認預定
                                     </button>
                                 </div>
                             </div>
@@ -731,7 +731,7 @@
                 <div class="col-lg-4 mt-4 mt-lg-0">
                     <div class="card ws-card-accent">
                         <div class="card-header">
-                            <i class="fa fa-info-circle"/> Resource Info
+                            <i class="fa fa-info-circle"/> 資源資訊
                         </div>
                         <div class="card-body">
                             <t t-if="resource.image">
@@ -747,7 +747,7 @@
                         <div class="card-footer">
                             <a t-attf-href="/my/booking/resources/#{resource.id}"
                                class="btn btn-outline-primary btn-sm btn-block">
-                                <i class="fa fa-calendar"/> View Available Slots
+                                <i class="fa fa-calendar"/> 查看可用時段
                             </a>
                         </div>
                     </div>
@@ -760,21 +760,21 @@
     <!-- NO RESOURCES AVAILABLE -->
     <!-- ============================================================ -->
 
-    <template id="portal_no_resources" name="No Resources Available">
+    <template id="portal_no_resources" name="無可用資源">
         <t t-call="portal.portal_layout">
             <t t-set="breadcrumbs_searchbar" t-value="False"/>
 
-            <h3 class="mb-4">No Resources Available</h3>
+            <h3 class="mb-4">目前沒有可用資源</h3>
 
             <div class="alert alert-warning" role="alert">
-                <h4 class="alert-heading"><i class="fa fa-exclamation-triangle"/> No Resources Available</h4>
-                <p>There are currently no resources available for you to book.</p>
+                <h4 class="alert-heading"><i class="fa fa-exclamation-triangle"/> 目前沒有可用資源</h4>
+                <p>目前沒有可供您預定的資源。</p>
                 <hr/>
-                <p class="mb-0">Please contact the administrator if you believe you should have access to booking resources.</p>
+                <p class="mb-0">如果您認為應該有權限預定資源，請聯絡管理員。</p>
             </div>
 
             <a href="/my" class="btn btn-secondary">
-                <i class="fa fa-arrow-left"/> Back to Portal
+                <i class="fa fa-arrow-left"/> 返回 Portal
             </a>
         </t>
     </template>
@@ -782,7 +782,7 @@
     <!-- ============================================================ -->
     <!-- INJECT GOOGLE FONTS INTO HEAD -->
     <!-- ============================================================ -->
-    <template id="booking_google_fonts" name="Booking Google Fonts" inherit_id="web.frontend_layout">
+    <template id="booking_google_fonts" name="預定 Google 字型" inherit_id="web.frontend_layout">
         <xpath expr="//head/link[1]" position="before">
             <link rel="preconnect" href="https://fonts.googleapis.com"/>
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
