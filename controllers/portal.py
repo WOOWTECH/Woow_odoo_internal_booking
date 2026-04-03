@@ -445,7 +445,12 @@ class BookingPortal(CustomerPortal):
         if partner not in allowed_partners:
             return request.redirect('/my/bookings')
 
-        return request.redirect('/odoo/discuss?active_id=discuss.channel_%s' % reservation.channel_id.id)
+        # Portal users cannot access /odoo/discuss (backend-only route)
+        # Use portal-friendly route from cs_portal_discuss module instead
+        if request.env.user.has_group('base.group_user'):
+            return request.redirect('/odoo/discuss?active_id=discuss.channel_%s' % reservation.channel_id.id)
+        else:
+            return request.redirect('/discuss/channel/%s?discussions=1' % reservation.channel_id.id)
 
     # ============================================================
     # CANCEL BOOKING
