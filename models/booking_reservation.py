@@ -220,6 +220,7 @@ class BookingReservation(models.Model):
     def action_cancel(self):
         """Cancel the reservation."""
         self.write({'state': 'cancelled'})
+        return True
 
     def action_confirm(self):
         """Confirm the reservation (re-confirm after cancellation)."""
@@ -227,6 +228,7 @@ class BookingReservation(models.Model):
             # Re-check for overlaps before confirming
             record._check_no_overlap()
         self.write({'state': 'confirmed'})
+        return True
 
     def _compute_access_url(self):
         """Compute portal access URL."""
