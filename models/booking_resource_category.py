@@ -7,36 +7,36 @@ class BookingResourceCategory(models.Model):
     Holds the properties definition that can be shared across resources.
     """
     _name = 'booking.resource.category'
-    _description = 'Booking Resource Category'
+    _description = '預定資源分類'
     _order = 'sequence, name'
 
     name = fields.Char(
-        string='Name',
+        string='名稱',
         required=True,
         translate=True,
     )
     sequence = fields.Integer(
-        string='Sequence',
+        string='排序',
         default=10,
     )
     active = fields.Boolean(
-        string='Active',
+        string='啟用',
         default=True,
     )
 
-    # Properties definition for this category
+    # 此分類的屬性定義
     resource_properties_definition = fields.PropertiesDefinition(
-        string='Resource Properties',
+        string='資源屬性',
     )
 
-    # Related resources
+    # 關聯資源
     resource_ids = fields.One2many(
         'booking.resource.type',
         'category_id',
-        string='Resources',
+        string='資源',
     )
     resource_count = fields.Integer(
-        string='Resource Count',
+        string='資源數量',
         compute='_compute_resource_count',
     )
 

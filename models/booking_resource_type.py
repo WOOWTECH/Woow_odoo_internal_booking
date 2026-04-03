@@ -6,126 +6,125 @@ from datetime import datetime, timedelta
 
 class BookingResourceType(models.Model):
     _name = 'booking.resource.type'
-    _description = 'Booking Resource Type'
+    _description = '預定資源'
     _inherit = ['mail.thread']
     _order = 'sequence, name'
 
-    # Basic Information
+    # 基本資訊
     name = fields.Char(
-        string='Name',
+        string='名稱',
         required=True,
         translate=True,
         tracking=True,
     )
     description = fields.Html(
-        string='Description',
+        string='說明',
         translate=True,
     )
     image = fields.Image(
-        string='Image',
+        string='圖片',
         max_width=512,
         max_height=512,
     )
     sequence = fields.Integer(
-        string='Sequence',
+        string='排序',
         default=10,
     )
     active = fields.Boolean(
-        string='Active',
+        string='啟用',
         default=True,
         tracking=True,
     )
 
-    # Resource Details
+    # 資源詳情
     location = fields.Char(
-        string='Location',
+        string='地點',
         translate=True,
     )
     capacity = fields.Integer(
-        string='Capacity',
+        string='容量',
         default=1,
-        help='Maximum capacity of the resource',
+        help='資源的最大容量',
     )
 
-    # Slot Settings
+    # 時段設定
     slot_duration = fields.Float(
-        string='Slot Duration (hours)',
+        string='時段長度（小時）',
         default=1.0,
         required=True,
-        help='Duration of each booking slot in hours',
+        help='每個預定時段的時長（小時）',
     )
     slot_interval = fields.Float(
-        string='Slot Interval (hours)',
+        string='時段間隔（小時）',
         default=1.0,
-        help='Time interval between available slots. Set same as duration for non-overlapping slots.',
+        help='可用時段之間的間隔時間。設定與時段長度相同可避免時段重疊。',
     )
     advance_days = fields.Integer(
-        string='Days Available in Advance',
+        string='可預定天數',
         default=30,
-        help='How many days in advance can users book this resource',
+        help='使用者可提前多少天預定此資源',
     )
 
-    # Availability (recurring weekly schedule)
+    # 可用時段（每週重複排程）
     availability_ids = fields.One2many(
         'booking.resource.availability',
         'resource_type_id',
-        string='Available Hours',
-        help='Define recurring availability windows for each day of the week',
+        string='可用時段',
+        help='定義每週各天的重複可用時段',
     )
 
-    # Discussion Settings
+    # 討論設定
     enable_discussion = fields.Boolean(
-        string='Allow Discussion Channel',
+        string='允許討論通道',
         default=False,
-        help='When enabled, users booking this resource can choose to create a Discussion channel for the reservation.',
+        help='啟用後，預定此資源的使用者可選擇為該預定建立討論通道。',
     )
 
-    # Access Control
+    # 存取控制
     share_type = fields.Selection(
         selection=[
-            ('all', 'All Portal Users'),
-            ('specific', 'Specific Contacts'),
+            ('all', '所有 Portal 使用者'),
+            ('specific', '特定聯絡人'),
         ],
-        string='Access Type',
+        string='存取類型',
         default='specific',
         required=True,
         tracking=True,
-        help='Control who can book this resource',
+        help='控制誰可以預定此資源',
     )
     allowed_partner_ids = fields.Many2many(
         'res.partner',
         'booking_resource_type_partner_rel',
         'resource_type_id',
         'partner_id',
-        string='Allowed Contacts',
+        string='允許的聯絡人',
         domain="[('is_company', '=', False)]",
-        help='Select contacts (Portal users) who can book this resource. Only applies when Access Type is "Specific Contacts".',
+        help='選擇可預定此資源的聯絡人（Portal 使用者）。僅在存取類型為「特定聯絡人」時適用。',
     )
 
-    # Category for Properties definition
+    # 分類（用於屬性定義）
     category_id = fields.Many2one(
         'booking.resource.category',
-        string='Category',
+        string='分類',
         ondelete='set null',
         index=True,
     )
 
-    # Dynamic Properties (Odoo 18 native feature)
-    # Properties field stores custom attributes defined by users
+    # 動態屬性（Odoo 18 原生功能）
     resource_properties = fields.Properties(
-        string='Properties',
+        string='屬性',
         definition='category_id.resource_properties_definition',
         copy=True,
     )
 
-    # Related Reservations
+    # 關聯預定
     reservation_ids = fields.One2many(
         'booking.reservation',
         'resource_type_id',
-        string='Reservations',
+        string='預定',
     )
     reservation_count = fields.Integer(
-        string='Reservation Count',
+        string='預定數量',
         compute='_compute_reservation_count',
     )
 
@@ -140,15 +139,15 @@ class BookingResourceType(models.Model):
     def _check_slot_settings(self):
         for record in self:
             if record.slot_duration <= 0:
-                raise ValidationError(_('Slot duration must be a positive number.'))
+                raise ValidationError(_('時段長度必須為正數。'))
             if record.slot_interval <= 0:
-                raise ValidationError(_('Slot interval must be a positive number.'))
+                raise ValidationError(_('時段間隔必須為正數。'))
 
     @api.constrains('advance_days')
     def _check_advance_days(self):
         for record in self:
             if record.advance_days < 1:
-                raise ValidationError(_('Advance booking days must be at least 1.'))
+                raise ValidationError(_('可預定天數至少為 1 天。'))
 
     def _check_partner_access(self, partner):
         """Check if a partner has access to book this resource."""
@@ -209,7 +208,7 @@ class BookingResourceType(models.Model):
         """Open reservations for this resource."""
         self.ensure_one()
         return {
-            'name': _('Reservations'),
+            'name': _('預定'),
             'type': 'ir.actions.act_window',
             'res_model': 'booking.reservation',
             'view_mode': 'calendar,tree,form',
