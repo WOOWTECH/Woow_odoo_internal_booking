@@ -224,7 +224,7 @@ class BookingReservation(models.Model):
             return False
         return {
             'type': 'ir.actions.act_url',
-            'url': '/odoo/action-mail.action_discuss?active_id=discuss.channel_%s' % self.channel_id.id,
+            'url': '/odoo/discuss?active_id=discuss.channel_%s' % self.channel_id.id,
             'target': 'self',
         }
 

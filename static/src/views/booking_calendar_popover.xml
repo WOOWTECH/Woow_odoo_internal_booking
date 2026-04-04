@@ -7,7 +7,7 @@
         <xpath expr="//ul[hasclass('o_cw_popover_fields_secondary')]" position="inside">
             <li t-if="props.record.rawRecord.channel_id" class="o_cw_popover_fields_secondary_item d-flex align-items-baseline">
                 <i class="fa fa-comments fa-fw me-2 text-muted" title="討論通道"/>
-                <a t-att-href="'/odoo/action-mail.action_discuss?active_id=discuss.channel_' + (Array.isArray(props.record.rawRecord.channel_id) ? props.record.rawRecord.channel_id[0] : props.record.rawRecord.channel_id)"
+                <a t-att-href="'/odoo/discuss?active_id=discuss.channel_' + (Array.isArray(props.record.rawRecord.channel_id) ? props.record.rawRecord.channel_id[0] : props.record.rawRecord.channel_id)"
                    class="text-truncate text-decoration-underline">
                     加入討論通道
                 </a>
