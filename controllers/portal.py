@@ -180,6 +180,7 @@ class BookingPortal(CustomerPortal):
             'show_prev': date_from > today,
             'show_next': date_from + timedelta(days=7) < max_date,
             'page_name': 'booking_resource_detail',
+            'error': kw.get('error'),
         }
 
         return request.render('odoo_booking_reservation.portal_resource_detail', values)
@@ -233,6 +234,7 @@ class BookingPortal(CustomerPortal):
             'resources': resources,
             'selected_resource': selected_resource[:1] if selected_resource else None,
             'page_name': 'booking_new',
+            'error': kw.get('error'),
         }
 
         return request.render('odoo_booking_reservation.portal_new_booking', values)

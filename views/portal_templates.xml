@@ -95,6 +95,31 @@
 
             <h3 class="mb-4"><t t-esc="resource.name"/></h3>
 
+            <t t-if="error == 'slot_taken'">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fa fa-exclamation-circle"/> 此時段已被預定，請選擇其他可用時段。
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"/>
+                </div>
+            </t>
+            <t t-if="error == 'invalid_datetime'">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fa fa-exclamation-circle"/> 日期時間格式無效，請重新選擇。
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"/>
+                </div>
+            </t>
+            <t t-if="error == 'past_slot'">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <i class="fa fa-clock-o"/> 無法預定過去的時段，請選擇未來的時段。
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"/>
+                </div>
+            </t>
+            <t t-if="error == 'too_far_ahead'">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <i class="fa fa-clock-o"/> 此時段超出可預定範圍。
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"/>
+                </div>
+            </t>
+
             <div class="row">
                 <!-- Resource Info: show on top at lg+, below slots on mobile via order -->
                 <div class="col-lg-4 mb-4 order-2 order-lg-1">
@@ -397,7 +422,13 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"/>
                 </div>
             </t>
-            <t t-if="error">
+            <t t-if="error == 'cannot_cancel'">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fa fa-exclamation-circle"/> 無法取消此預定。
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"/>
+                </div>
+            </t>
+            <t t-elif="error">
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <i class="fa fa-exclamation-circle"/> <t t-esc="error"/>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"/>
@@ -560,6 +591,31 @@
             <t t-set="breadcrumbs_searchbar" t-value="False"/>
 
             <h3 class="mb-4">新增預定</h3>
+
+            <t t-if="error == 'missing_fields'">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fa fa-exclamation-circle"/> 缺少必填欄位，請重新選擇。
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"/>
+                </div>
+            </t>
+            <t t-if="error == 'invalid_resource'">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fa fa-exclamation-circle"/> 所選資源無效。
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"/>
+                </div>
+            </t>
+            <t t-if="error == 'unauthorized'">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fa fa-lock"/> 您沒有存取此資源的權限。
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"/>
+                </div>
+            </t>
+            <t t-if="error == 'invalid_datetime'">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fa fa-exclamation-circle"/> 日期時間格式無效。
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"/>
+                </div>
+            </t>
 
             <div class="alert alert-info" role="alert">
                 <i class="fa fa-info-circle"/> 選擇以下資源來查看可用時段並進行預定。
