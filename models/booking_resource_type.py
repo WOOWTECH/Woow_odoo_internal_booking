@@ -142,6 +142,14 @@ class BookingResourceType(models.Model):
                 raise ValidationError(_('時段長度必須為正數。'))
             if record.slot_interval <= 0:
                 raise ValidationError(_('時段間隔必須為正數。'))
+            if record.slot_interval < 0.25:
+                raise ValidationError(_('時段間隔不得小於 15 分鐘（0.25 小時）。'))
+
+    @api.constrains('capacity')
+    def _check_capacity(self):
+        for record in self:
+            if record.capacity < 1:
+                raise ValidationError(_('容量必須至少為 1。'))
 
     @api.constrains('advance_days')
     def _check_advance_days(self):

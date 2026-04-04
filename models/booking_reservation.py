@@ -182,6 +182,26 @@ class BookingReservation(models.Model):
                 start = fields.Datetime.to_datetime(record.start_datetime)
                 record.end_datetime = start + timedelta(hours=record.duration)
 
+    @api.constrains('resource_type_id', 'start_datetime', 'end_datetime')
+    def _check_duration_matches_slot(self):
+        """Ensure booking duration matches the resource's configured slot_duration."""
+        for record in self:
+            if not record.start_datetime or not record.end_datetime:
+                continue
+            start = fields.Datetime.to_datetime(record.start_datetime)
+            end = fields.Datetime.to_datetime(record.end_datetime)
+            actual_hours = (end - start).total_seconds() / 3600
+            expected_hours = record.resource_type_id.slot_duration
+            # Allow small floating-point tolerance (1 minute)
+            if abs(actual_hours - expected_hours) > (1.0 / 60):
+                raise ValidationError(
+                    _('預定時長（%.1f 小時）與資源「%s」的時段長度（%.1f 小時）不符。') % (
+                        actual_hours,
+                        record.resource_type_id.name,
+                        expected_hours,
+                    )
+                )
+
     @api.constrains('resource_type_id', 'partner_id')
     def _check_partner_access(self):
         """Ensure the partner has access to book this resource."""
@@ -196,21 +216,30 @@ class BookingReservation(models.Model):
 
     @api.constrains('resource_type_id', 'start_datetime', 'end_datetime', 'state')
     def _check_no_overlap(self):
-        """Ensure no overlapping reservations for the same resource."""
+        """Ensure no overlapping reservations for the same resource.
+
+        Uses a raw SQL query with FOR UPDATE to prevent race conditions
+        from concurrent booking attempts. The second concurrent transaction
+        will block until the first commits, then correctly detect the overlap.
+        """
         for record in self:
             if record.state == 'cancelled':
                 continue
 
-            domain = [
-                ('id', '!=', record.id),
-                ('resource_type_id', '=', record.resource_type_id.id),
-                ('state', '=', 'confirmed'),
-                ('start_datetime', '<', record.end_datetime),
-                ('end_datetime', '>', record.start_datetime),
-            ]
+            # Use SQL with row-level locking to prevent race conditions
+            self.env.cr.execute("""
+                SELECT id FROM booking_reservation
+                WHERE id != %s
+                  AND resource_type_id = %s
+                  AND state = 'confirmed'
+                  AND start_datetime < %s
+                  AND end_datetime > %s
+                FOR UPDATE
+                LIMIT 1
+            """, (record.id, record.resource_type_id.id,
+                  record.end_datetime, record.start_datetime))
 
-            overlapping = self.search_count(domain)
-            if overlapping:
+            if self.env.cr.fetchone():
                 raise ValidationError(
                     _('資源「%s」的此時段已被預定，請選擇其他時間。') % (
                         record.resource_type_id.name,

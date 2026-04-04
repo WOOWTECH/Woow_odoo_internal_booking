@@ -147,7 +147,7 @@
 
                             <t t-if="resource.description">
                                 <hr/>
-                                <div t-raw="resource.description"/>
+                                <div t-out="resource.description"/>
                             </t>
                         </div>
                     </div>
@@ -524,7 +524,7 @@
                             <t t-if="reservation.description">
                                 <hr/>
                                 <h6 class="text-muted">說明</h6>
-                                <div t-raw="reservation.description"/>
+                                <div t-out="reservation.description"/>
                             </t>
 
                             <!-- Legacy notes -->
@@ -567,7 +567,7 @@
                             </t>
                             <h6><t t-esc="reservation.resource_type_id.name"/></h6>
                             <t t-if="reservation.resource_type_id.description">
-                                <div t-raw="reservation.resource_type_id.description"/>
+                                <div t-out="reservation.resource_type_id.description"/>
                             </t>
                         </div>
                         <div class="card-footer">
@@ -613,6 +613,12 @@
             <t t-if="error == 'invalid_datetime'">
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <i class="fa fa-exclamation-circle"/> 日期時間格式無效。
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"/>
+                </div>
+            </t>
+            <t t-if="error == 'system_error'">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fa fa-exclamation-circle"/> 系統錯誤，請稍後再試或聯繫管理員。
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"/>
                 </div>
             </t>
@@ -786,7 +792,7 @@
                             </t>
                             <h6><t t-esc="resource.name"/></h6>
                             <t t-if="resource.description">
-                                <div t-raw="resource.description"/>
+                                <div t-out="resource.description"/>
                             </t>
                         </div>
                         <div class="card-footer">

@@ -2,6 +2,7 @@ from odoo import http, fields, _
 from odoo.http import request
 from odoo.addons.portal.controllers.portal import CustomerPortal, pager as portal_pager
 from odoo.exceptions import AccessError, MissingError, ValidationError
+from odoo.tools import html_sanitize
 from datetime import datetime, timedelta
 import json
 import pytz
@@ -173,7 +174,7 @@ class BookingPortal(CustomerPortal):
             'selected_date': selected_date,
             'date_from': date_from,
             'date_to': date_to,
-            'date_from_str': date_from.strftime('%m/%d'),
+            'date_from_str': date_from.strftime('%Y/%m/%d'),
             'date_to_str': date_to.strftime('%Y/%m/%d'),
             'prev_week': max(today, date_from - timedelta(days=7)).strftime('%Y-%m-%d'),
             'next_week': min(max_date, date_from + timedelta(days=7)).strftime('%Y-%m-%d'),
@@ -194,15 +195,31 @@ class BookingPortal(CustomerPortal):
         if not self._check_resource_access(resource, partner):
             return {'error': 'Unauthorized'}
 
+        local_now = self._get_local_now()
+        today = local_now.date()
+        max_date = today + timedelta(days=resource.advance_days)
+
         if date_from:
-            date_from = datetime.strptime(date_from, '%Y-%m-%d').date()
+            try:
+                date_from = datetime.strptime(date_from, '%Y-%m-%d').date()
+            except (ValueError, TypeError):
+                return {'error': 'invalid_date_format'}
         else:
-            date_from = self._get_local_now().date()
+            date_from = today
 
         if date_to:
-            date_to = datetime.strptime(date_to, '%Y-%m-%d').date()
+            try:
+                date_to = datetime.strptime(date_to, '%Y-%m-%d').date()
+            except (ValueError, TypeError):
+                return {'error': 'invalid_date_format'}
         else:
-            date_to = date_from + timedelta(days=resource.advance_days)
+            date_to = date_from + timedelta(days=7)
+
+        # Clamp to valid range
+        if date_from < today:
+            date_from = today
+        if date_to > max_date + timedelta(days=1):
+            date_to = max_date + timedelta(days=1)
 
         slots = self._generate_slots_for_portal(resource, date_from, date_to, partner)
 
@@ -353,7 +370,7 @@ class BookingPortal(CustomerPortal):
             if subject:
                 vals['subject'] = subject
             if description:
-                vals['description'] = description
+                vals['description'] = html_sanitize(description)
             if enable_discussion and resource.enable_discussion:
                 vals['enable_discussion'] = True
 
@@ -365,8 +382,8 @@ class BookingPortal(CustomerPortal):
         except ValidationError:
             # Overlap or access constraint - redirect back to resource page
             return request.redirect(f'/my/booking/resources/{resource_id}?error=slot_taken')
-        except Exception as e:
-            return request.redirect(f'/my/bookings/new?error={str(e)}')
+        except Exception:
+            return request.redirect('/my/bookings/new?error=system_error')
 
     # ============================================================
     # MY BOOKINGS LIST
@@ -486,6 +503,36 @@ class BookingPortal(CustomerPortal):
             return request.redirect('/odoo/discuss?active_id=discuss.channel_%s' % reservation.channel_id.id)
         else:
             return request.redirect('/my/discussions?open_channel=%s' % reservation.channel_id.id)
+
+    @http.route(['/my/discussions', '/my/discussions/page/<int:page>'], type='http', auth='user', website=True)
+    def portal_discussions(self, page=1, **kw):
+        """Override /my/discussions to validate open_channel parameter.
+
+        Prevents IDOR: users can only auto-open channels linked to their own bookings.
+        If open_channel is provided but the user has no booking with that channel,
+        strip the parameter and show the discussions list normally.
+        """
+        open_channel = kw.get('open_channel')
+        if open_channel:
+            try:
+                channel_id = int(open_channel)
+            except (ValueError, TypeError):
+                return request.redirect('/my/discussions')
+
+            partner = request.env.user.partner_id
+            reservation = request.env['booking.reservation'].sudo().search([
+                ('channel_id', '=', channel_id),
+                '|', '|',
+                ('partner_id', '=', partner.id),
+                ('organizer_id', '=', partner.id),
+                ('attendee_ids', 'in', [partner.id]),
+            ], limit=1)
+
+            if not reservation:
+                return request.redirect('/my/discussions')
+
+        # Call parent's portal_discussions (from cs_portal_discuss)
+        return super().portal_discussions(page=page, **kw)
 
     # ============================================================
     # CANCEL BOOKING

@@ -24,6 +24,7 @@ Odoo 18 資源預定管理模組
         'mail',
         'calendar',
         'portal',
+        'cs_portal_discuss',
     ],
     'data': [
         # Security
