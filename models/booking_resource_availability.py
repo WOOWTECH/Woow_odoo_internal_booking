@@ -54,6 +54,28 @@ class BookingResourceAvailability(models.Model):
             if record.hour_from >= record.hour_to:
                 raise ValidationError(_('開始時間必須在結束時間之前。'))
 
+    @api.constrains('resource_type_id', 'dayofweek', 'hour_from', 'hour_to')
+    def _check_no_overlap(self):
+        """Prevent overlapping availability windows for the same resource on the same day."""
+        for record in self:
+            overlapping = self.search([
+                ('id', '!=', record.id),
+                ('resource_type_id', '=', record.resource_type_id.id),
+                ('dayofweek', '=', record.dayofweek),
+                ('hour_from', '<', record.hour_to),
+                ('hour_to', '>', record.hour_from),
+            ], limit=1)
+            if overlapping:
+                raise ValidationError(
+                    _('可用時段重疊：%s 的 %s-%s 與 %s-%s 衝突。') % (
+                        dict(self._fields['dayofweek'].selection).get(record.dayofweek),
+                        record._format_hour(record.hour_from),
+                        record._format_hour(record.hour_to),
+                        overlapping._format_hour(overlapping.hour_from),
+                        overlapping._format_hour(overlapping.hour_to),
+                    )
+                )
+
     def _format_hour(self, hour):
         """Convert float hour to HH:MM format."""
         hours = int(hour)

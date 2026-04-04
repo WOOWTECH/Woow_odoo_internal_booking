@@ -130,10 +130,18 @@ class BookingResourceType(models.Model):
 
     @api.depends('reservation_ids')
     def _compute_reservation_count(self):
+        if not self.ids:
+            self.reservation_count = 0
+            return
+        counts = {}
+        for row in self.env['booking.reservation']._read_group(
+            domain=[('resource_type_id', 'in', self.ids), ('state', '=', 'confirmed')],
+            groupby=['resource_type_id'],
+            aggregates=['__count'],
+        ):
+            counts[row[0].id] = row[1]
         for record in self:
-            record.reservation_count = len(record.reservation_ids.filtered(
-                lambda r: r.state == 'confirmed'
-            ))
+            record.reservation_count = counts.get(record.id, 0)
 
     @api.constrains('slot_duration', 'slot_interval')
     def _check_slot_settings(self):

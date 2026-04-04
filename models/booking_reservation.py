@@ -56,6 +56,7 @@ class BookingReservation(models.Model):
         'res.partner',
         string='預定者',
         required=True,
+        ondelete='restrict',
         tracking=True,
     )
 
@@ -63,6 +64,7 @@ class BookingReservation(models.Model):
     organizer_id = fields.Many2one(
         'res.partner',
         string='舉辦方',
+        ondelete='set null',
         tracking=True,
     )
     attendee_ids = fields.Many2many(
@@ -265,11 +267,17 @@ class BookingReservation(models.Model):
         return True
 
     def action_confirm(self):
-        """Confirm the reservation (re-confirm after cancellation)."""
+        """Confirm the reservation (re-confirm after cancellation).
+
+        Manually checks overlap before writing state.
+        The @api.constrains also fires on write, but this pre-check
+        provides a clearer error path before the state transition.
+        """
         for record in self:
-            # Re-check for overlaps before confirming
+            if record.state == 'confirmed':
+                continue
             record._check_no_overlap()
-        self.write({'state': 'confirmed'})
+        self.filtered(lambda r: r.state != 'confirmed').write({'state': 'confirmed'})
         return True
 
     def _compute_access_url(self):
@@ -324,6 +332,17 @@ class BookingReservation(models.Model):
             self.channel_id = channel
         except Exception as e:
             _logger.warning('Failed to create discussion channel for reservation %s: %s', self.id, e)
+
+    @api.constrains('start_datetime')
+    def _check_not_in_past(self):
+        """Prevent creating reservations in the past."""
+        for record in self:
+            if record.state == 'cancelled':
+                continue
+            if record.start_datetime and record.start_datetime < fields.Datetime.now():
+                raise ValidationError(
+                    _('無法預定過去的時段。')
+                )
 
     @api.model_create_multi
     def create(self, vals_list):

@@ -41,5 +41,15 @@ class BookingResourceCategory(models.Model):
     )
 
     def _compute_resource_count(self):
+        if not self.ids:
+            self.resource_count = 0
+            return
+        counts = {}
+        for row in self.env['booking.resource.type']._read_group(
+            domain=[('category_id', 'in', self.ids)],
+            groupby=['category_id'],
+            aggregates=['__count'],
+        ):
+            counts[row[0].id] = row[1]
         for category in self:
-            category.resource_count = len(category.resource_ids)
+            category.resource_count = counts.get(category.id, 0)
