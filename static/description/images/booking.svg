@@ -1,0 +1,18 @@
+<svg width="60" height="64" viewBox="0 0 60 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Calendar icon for "我的預定" -->
+  <rect x="6" y="10" width="48" height="46" rx="6" fill="#C1DBF6" stroke="#374874" stroke-width="2"/>
+  <rect x="6" y="10" width="48" height="14" rx="6" fill="#374874"/>
+  <rect x="6" y="18" width="48" height="6" fill="#374874"/>
+  <!-- Calendar hooks -->
+  <rect x="18" y="4" width="4" height="12" rx="2" fill="#374874"/>
+  <rect x="38" y="4" width="4" height="12" rx="2" fill="#374874"/>
+  <!-- Calendar dots/events -->
+  <circle cx="20" cy="36" r="4" fill="#374874"/>
+  <circle cx="30" cy="36" r="4" fill="#FBDBD0"/>
+  <circle cx="40" cy="36" r="4" fill="#374874"/>
+  <circle cx="20" cy="48" r="4" fill="#FBDBD0"/>
+  <circle cx="30" cy="48" r="4" fill="#374874"/>
+  <circle cx="40" cy="48" r="4" fill="#C1DBF6" stroke="#374874" stroke-width="1.5"/>
+  <!-- Check mark on one event -->
+  <path d="M27 35 L29 38 L34 33" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>

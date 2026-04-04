@@ -1,7 +1,7 @@
 from odoo import http, fields, _
 from odoo.http import request
 from odoo.addons.portal.controllers.portal import CustomerPortal, pager as portal_pager
-from odoo.exceptions import AccessError, MissingError
+from odoo.exceptions import AccessError, MissingError, ValidationError
 from datetime import datetime, timedelta
 import json
 import pytz
@@ -52,15 +52,31 @@ class BookingPortal(CustomerPortal):
         """
         Generate available time slots for Portal display.
         Hides booking details from other users (privacy).
+
+        Slots are generated in the user's local timezone. Reservations in the DB
+        are stored in UTC. We convert between the two for correct overlap detection.
         """
         slots = resource._generate_slots(date_from, date_to)
 
-        # Get existing reservations for this period
+        # Determine user timezone for converting between local and UTC
+        tz_name = request.env.user.tz or request.env.context.get('tz') or 'UTC'
+        try:
+            user_tz = pytz.timezone(tz_name)
+        except pytz.UnknownTimeZoneError:
+            user_tz = pytz.UTC
+
+        # Convert date range boundaries from local time to UTC for DB query
+        window_start_local = datetime.combine(date_from, datetime.min.time())
+        window_end_local = datetime.combine(date_to, datetime.max.time())
+        window_start_utc = user_tz.localize(window_start_local).astimezone(pytz.UTC).replace(tzinfo=None)
+        window_end_utc = user_tz.localize(window_end_local).astimezone(pytz.UTC).replace(tzinfo=None)
+
+        # Use overlap query (not fully-contained) to catch boundary-straddling reservations
         reservations = request.env['booking.reservation'].sudo().search([
             ('resource_type_id', '=', resource.id),
             ('state', '=', 'confirmed'),
-            ('start_datetime', '>=', datetime.combine(date_from, datetime.min.time())),
-            ('end_datetime', '<=', datetime.combine(date_to, datetime.max.time())),
+            ('start_datetime', '<', window_end_utc),
+            ('end_datetime', '>', window_start_utc),
         ])
 
         # Mark slot availability
@@ -70,11 +86,14 @@ class BookingPortal(CustomerPortal):
             slot['reservation_id'] = False
 
             for res in reservations:
-                res_start = fields.Datetime.to_datetime(res.start_datetime)
-                res_end = fields.Datetime.to_datetime(res.end_datetime)
+                # Convert reservation UTC times to local for comparison with local slots
+                res_start_utc = fields.Datetime.to_datetime(res.start_datetime)
+                res_end_utc = fields.Datetime.to_datetime(res.end_datetime)
+                res_start_local = pytz.UTC.localize(res_start_utc).astimezone(user_tz).replace(tzinfo=None)
+                res_end_local = pytz.UTC.localize(res_end_utc).astimezone(user_tz).replace(tzinfo=None)
 
-                # Check overlap
-                if slot['start'] < res_end and slot['end'] > res_start:
+                # Check overlap (both sides now in local time)
+                if slot['start'] < res_end_local and slot['end'] > res_start_local:
                     slot['is_available'] = False
                     if res.partner_id.id == partner.id:
                         slot['is_mine'] = True
@@ -308,11 +327,22 @@ class BookingPortal(CustomerPortal):
             except (ValueError, TypeError):
                 return request.redirect('/my/bookings/new?error=invalid_datetime')
 
-            # Build reservation vals
+            # Convert local datetime strings to UTC for storage
+            tz_name = request.env.user.tz or request.env.context.get('tz') or 'UTC'
+            try:
+                user_tz = pytz.timezone(tz_name)
+            except pytz.UnknownTimeZoneError:
+                user_tz = pytz.UTC
+            start_dt_local = user_tz.localize(start_dt)
+            end_dt_local = user_tz.localize(datetime.strptime(end_datetime, '%Y-%m-%d %H:%M:%S'))
+            start_dt_utc = start_dt_local.astimezone(pytz.UTC).replace(tzinfo=None)
+            end_dt_utc = end_dt_local.astimezone(pytz.UTC).replace(tzinfo=None)
+
+            # Build reservation vals (UTC datetimes for DB storage)
             vals = {
                 'resource_type_id': resource_id,
-                'start_datetime': start_datetime,
-                'end_datetime': end_datetime,
+                'start_datetime': fields.Datetime.to_string(start_dt_utc),
+                'end_datetime': fields.Datetime.to_string(end_dt_utc),
                 'partner_id': partner.id,
                 'organizer_id': partner.id,
                 'state': 'confirmed',
@@ -330,6 +360,9 @@ class BookingPortal(CustomerPortal):
 
             return request.redirect(f'/my/bookings/{reservation.id}?success=created')
 
+        except ValidationError:
+            # Overlap or access constraint - redirect back to resource page
+            return request.redirect(f'/my/booking/resources/{resource_id}?error=slot_taken')
         except Exception as e:
             return request.redirect(f'/my/bookings/new?error={str(e)}')
 
@@ -445,8 +478,8 @@ class BookingPortal(CustomerPortal):
         if partner not in allowed_partners:
             return request.redirect('/my/bookings')
 
-        # Portal users cannot access /odoo/discuss (backend-only route)
-        # Use portal-friendly route from cs_portal_discuss module instead
+        # Internal users go to backend Discuss (popup dialog mode)
+        # Portal users go to portal-friendly discuss route from cs_portal_discuss
         if request.env.user.has_group('base.group_user'):
             return request.redirect('/odoo/discuss?active_id=discuss.channel_%s' % reservation.channel_id.id)
         else:
