@@ -218,13 +218,13 @@ class BookingReservation(models.Model):
                 )
 
     def action_open_discuss_channel(self):
-        """Open the discussion channel in Discuss."""
+        """Open the discussion channel directly in the Discuss chat interface."""
         self.ensure_one()
         if not self.channel_id:
             return False
         return {
             'type': 'ir.actions.act_url',
-            'url': '/odoo/discuss?active_id=discuss.channel_%s' % self.channel_id.id,
+            'url': '/odoo/action-mail.action_discuss?active_id=discuss.channel_%s' % self.channel_id.id,
             'target': 'self',
         }
 

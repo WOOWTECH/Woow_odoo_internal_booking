@@ -67,9 +67,10 @@
                     <field name="resource_enable_discussion" invisible="1"/>
                     <group string="討論" invisible="not resource_enable_discussion">
                         <field name="enable_discussion"/>
-                        <field name="channel_id" readonly="1" invisible="not enable_discussion"/>
+                        <field name="channel_id" readonly="1" invisible="not enable_discussion"
+                               options="{'no_open': True}"/>
                         <button name="action_open_discuss_channel" type="object"
-                                string="開啟討論通道" icon="fa-comments"
+                                string="加入討論通道" icon="fa-comments"
                                 class="oe_link ps-0" invisible="not channel_id"/>
                     </group>
 

@@ -448,7 +448,7 @@ class BookingPortal(CustomerPortal):
         # Portal users cannot access /odoo/discuss (backend-only route)
         # Use portal-friendly route from cs_portal_discuss module instead
         if request.env.user.has_group('base.group_user'):
-            return request.redirect('/odoo/discuss?active_id=discuss.channel_%s' % reservation.channel_id.id)
+            return request.redirect('/odoo/action-mail.action_discuss?active_id=discuss.channel_%s' % reservation.channel_id.id)
         else:
             return request.redirect('/discuss/channel/%s?discussions=1' % reservation.channel_id.id)
 
