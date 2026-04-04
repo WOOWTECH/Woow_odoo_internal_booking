@@ -778,4 +778,76 @@
             <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
         </xpath>
     </template>
+
+    <!-- ============================================================ -->
+    <!-- DISCUSSIONS PAGE - Auto-open channel in modal -->
+    <!-- ============================================================ -->
+    <template id="portal_discussions_auto_open"
+              inherit_id="cs_portal_discuss.portal_discuss_channels"
+              name="自動開啟討論頻道視窗">
+        <xpath expr="//t[@t-call='portal.portal_layout']" position="inside">
+            <!-- Modal for discuss channel iframe -->
+            <div class="modal fade" id="discussChannelModal" tabindex="-1"
+                 aria-labelledby="discussChannelModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl modal-dialog-centered" style="max-width: 95vw; height: 90vh;">
+                    <div class="modal-content" style="height: 85vh;">
+                        <div class="modal-header py-2">
+                            <h5 class="modal-title" id="discussChannelModalLabel">討論通道</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"/>
+                        </div>
+                        <div class="modal-body p-0" style="height: calc(85vh - 56px); overflow: hidden;">
+                            <iframe id="discussChannelFrame"
+                                    style="width: 100%; height: 100%; border: none;"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var params = new URLSearchParams(window.location.search);
+                    var channelId = params.get('open_channel');
+                    if (channelId) {
+                        var iframe = document.getElementById('discussChannelFrame');
+                        iframe.src = '/discuss/channel/' + channelId + '?discussions=1';
+                        // Use Modal from odoo's Bootstrap bundle
+                        var modalEl = document.getElementById('discussChannelModal');
+                        var Modal = (window.bootstrap &amp;&amp; window.bootstrap.Modal)
+                                    || (window.Modal)
+                                    || (typeof odoo !== 'undefined' &amp;&amp; odoo.loader &amp;&amp; odoo.loader.modules.get('@web/legacy/js/libs/bootstrap') &amp;&amp; odoo.loader.modules.get('@web/legacy/js/libs/bootstrap').Modal);
+                        if (Modal) {
+                            var modal = new Modal(modalEl);
+                            modal.show();
+                        } else {
+                            // Fallback: trigger via jQuery if available
+                            if (window.$ &amp;&amp; $.fn.modal) {
+                                $(modalEl).modal('show');
+                            } else {
+                                // Last resort: manually show modal
+                                modalEl.classList.add('show');
+                                modalEl.style.display = 'block';
+                                modalEl.removeAttribute('aria-hidden');
+                                document.body.classList.add('modal-open');
+                                var backdrop = document.createElement('div');
+                                backdrop.className = 'modal-backdrop fade show';
+                                backdrop.id = 'discussModalBackdrop';
+                                document.body.appendChild(backdrop);
+                                modalEl.querySelector('.btn-close').addEventListener('click', function() {
+                                    modalEl.classList.remove('show');
+                                    modalEl.style.display = 'none';
+                                    modalEl.setAttribute('aria-hidden', 'true');
+                                    document.body.classList.remove('modal-open');
+                                    var bd = document.getElementById('discussModalBackdrop');
+                                    if (bd) bd.remove();
+                                });
+                            }
+                        }
+                        // Clean up URL without reloading
+                        var cleanUrl = window.location.pathname;
+                        window.history.replaceState({}, document.title, cleanUrl);
+                    }
+                });
+            </script>
+        </xpath>
+    </template>
 </odoo>

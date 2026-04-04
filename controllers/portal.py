@@ -479,11 +479,11 @@ class BookingPortal(CustomerPortal):
             return request.redirect('/my/bookings')
 
         # Internal users go to backend Discuss (popup dialog mode)
-        # Portal users go to portal-friendly discuss route from cs_portal_discuss
+        # Portal users go to /my/discussions with auto-open parameter
         if request.env.user.has_group('base.group_user'):
             return request.redirect('/odoo/discuss?active_id=discuss.channel_%s' % reservation.channel_id.id)
         else:
-            return request.redirect('/discuss/channel/%s?discussions=1' % reservation.channel_id.id)
+            return request.redirect('/my/discussions?open_channel=%s' % reservation.channel_id.id)
 
     # ============================================================
     # CANCEL BOOKING
