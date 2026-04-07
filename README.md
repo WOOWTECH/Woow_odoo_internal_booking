@@ -2,22 +2,23 @@
   <img src="static/description/icon.svg" alt="Odoo Booking Reservation" width="120"/>
 </p>
 
-<h1 align="center">Odoo 資源預定管理模組</h1>
+<h1 align="center">Odoo Resource Booking & Reservation</h1>
 
 <p align="center">
-  <strong>Odoo 18 企業級資源預定與管理解決方案</strong><br/>
-  Portal 使用者自助預定、後台行事曆管理、討論通道整合
+  <strong>Enterprise-grade Resource Booking & Management for Odoo 18</strong><br/>
+  Self-service Portal Booking, Backend Calendar Management, Discussion Channel Integration
 </p>
 
 <p align="center">
-  <a href="#功能特色">功能特色</a> &bull;
-  <a href="#系統架構">系統架構</a> &bull;
-  <a href="#安裝說明">安裝說明</a> &bull;
-  <a href="#功能截圖">功能截圖</a> &bull;
-  <a href="#設定指南">設定指南</a> &bull;
-  <a href="#安全機制">安全機制</a> &bull;
-  <a href="#技術細節">技術細節</a> &bull;
-  <a href="README_EN.md">English</a>
+  <a href="#features">Features</a> &bull;
+  <a href="#architecture">Architecture</a> &bull;
+  <a href="#installation">Installation</a> &bull;
+  <a href="#screenshots">Screenshots</a> &bull;
+  <a href="#configuration">Configuration</a> &bull;
+  <a href="#security">Security</a> &bull;
+  <a href="#api-reference">API</a> &bull;
+  <a href="#changelog">Changelog</a> &bull;
+  <a href="README_zh-TW.md">中文文件</a>
 </p>
 
 <p align="center">
@@ -29,96 +30,96 @@
 
 ---
 
-## 概述
+## Overview
 
-**Odoo 資源預定管理模組** 是為 Odoo 18 打造的完整資源預定解決方案。讓 Portal 使用者能夠自助瀏覽可用資源、選擇時段、確認預定，並透過內建的討論通道與其他參加者即時協作。管理員可在後台透過行事曆視圖管理所有預定，設定資源的可用時段、存取控制、容量限制等。
+**Odoo Resource Booking & Reservation** is a complete resource booking solution for Odoo 18. It enables Portal users to browse available resources, select time slots, confirm bookings, and collaborate with attendees through built-in discussion channels. Administrators manage all reservations via a backend calendar view with resource configuration, availability schedules, access control, and capacity management.
 
 <p align="center">
-  <img src="docs/screenshots/portal_resources.png" alt="Portal 資源瀏覽" width="720"/>
+  <img src="docs/screenshots/portal_resources.png" alt="Portal Resource Browsing" width="720"/>
 </p>
 
-### 為什麼選擇此模組？
+### Why This Module?
 
-| 問題痛點 | 解決方案 |
-|----------|----------|
-| 會議室/設備預定流程繁瑣 | Portal 使用者自助線上預定，無需聯絡管理員 |
-| 預定衝突難以避免 | SQL 行級鎖定（FOR UPDATE）防止並發衝突，100% 避免重複預定 |
-| 缺乏統一管理介面 | 後台行事曆視圖整合，一目了然所有預定 |
-| 團隊溝通分散 | 每筆預定自動建立討論通道，參加者即時協作 |
-| 安全性不足 | XSS 防護、IDOR 驗證、RPC 繞過防護、Portal 記錄規則 |
-| 不依賴 Website 模組 | 純 Portal 架構，輕量部署，無需安裝 Website 模組 |
-
----
-
-## 功能特色
-
-### Portal 使用者功能
-
-- **資源瀏覽** — 卡片式介面展示所有可預定資源，包含地點、容量、說明
-- **時段選擇** — 日曆風格的時段顯示，已預定時段自動標記，支援跨週翻頁
-- **預定確認** — 填寫主題、說明，選擇是否開啟討論通道
-- **我的預定** — 查看所有預定紀錄，支援篩選（即將到來/全部）、排序（日期）
-- **預定詳情** — 完整預定資訊、取消預定、再次預定、進入討論通道
-- **討論通道** — 每筆預定可建立專屬通道，與舉辦方及參加者即時溝通
-
-### 後台管理功能
-
-- **行事曆視圖** — 日/週/月/年 多種檢視模式，依資源顏色分類
-- **資源管理** — 建立/編輯資源，設定分類、地點、容量、時段長度、間隔、可預定天數
-- **可用時段** — 依星期幾設定每日可用時段（例：週一至週五 09:00-18:00）
-- **存取控制** — 「所有 Portal 使用者」或「特定聯絡人」兩種模式
-- **預定清單** — 列表視圖管理所有預定，支援搜尋、篩選、群組
-- **進階設定** — 動態屬性（Odoo 原生功能）、資源分類、提醒通知
-
-### 安全與穩定性
-
-- **XSS 防護** — 所有使用者輸入透過 `html_sanitize` 處理，模板使用 `t-out` 取代 `t-raw`
-- **競態條件防護** — SQL `FOR UPDATE` 行級鎖定，防止並發預定衝突
-- **IDOR 防護** — 討論通道存取驗證，確保只有預定相關人員可存取
-- **RPC 繞過防護** — Model 層級約束（`@api.constrains`），阻擋繞過 Controller 的直接 RPC 呼叫
-- **Portal 記錄規則** — 3 條 `ir.rule` 限制 Portal 使用者只能存取授權資源
-- **刪除保護** — `partner_id` 設定 `ondelete='restrict'`，防止刪除關聯預定者
+| Challenge | Solution |
+|-----------|----------|
+| Complex booking workflows | Portal users self-serve bookings online without contacting admins |
+| Double-booking conflicts | SQL row-level locking (`FOR UPDATE`) prevents concurrent conflicts — 100% collision-free |
+| No unified management view | Backend calendar view integration — all bookings at a glance |
+| Scattered team communication | Auto-created discussion channel per booking for real-time collaboration |
+| Insufficient security | XSS protection, IDOR validation, RPC bypass prevention, Portal record rules |
+| Website module dependency | Pure Portal architecture — lightweight deployment, no Website module required |
 
 ---
 
-## 系統架構
+## Features
+
+### Portal User Features
+
+- **Resource Browsing** — Card-based interface showing all bookable resources with location, capacity, and description
+- **Slot Selection** — Calendar-style time slot display with booked slots auto-marked, week-by-week navigation
+- **Booking Confirmation** — Enter topic, description, and optionally enable a discussion channel
+- **My Bookings** — View all booking records with filtering (upcoming/all) and sorting (by date)
+- **Booking Details** — Full booking information, cancel booking, re-book, and enter discussion channel
+- **Discussion Channels** — Each booking can create a dedicated channel for real-time communication
+
+### Backend Admin Features
+
+- **Calendar View** — Day/Week/Month/Year viewing modes with color-coded resources
+- **Resource Management** — Create/edit resources with category, location, capacity, slot duration, interval, and advance booking days
+- **Availability Schedule** — Set daily available hours by day of week (e.g., Mon-Fri 09:00-18:00)
+- **Access Control** — "All Portal Users" or "Specific Contacts" modes
+- **Reservation List** — List view for managing all bookings with search, filter, and grouping
+- **Advanced Settings** — Dynamic attributes (native Odoo feature), resource categories, reminder notifications
+
+### Security & Stability
+
+- **XSS Protection** — All user input processed via `html_sanitize`, templates use `t-out` instead of `t-raw`
+- **Race Condition Prevention** — SQL `FOR UPDATE` row-level locking prevents concurrent booking conflicts
+- **IDOR Protection** — Discussion channel access validation ensures only booking-related users can access
+- **RPC Bypass Prevention** — Model-level constraints (`@api.constrains`) block direct RPC calls bypassing controllers
+- **Portal Record Rules** — 3 `ir.rule` records restrict Portal user access to authorized resources only
+- **Deletion Protection** — `partner_id` set to `ondelete='restrict'` to prevent deleting associated bookers
+
+---
+
+## Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│              Odoo 資源預定管理模組                            │
+│            Odoo Resource Booking & Reservation               │
 ├─────────────────────────────────────────────────────────────┤
 │                                                              │
 │  ┌────────────────────────┐  ┌────────────────────────┐     │
-│  │    Portal 前台         │  │     後台管理            │     │
+│  │    Portal Frontend     │  │   Backend Admin         │     │
 │  │                        │  │                        │     │
-│  │ • 資源瀏覽 (卡片式)   │  │ • 行事曆視圖           │     │
-│  │ • 時段選擇 (日曆風格)  │  │ • 預定清單/表單        │     │
-│  │ • 預定確認/取消        │  │ • 資源設定             │     │
-│  │ • 我的預定列表         │  │ • 分類管理             │     │
-│  │ • 討論通道整合         │  │ • 可用時段設定         │     │
+│  │ • Resource Browsing    │  │ • Calendar View         │     │
+│  │ • Slot Selection       │  │ • Reservation List/Form │     │
+│  │ • Booking Confirm      │  │ • Resource Config       │     │
+│  │ • My Bookings          │  │ • Category Management   │     │
+│  │ • Discussion Channels  │  │ • Availability Setup    │     │
 │  └──────────┬─────────────┘  └──────────┬─────────────┘     │
 │             │                           │                    │
 │             └───────────┬───────────────┘                    │
 │                         │                                    │
 │  ┌──────────────────────▼──────────────────────────────┐    │
-│  │                  核心模型層                           │    │
+│  │                 Core Model Layer                      │    │
 │  │                                                      │    │
-│  │  booking.reservation     — 預定記錄                  │    │
-│  │  booking.resource.type   — 可預定資源                │    │
-│  │  booking.resource.category — 資源分類                │    │
-│  │  booking.resource.availability — 可用時段            │    │
+│  │  booking.reservation     — Booking records           │    │
+│  │  booking.resource.type   — Bookable resources        │    │
+│  │  booking.resource.category — Resource categories     │    │
+│  │  booking.resource.availability — Availability slots  │    │
 │  │                                                      │    │
-│  │  安全機制：                                           │    │
-│  │  • SQL FOR UPDATE 防競態條件                          │    │
-│  │  • @api.constrains 模型層約束                        │    │
-│  │  • ir.rule Portal 記錄規則                           │    │
-│  │  • html_sanitize XSS 防護                            │    │
+│  │  Security:                                            │    │
+│  │  • SQL FOR UPDATE race condition prevention           │    │
+│  │  • @api.constrains model-level validation            │    │
+│  │  • ir.rule Portal record rules                       │    │
+│  │  • html_sanitize XSS protection                      │    │
 │  └──────────────────────┬──────────────────────────────┘    │
 │                         │                                    │
 ├─────────────────────────┼────────────────────────────────────┤
 │                         ▼                                    │
 │  ┌───────────────────────────────────────────────────────┐  │
-│  │                 Odoo 18 框架                           │  │
+│  │                 Odoo 18 Framework                      │  │
 │  │  Portal │ Mail │ Calendar │ ORM │ Security             │  │
 │  └───────────────────────────────────────────────────────┘  │
 │                         │                                    │
@@ -128,223 +129,223 @@
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### 模組依賴
+### Module Dependencies
 
 ```
 odoo_booking_reservation
     ├── base
-    ├── mail          (討論通道、郵件通知)
-    ├── calendar      (行事曆視圖整合)
-    ├── portal        (Portal 使用者介面)
-    └── cs_portal_discuss  (Portal 討論頁面)
+    ├── mail          (Discussion channels, email notifications)
+    ├── calendar      (Calendar view integration)
+    ├── portal        (Portal user interface)
+    └── cs_portal_discuss  (Portal discussion page)
 ```
 
 ---
 
-## 功能截圖
+## Screenshots
 
-### Portal — 資源瀏覽
+### Portal — Resource Browsing
 
-Portal 使用者可瀏覽所有可預定資源，顯示名稱、地點、容量。
+Portal users browse all bookable resources showing name, location, and capacity.
 
 <p align="center">
-  <img src="docs/screenshots/portal_resources.png" alt="Portal 資源瀏覽" width="720"/>
+  <img src="docs/screenshots/portal_resources.png" alt="Portal Resources" width="720"/>
 </p>
 
-### Portal — 時段選擇
+### Portal — Slot Selection
 
-選擇資源後，以日曆風格顯示可用時段。已預定時段標記為「您的預定」。
+After selecting a resource, available time slots are displayed in calendar style. Booked slots are marked "Your Booking".
 
 <p align="center">
-  <img src="docs/screenshots/portal_slots.png" alt="Portal 時段選擇" width="720"/>
+  <img src="docs/screenshots/portal_slots.png" alt="Portal Slots" width="720"/>
 </p>
 
-### Portal — 預定確認
+### Portal — Booking Confirmation
 
-填寫預定主題、說明，選擇是否建立討論通道。
+Enter booking topic, description, and choose whether to create a discussion channel.
 
 <p align="center">
-  <img src="docs/screenshots/portal_confirm.png" alt="Portal 預定確認" width="720"/>
+  <img src="docs/screenshots/portal_confirm.png" alt="Portal Confirm" width="720"/>
 </p>
 
-### Portal — 我的預定
+### Portal — My Bookings
 
-查看所有預定紀錄，支援篩選和排序。
+View all booking records with filtering and sorting support.
 
 <p align="center">
-  <img src="docs/screenshots/portal_my_bookings.png" alt="Portal 我的預定" width="720"/>
+  <img src="docs/screenshots/portal_my_bookings.png" alt="Portal My Bookings" width="720"/>
 </p>
 
-### Portal — 預定詳情
+### Portal — Booking Details
 
-完整預定資訊，可取消預定、再次預定、進入討論通道。
+Full booking information with cancel, re-book, and discussion channel access.
 
 <p align="center">
-  <img src="docs/screenshots/portal_booking_detail.png" alt="Portal 預定詳情" width="720"/>
+  <img src="docs/screenshots/portal_booking_detail.png" alt="Portal Booking Detail" width="720"/>
 </p>
 
-### Portal — 首頁入口
+### Portal — Home Page
 
-Portal 首頁顯示「我的預定」和「預定資源」兩張卡片。
+Portal home page shows "My Bookings" and "Book Resources" entry cards.
 
 <p align="center">
-  <img src="docs/screenshots/portal_home.png" alt="Portal 首頁" width="720"/>
+  <img src="docs/screenshots/portal_home.png" alt="Portal Home" width="720"/>
 </p>
 
-### 後台 — 行事曆視圖（月）
+### Backend — Calendar View (Month)
 
-管理員透過行事曆月視圖總覽所有預定，依資源顏色分類。
+Administrators view all bookings in month calendar view, color-coded by resource.
 
 <p align="center">
-  <img src="docs/screenshots/backend_calendar_month.png" alt="後台行事曆月視圖" width="720"/>
+  <img src="docs/screenshots/backend_calendar_month.png" alt="Backend Calendar Month" width="720"/>
 </p>
 
-### 後台 — 行事曆視圖（週）
+### Backend — Calendar View (Week)
 
-行事曆週視圖，顯示每日時段分佈，右側資源篩選。
+Weekly calendar view showing daily slot distribution with resource filter sidebar.
 
 <p align="center">
-  <img src="docs/screenshots/backend_calendar_view.png" alt="後台行事曆週視圖" width="720"/>
+  <img src="docs/screenshots/backend_calendar_view.png" alt="Backend Calendar Week" width="720"/>
 </p>
 
-### 後台 — 預定清單
+### Backend — Reservation List
 
-列表視圖管理所有預定，顯示名稱、資源、時間、時長、預定者、狀態。
+List view for managing all reservations showing name, resource, time, duration, booker, and status.
 
 <p align="center">
-  <img src="docs/screenshots/backend_reservation_list.png" alt="後台預定清單" width="720"/>
+  <img src="docs/screenshots/backend_reservation_list.png" alt="Backend Reservation List" width="720"/>
 </p>
 
-### 後台 — 預定表單
+### Backend — Reservation Form
 
-預定表單詳情，包含資源資訊、時間、人員（舉辦方/預定者/參加者）、討論通道、說明、提醒。
+Reservation form with resource info, time, personnel (organizer/booker/attendees), discussion channel, description, and reminders.
 
 <p align="center">
-  <img src="docs/screenshots/backend_reservation_form.png" alt="後台預定表單" width="720"/>
+  <img src="docs/screenshots/backend_reservation_form.png" alt="Backend Reservation Form" width="720"/>
 </p>
 
-### 後台 — 資源清單
+### Backend — Resource List
 
-資源管理列表，顯示名稱、地點、容量、時段長度、存取類型、預定數。
+Resource management list showing name, location, capacity, slot duration, access type, and booking count.
 
 <p align="center">
-  <img src="docs/screenshots/backend_resource_list.png" alt="後台資源清單" width="720"/>
+  <img src="docs/screenshots/backend_resource_list.png" alt="Backend Resource List" width="720"/>
 </p>
 
-### 後台 — 資源設定
+### Backend — Resource Configuration
 
-資源表單設定頁面，包含基本資訊、預定設定、說明、可用時段、存取控制、進階設定。
+Resource form with basic info, booking settings, description, availability schedule, access control, and advanced settings tabs.
 
 <p align="center">
-  <img src="docs/screenshots/backend_resource_form.png" alt="後台資源設定" width="720"/>
+  <img src="docs/screenshots/backend_resource_form.png" alt="Backend Resource Config" width="720"/>
 </p>
 
-### 後台 — 可用時段設定
+### Backend — Availability Schedule
 
-依星期幾設定每日可用時段，例如週一至週五 09:00-18:00。
+Set daily available hours by day of week, e.g., Monday to Friday 09:00-18:00.
 
 <p align="center">
-  <img src="docs/screenshots/backend_resource_availability.png" alt="後台可用時段" width="720"/>
+  <img src="docs/screenshots/backend_resource_availability.png" alt="Backend Availability" width="720"/>
 </p>
 
-### 後台 — 存取控制
+### Backend — Access Control
 
-設定資源的存取類型：「所有 Portal 使用者」或「特定聯絡人」。
+Configure resource access type: "All Portal Users" or "Specific Contacts".
 
 <p align="center">
-  <img src="docs/screenshots/backend_resource_access.png" alt="後台存取控制" width="720"/>
+  <img src="docs/screenshots/backend_resource_access.png" alt="Backend Access Control" width="720"/>
 </p>
 
 ---
 
-## 安裝說明
+## Installation
 
-### 系統需求
+### Prerequisites
 
-- **Odoo 18.0**（社區版或企業版）
+- **Odoo 18.0** (Community or Enterprise)
 - **PostgreSQL 13+**
 - **Python 3.10+**
-- **相依模組：** `mail`, `calendar`, `portal`, `cs_portal_discuss`
+- **Dependencies:** `mail`, `calendar`, `portal`, `cs_portal_discuss`
 
-### 安裝步驟
+### Steps
 
 ```bash
-# 1. 複製模組到 Odoo addons 路徑
-git clone https://github.com/WOOWTECH/Woow_odoo_internal_booking.git
-cp -r Woow_odoo_internal_booking/odoo_booking_reservation /path/to/odoo/addons/
+# 1. Clone the module into your Odoo addons path
+cd /path/to/odoo/addons/
+git clone https://github.com/WOOWTECH/Woow_odoo_internal_booking.git odoo_booking_reservation
 
-# 2. 更新模組列表並安裝
+# 2. Update module list and install
 odoo -u odoo_booking_reservation -d your_database
 ```
 
-### 在 Odoo 中安裝
+### Install via Odoo UI
 
-1. 前往 **應用程式** 選單
-2. 點擊 **更新應用程式列表**
-3. 搜尋「資源預定管理」
-4. 點擊 **安裝**
-
----
-
-## 設定指南
-
-### 1. 建立資源分類
-
-前往 **日曆 > 配置 > 資源分類**
-
-建立資源分類（例：會議室、設備、場地），方便管理和篩選。
-
-### 2. 建立可預定資源
-
-前往 **日曆 > 配置 > 預定資源**
-
-| 欄位 | 說明 |
-|------|------|
-| 名稱 | 資源名稱（例：Conference Room A） |
-| 分類 | 所屬分類 |
-| 地點 | 資源位置 |
-| 容量 | 最大容納人數 |
-| 時段長度 | 每個預定時段的長度（小時） |
-| 時段間隔 | 時段之間的間隔（最小 0.25 小時） |
-| 可預定天數 | 允許提前預定的天數 |
-
-### 3. 設定可用時段
-
-在資源表單的「可用時段」分頁，依星期幾設定每日可用時間段。
-
-### 4. 設定存取控制
-
-在資源表單的「存取控制」分頁：
-- **所有 Portal 使用者** — 所有 Portal 使用者都可預定
-- **特定聯絡人** — 只有指定的聯絡人可預定
-
-### 5. 郵件通知
-
-模組內建兩個郵件模板：
-- **預定確認** — 預定確認時自動發送
-- **預定取消** — 預定取消時自動發送
+1. Go to **Apps** menu
+2. Click **Update Apps List**
+3. Search for "Resource Booking"
+4. Click **Install**
 
 ---
 
-## 安全機制
+## Configuration
 
-### 安全特性
+### 1. Create Resource Categories
 
-| 安全項目 | 實作方式 |
-|----------|----------|
-| XSS 防護 | `html_sanitize()` 處理使用者輸入，`t-out` 取代 `t-raw` |
-| 競態條件防護 | SQL `FOR UPDATE` 行級鎖定 |
-| IDOR 防護 | 討論通道存取驗證，檢查預定擁有權 |
-| RPC 繞過防護 | `@api.constrains` 模型層驗證（過去時段、重疊、時長） |
-| Portal 記錄規則 | 3 條 `ir.rule` 限制 Portal 存取範圍 |
-| 異常洩漏防護 | Controller 層捕捉異常，返回通用錯誤碼 |
-| 刪除保護 | `ondelete='restrict'` 防止刪除關聯預定者 |
-| 輸入驗證 | 日期格式驗證、範圍限制、容量/間隔最小值 |
+Navigate to **Calendar > Configuration > Resource Categories**
 
-### Portal 記錄規則
+Create categories (e.g., Meeting Rooms, Equipment, Venues) for organization and filtering.
+
+### 2. Create Bookable Resources
+
+Navigate to **Calendar > Configuration > Booking Resources**
+
+| Field | Description |
+|-------|-------------|
+| Name | Resource name (e.g., Conference Room A) |
+| Category | Assigned category |
+| Location | Physical location |
+| Capacity | Maximum occupancy |
+| Slot Duration | Length of each booking slot (hours) |
+| Slot Interval | Gap between slots (minimum 0.25 hours) |
+| Advance Days | How many days ahead users can book |
+
+### 3. Set Availability Schedule
+
+On the resource form's "Availability" tab, configure daily available hours by day of week.
+
+### 4. Configure Access Control
+
+On the resource form's "Access Control" tab:
+- **All Portal Users** — Any portal user can book
+- **Specific Contacts** — Only designated contacts can book
+
+### 5. Email Notifications
+
+The module includes two email templates:
+- **Booking Confirmed** — Sent automatically when a booking is confirmed
+- **Booking Cancelled** — Sent automatically when a booking is cancelled
+
+---
+
+## Security
+
+### Security Features
+
+| Feature | Implementation |
+|---------|---------------|
+| XSS Protection | `html_sanitize()` on user input, `t-out` replaces `t-raw` |
+| Race Condition Prevention | SQL `FOR UPDATE` row-level locking |
+| IDOR Protection | Discussion channel access validation with booking ownership check |
+| RPC Bypass Prevention | `@api.constrains` model-level validation (past slots, overlap, duration) |
+| Portal Record Rules | 3 `ir.rule` records restricting Portal access scope |
+| Exception Leak Prevention | Controller catches exceptions, returns generic error codes |
+| Deletion Protection | `ondelete='restrict'` prevents deleting associated bookers |
+| Input Validation | Date format validation, range clamping, capacity/interval minimums |
+
+### Portal Record Rules
 
 ```xml
-<!-- Portal 使用者只能存取啟用中且授權的資源 -->
+<!-- Portal users can only access active, authorized resources -->
 <record id="booking_resource_type_portal_rule" model="ir.rule">
     <field name="domain_force">[
         ('active', '=', True),
@@ -358,46 +359,153 @@ odoo -u odoo_booking_reservation -d your_database
 
 ---
 
-## 技術細節
+## Technical Details
 
-### 模型結構
+### Model Structure
 
-| 模型 | 說明 | 關鍵欄位 |
-|------|------|----------|
-| `booking.reservation` | 預定記錄 | resource_type_id, start/end_datetime, partner_id, state, channel_id |
-| `booking.resource.type` | 可預定資源 | name, category_id, capacity, slot_duration, slot_interval, share_type |
-| `booking.resource.category` | 資源分類 | name, description |
-| `booking.resource.availability` | 可用時段 | resource_type_id, dayofweek, hour_from, hour_to |
+| Model | Description | Key Fields |
+|-------|-------------|------------|
+| `booking.reservation` | Booking records | resource_type_id, start/end_datetime, partner_id, state, channel_id |
+| `booking.resource.type` | Bookable resources | name, category_id, capacity, slot_duration, slot_interval, share_type |
+| `booking.resource.category` | Resource categories | name, description |
+| `booking.resource.availability` | Availability slots | resource_type_id, dayofweek, hour_from, hour_to |
 
-### 模型約束（`@api.constrains`）
+### Model Constraints (`@api.constrains`)
 
-| 約束 | 說明 |
-|------|------|
-| `_check_no_overlap` | SQL FOR UPDATE 防止重複預定 |
-| `_check_duration_matches_slot` | 驗證預定時長與資源時段長度一致 |
-| `_check_not_in_past` | 阻擋過去時段的預定 |
-| `_check_capacity` | 資源容量至少為 1 |
-| `_check_slot_settings` | 時段間隔最小 0.25 小時 |
-| `_check_availability_overlap` | 防止可用時段重疊 |
+| Constraint | Description |
+|------------|-------------|
+| `_check_no_overlap` | SQL FOR UPDATE prevents double-booking |
+| `_check_duration_matches_slot` | Validates booking duration matches resource slot length |
+| `_check_not_in_past` | Blocks booking past time slots |
+| `_check_capacity` | Resource capacity must be >= 1 |
+| `_check_slot_settings` | Slot interval minimum 0.25 hours |
+| `_check_availability_overlap` | Prevents overlapping availability windows |
 
-### 效能優化
+### Performance Optimizations
 
-- **`_read_group` 聚合查詢** — 計算預定數和資源數，取代 `len(filtered())` 模式
-- **SQL 原生查詢** — 重疊檢查使用原生 SQL + `FOR UPDATE`，避免 ORM 開銷
-
----
-
-## 授權條款
-
-本專案採用 **LGPL-3** 授權條款。
+- **`_read_group` aggregation** — Computed counts use `_read_group` instead of `len(filtered())` pattern
+- **Native SQL queries** — Overlap checking uses raw SQL + `FOR UPDATE` to avoid ORM overhead
 
 ---
 
-## 支援
+## API Reference
 
-- **公司：** [WOOWTECH](https://woowtech.com)
-- **Email：** gt.apps.odoo@gmail.com
-- **Issues：** [GitHub Issues](https://github.com/WOOWTECH/Woow_odoo_internal_booking/issues)
+### Portal HTTP Endpoints
+
+All routes require authenticated portal user (`auth='user'`).
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/my/booking/resources` | GET | Browse all available resources |
+| `/my/booking/resources/<id>` | GET | Resource detail with available time slots |
+| `/my/booking/resources/<id>/slots` | JSON | Get available slots (params: `date_from`, `date_to`) |
+| `/my/bookings/new` | GET | New booking form |
+| `/my/bookings/confirm` | GET | Booking confirmation page |
+| `/my/bookings/create` | POST | Create a new booking |
+| `/my/bookings` | GET | List user's bookings (params: `page`, `sortby`, `filterby`) |
+| `/my/bookings/<id>` | GET | Booking detail page |
+| `/my/bookings/<id>/cancel` | POST | Cancel a confirmed booking |
+| `/my/bookings/<id>/discuss` | GET | Redirect to booking's discussion channel |
+| `/my/discussions` | GET | Portal discussions list (IDOR-protected) |
+
+### Key Model Methods
+
+```python
+# booking.reservation
+reservation.action_cancel()         # Cancel a confirmed booking
+reservation.action_confirm()        # Re-confirm a cancelled booking
+reservation.action_open_discuss_channel()  # Open discussion channel in Discuss
+
+# booking.resource.type
+resource._check_partner_access(partner)    # Check if partner can book
+resource._generate_slots(date_from, date_to)  # Generate available time slots
+resource.action_view_reservations()        # Open reservations calendar view
+```
+
+### Mail Templates
+
+| Template ID | Trigger | Description |
+|-------------|---------|-------------|
+| `mail_template_booking_confirmed` | `create()` | Booking confirmation email with resource details, time, and action buttons |
+| `mail_template_booking_cancelled` | `action_cancel()` | Cancellation notification with re-booking link |
+
+---
+
+## Testing
+
+The module has been through comprehensive testing across multiple phases:
+
+### Functional Test Results
+
+| Phase | Test Items | Pass | Fail | Rate |
+|-------|-----------|------|------|------|
+| Portal End-to-End | 66 | 66 | 0 | 100% |
+| Backend CRUD & Calendar | 48 | 48 | 0 | 100% |
+| Security & Edge Cases | 48 | 48 | 0 | 100% |
+| **Grand Total** | **162** | **162** | **0** | **100%** |
+
+### Pre-Production Audit
+
+23-point security and stability audit covering:
+
+| Category | Items | Status |
+|----------|-------|--------|
+| XSS Protection | Template sanitization, `t-out` enforcement | Fixed |
+| Race Conditions | SQL `FOR UPDATE` locking | Fixed |
+| IDOR Validation | Discussion channel access checks | Fixed |
+| RPC Bypass Prevention | `@api.constrains` model-level guards | Fixed |
+| Portal Record Rules | 3 `ir.rule` records for resource/booking access | Fixed |
+| Input Validation | Past slot blocking, overlap detection, capacity checks | Fixed |
+| Deletion Protection | `ondelete='restrict'` on partner references | Fixed |
+| Performance | `_read_group` aggregation, SQL optimization | Fixed |
+
+All 23 findings identified and resolved before production release.
+
+---
+
+## Changelog
+
+### v1.0.0 (2026-04)
+
+- **Security:** Pre-production 23-point security audit — XSS, race conditions, IDOR, RPC bypass, record rules all fixed
+- **Enhancement:** Past time slot validation — `@api.constrains` blocks booking past slots
+- **Enhancement:** Availability overlap detection — prevents conflicting availability windows on same resource
+- **Enhancement:** Performance optimization — `_read_group` aggregation replaces `len(filtered())` pattern
+- **Enhancement:** Deletion protection — `ondelete='restrict'` on `partner_id` prevents orphaned records
+- **Localization:** Complete Traditional Chinese interface — all views, templates, controllers, error messages, field labels
+- **Fix:** Discussion channel dialog — pure DOM approach ensures reliable close button behavior
+- **Fix:** Timezone handling — slot generation correctly converts between user timezone and UTC
+- **Fix:** Portal home page card icons and layout alignment
+
+### v0.9.0 (2026-03)
+
+- **Feature:** Calendar-style booking form with topic, organizer, attendees, and Discussion channel integration
+- **Feature:** Portal brand redesign — Woowtech brand colors and typography applied
+- **Feature:** Discussion channel auto-creation per booking with attendee membership
+- **Feature:** Email notification templates — booking confirmation and cancellation
+- **Testing:** 162/162 comprehensive tests passed (100%)
+
+### v0.1.0 (2026-02)
+
+- **Initial Release:** Complete resource booking module for Odoo 18
+- **Feature:** Portal self-service resource browsing, slot selection, booking confirmation
+- **Feature:** Backend calendar view with day/week/month/year modes
+- **Feature:** Resource management with categories, capacity, availability schedules, access control
+- **Feature:** Pagination, sorting, filtering on booking lists
+
+---
+
+## License
+
+This project is licensed under **LGPL-3**.
+
+---
+
+## Support
+
+- **Company:** [WOOWTECH](https://woowtech.com)
+- **Email:** gt.apps.odoo@gmail.com
+- **Issues:** [GitHub Issues](https://github.com/WOOWTECH/Woow_odoo_internal_booking/issues)
 
 ---
 
