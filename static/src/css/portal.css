@@ -1,6 +1,6 @@
 /*
  * Woowtech Smart Space Solution — Booking Reservation Portal
- * Brand Design System — follows Odoo default purple theme
+ * Brand Design System — follows odoo_color_customizer with fallback to Odoo default purple
  *
  * Color Ratio: White 50% / Gray 20% / Deep Gray 10% / Purple 10% / Accent 5% / Black 5%
  */
@@ -11,9 +11,9 @@
    CSS VARIABLES
    ============================================================ */
 :root {
-    --ws-primary: #714B67;
-    --ws-primary-hover: #5a3c52;
-    --ws-primary-light: rgba(113, 75, 103, 0.08);
+    --ws-primary: var(--custom-primary, #714B67);
+    --ws-primary-hover: var(--custom-primary-hover, #5a3c52);
+    --ws-primary-light: var(--custom-primary-light, rgba(113, 75, 103, 0.08));
     --ws-white: #FFFFFF;
     --ws-light-gray: #EFF1F5;
     --ws-gray: #646262;
@@ -111,7 +111,7 @@
 .o_portal .o_portal_wrap .btn-primary:focus {
     background-color: var(--ws-primary-hover);
     border-color: var(--ws-primary-hover);
-    box-shadow: 0 0 0 0.2rem rgba(113, 75, 103, 0.25);
+    box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--ws-primary) 25%, transparent);
 }
 
 /* Buttons — Secondary (brand outline style) */
@@ -219,7 +219,7 @@
 /* ============================================================
    RESOURCE DETAIL — Info Card with Purple Top Line
    ============================================================ */
-.ws-card-accent {
+.o_portal .o_portal_wrap .ws-card-accent {
     border-top: 3px solid var(--ws-primary);
 }
 
@@ -253,7 +253,7 @@
     background-color: var(--ws-primary);
     border-color: var(--ws-primary);
     color: var(--ws-white);
-    box-shadow: 0 2px 8px rgba(113, 75, 103, 0.3);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--ws-primary) 30%, transparent);
 }
 
 /* My booking slots — Cyan */
@@ -279,7 +279,7 @@
 /* ============================================================
    TIME SLOTS CARD HEADER — Purple bottom line
    ============================================================ */
-.ws-slots-header {
+.o_portal .o_portal_wrap .ws-slots-header {
     background-color: var(--ws-white);
     border-bottom: 2px solid var(--ws-primary);
 }
@@ -419,7 +419,7 @@
 /* ============================================================
    DETAIL / CONFIRM — Card Header with Purple Left Border
    ============================================================ */
-.ws-card-header-accent {
+.o_portal .o_portal_wrap .ws-card-header-accent {
     background-color: var(--ws-white);
     border-bottom: 1px solid var(--ws-light-gray);
     border-left: 4px solid var(--ws-primary);
@@ -477,7 +477,7 @@
    ============================================================ */
 .o_portal .o_portal_wrap .form-control:focus {
     border-color: var(--ws-primary);
-    box-shadow: 0 0 0 0.2rem rgba(113, 75, 103, 0.15);
+    box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--ws-primary) 15%, transparent);
 }
 
 .o_portal .o_portal_wrap .form-label {
