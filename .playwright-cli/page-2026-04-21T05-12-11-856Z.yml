@@ -1,0 +1,78 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - navigation [ref=e4]:
+      - generic [ref=e5]:
+        - link "Logo of My Company" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - img "Logo of My Company" [ref=e7]
+        - list [ref=e8]:
+          - listitem [ref=e9]:
+            - button "Administrator" [ref=e10] [cursor=pointer]
+            - text:   
+  - main [ref=e11]:
+    - list [ref=e14]:
+      - listitem [ref=e15]:
+        - link "Home" [ref=e16] [cursor=pointer]:
+          - /url: /my/home
+          - generic [ref=e17]: 
+    - generic [ref=e19]:
+      - heading "Booking Detail" [level=3] [ref=e20]
+      - alert [ref=e21]:
+        - generic [ref=e22]: 
+        - text: Your booking has been confirmed!
+        - button "Close" [ref=e23] [cursor=pointer]
+      - generic [ref=e24]:
+        - generic [ref=e26]:
+          - generic [ref=e27]:
+            - generic [ref=e28]:
+              - generic [ref=e29]: 
+              - text: "Booking #428"
+            - generic [ref=e30]: Confirmed
+          - generic [ref=e31]:
+            - heading "Conference Room A" [level=4] [ref=e32]
+            - generic [ref=e33]:
+              - term [ref=e34]: Resource
+              - definition [ref=e35]: Conference Room A
+              - term [ref=e36]: Location
+              - definition [ref=e37]: Building 1, Floor 3
+            - separator [ref=e38]
+            - generic [ref=e39]:
+              - term [ref=e40]: Start
+              - definition [ref=e41]: Wednesday, April 22, 2026 09:00
+              - term [ref=e42]: End
+              - definition [ref=e43]: Wednesday, April 22, 2026 10:00
+              - term [ref=e44]: Duration
+              - definition [ref=e45]: 1.0 hours
+            - separator [ref=e46]
+            - generic [ref=e47]:
+              - term [ref=e48]: Organizer
+              - definition [ref=e49]: Administrator
+              - term [ref=e50]: Booker
+              - definition [ref=e51]: Administrator
+          - generic [ref=e53]:
+            - link " Back" [ref=e54] [cursor=pointer]:
+              - /url: /my/bookings
+              - generic [ref=e55]: 
+              - text: Back
+            - button " Cancel Booking" [ref=e57] [cursor=pointer]:
+              - generic [ref=e58]: 
+              - text: Cancel Booking
+        - generic [ref=e60]:
+          - generic [ref=e61]:
+            - generic [ref=e62]: 
+            - text: Resource Information
+          - heading "Conference Room A" [level=6] [ref=e64]
+          - link " Book Again" [ref=e66] [cursor=pointer]:
+            - /url: /my/booking/resources/2
+            - generic [ref=e67]: 
+            - text: Book Again
+  - contentinfo [ref=e68]:
+    - generic [ref=e71]:
+      - generic [ref=e72]:
+        - generic [ref=e73]: Copyright © My Company
+        - button "English (US)" [expanded] [ref=e75] [cursor=pointer]
+      - generic [ref=e77]:
+        - text: Powered by
+        - link "Odoo" [ref=e78] [cursor=pointer]:
+          - /url: http://www.odoo.com?utm_source=db&utm_medium=portal
+          - img "Odoo" [ref=e79]

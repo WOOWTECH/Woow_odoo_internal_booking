@@ -1,0 +1,191 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - navigation [ref=e4]:
+      - generic [ref=e5]:
+        - link "Logo of My Company" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - img "Logo of My Company" [ref=e7]
+        - list [ref=e8]:
+          - listitem [ref=e9]:
+            - button "Administrator" [ref=e10] [cursor=pointer]
+            - text:   
+  - main [ref=e11]:
+    - list [ref=e14]:
+      - listitem [ref=e15]:
+        - link "Home" [ref=e16] [cursor=pointer]:
+          - /url: /my/home
+          - generic [ref=e17]: 
+    - generic [ref=e19]:
+      - heading "Conference Room A" [level=3] [ref=e20]
+      - alert [ref=e21]:
+        - generic [ref=e22]: 
+        - text: Cannot book a past time slot. Please select a future slot.
+        - button "Close" [ref=e23] [cursor=pointer]
+      - generic [ref=e24]:
+        - generic [ref=e25]:
+          - generic [ref=e27]:
+            - heading "Conference Room A" [level=5] [ref=e28]
+            - generic [ref=e29]:
+              - term [ref=e30]: Location
+              - definition [ref=e31]: Building 1, Floor 3
+              - term [ref=e32]: Capacity
+              - definition [ref=e33]: "20"
+              - term [ref=e34]: Duration
+              - definition [ref=e35]: 1.0 hours
+          - link " Back to Resources" [ref=e37] [cursor=pointer]:
+            - /url: /my/booking/resources
+            - generic [ref=e38]: 
+            - text: Back to Resources
+        - generic [ref=e40]:
+          - generic [ref=e42]:
+            - generic [ref=e43]:
+              - generic [ref=e44]: 
+              - text: Available Slots
+            - generic [ref=e45]:
+              - generic:
+                - generic: 
+              - generic [ref=e46]: 2026/04/21 - 2026/04/28
+              - link "" [ref=e47] [cursor=pointer]:
+                - /url: /my/booking/resources/2?date=2026-04-28
+                - generic [ref=e48]: 
+          - generic [ref=e49]:
+            - heading "2026-04-21" [level=6] [ref=e50]
+            - generic [ref=e51]:
+              - link "09:00 - 10:00" [ref=e53] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-21 09:00:00&end_datetime=2026-04-21 10:00:00
+              - link "10:00 - 11:00" [ref=e55] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-21 10:00:00&end_datetime=2026-04-21 11:00:00
+              - link "11:00 - 12:00" [ref=e57] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-21 11:00:00&end_datetime=2026-04-21 12:00:00
+              - link "12:00 - 13:00" [ref=e59] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-21 12:00:00&end_datetime=2026-04-21 13:00:00
+              - link "13:00 - 14:00" [ref=e61] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-21 13:00:00&end_datetime=2026-04-21 14:00:00
+              - link "14:00 - 15:00" [ref=e63] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-21 14:00:00&end_datetime=2026-04-21 15:00:00
+              - link "15:00 - 16:00" [ref=e65] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-21 15:00:00&end_datetime=2026-04-21 16:00:00
+              - link "16:00 - 17:00" [ref=e67] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-21 16:00:00&end_datetime=2026-04-21 17:00:00
+              - link "17:00 - 18:00" [ref=e69] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-21 17:00:00&end_datetime=2026-04-21 18:00:00
+            - heading "2026-04-22" [level=6] [ref=e70]
+            - generic [ref=e71]:
+              - link "09:00 - 10:00" [ref=e73] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-22 09:00:00&end_datetime=2026-04-22 10:00:00
+              - link "10:00 - 11:00" [ref=e75] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-22 10:00:00&end_datetime=2026-04-22 11:00:00
+              - link "11:00 - 12:00" [ref=e77] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-22 11:00:00&end_datetime=2026-04-22 12:00:00
+              - link "12:00 - 13:00" [ref=e79] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-22 12:00:00&end_datetime=2026-04-22 13:00:00
+              - link "13:00 - 14:00" [ref=e81] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-22 13:00:00&end_datetime=2026-04-22 14:00:00
+              - link "14:00 - 15:00" [ref=e83] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-22 14:00:00&end_datetime=2026-04-22 15:00:00
+              - link "15:00 - 16:00" [ref=e85] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-22 15:00:00&end_datetime=2026-04-22 16:00:00
+              - link "16:00 - 17:00" [ref=e87] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-22 16:00:00&end_datetime=2026-04-22 17:00:00
+              - link "17:00 - 18:00" [ref=e89] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-22 17:00:00&end_datetime=2026-04-22 18:00:00
+            - heading "2026-04-23" [level=6] [ref=e90]
+            - generic [ref=e91]:
+              - link "09:00 - 10:00" [ref=e93] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-23 09:00:00&end_datetime=2026-04-23 10:00:00
+              - link "10:00 - 11:00" [ref=e95] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-23 10:00:00&end_datetime=2026-04-23 11:00:00
+              - link "11:00 - 12:00" [ref=e97] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-23 11:00:00&end_datetime=2026-04-23 12:00:00
+              - link "12:00 - 13:00" [ref=e99] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-23 12:00:00&end_datetime=2026-04-23 13:00:00
+              - link "13:00 - 14:00" [ref=e101] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-23 13:00:00&end_datetime=2026-04-23 14:00:00
+              - link "14:00 - 15:00" [ref=e103] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-23 14:00:00&end_datetime=2026-04-23 15:00:00
+              - link "15:00 - 16:00" [ref=e105] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-23 15:00:00&end_datetime=2026-04-23 16:00:00
+              - link "16:00 - 17:00" [ref=e107] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-23 16:00:00&end_datetime=2026-04-23 17:00:00
+              - link "17:00 - 18:00" [ref=e109] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-23 17:00:00&end_datetime=2026-04-23 18:00:00
+            - heading "2026-04-24" [level=6] [ref=e110]
+            - generic [ref=e111]:
+              - link "09:00 - 10:00" [ref=e113] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-24 09:00:00&end_datetime=2026-04-24 10:00:00
+              - link "10:00 - 11:00" [ref=e115] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-24 10:00:00&end_datetime=2026-04-24 11:00:00
+              - link "11:00 - 12:00" [ref=e117] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-24 11:00:00&end_datetime=2026-04-24 12:00:00
+              - link "12:00 - 13:00" [ref=e119] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-24 12:00:00&end_datetime=2026-04-24 13:00:00
+              - link "13:00 - 14:00" [ref=e121] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-24 13:00:00&end_datetime=2026-04-24 14:00:00
+              - link "14:00 - 15:00" [ref=e123] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-24 14:00:00&end_datetime=2026-04-24 15:00:00
+              - link "15:00 - 16:00" [ref=e125] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-24 15:00:00&end_datetime=2026-04-24 16:00:00
+              - link "16:00 - 17:00" [ref=e127] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-24 16:00:00&end_datetime=2026-04-24 17:00:00
+              - link "17:00 - 18:00" [ref=e129] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-24 17:00:00&end_datetime=2026-04-24 18:00:00
+            - heading "2026-04-25" [level=6] [ref=e130]
+            - generic [ref=e131]:
+              - link "10:00 - 11:00" [ref=e133] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-25 10:00:00&end_datetime=2026-04-25 11:00:00
+              - link "11:00 - 12:00" [ref=e135] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-25 11:00:00&end_datetime=2026-04-25 12:00:00
+              - link "12:00 - 13:00" [ref=e137] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-25 12:00:00&end_datetime=2026-04-25 13:00:00
+              - link "13:00 - 14:00" [ref=e139] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-25 13:00:00&end_datetime=2026-04-25 14:00:00
+            - heading "2026-04-27" [level=6] [ref=e140]
+            - generic [ref=e141]:
+              - link "09:00 - 10:00" [ref=e143] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-27 09:00:00&end_datetime=2026-04-27 10:00:00
+              - link "10:00 - 11:00" [ref=e145] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-27 10:00:00&end_datetime=2026-04-27 11:00:00
+              - link "11:00 - 12:00" [ref=e147] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-27 11:00:00&end_datetime=2026-04-27 12:00:00
+              - link "12:00 - 13:00" [ref=e149] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-27 12:00:00&end_datetime=2026-04-27 13:00:00
+              - link "13:00 - 14:00" [ref=e151] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-27 13:00:00&end_datetime=2026-04-27 14:00:00
+              - link "14:00 - 15:00" [ref=e153] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-27 14:00:00&end_datetime=2026-04-27 15:00:00
+              - link "15:00 - 16:00" [ref=e155] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-27 15:00:00&end_datetime=2026-04-27 16:00:00
+              - link "16:00 - 17:00" [ref=e157] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-27 16:00:00&end_datetime=2026-04-27 17:00:00
+              - link "17:00 - 18:00" [ref=e159] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-27 17:00:00&end_datetime=2026-04-27 18:00:00
+            - heading "2026-04-28" [level=6] [ref=e160]
+            - generic [ref=e161]:
+              - link "09:00 - 10:00" [ref=e163] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-28 09:00:00&end_datetime=2026-04-28 10:00:00
+              - link "10:00 - 11:00" [ref=e165] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-28 10:00:00&end_datetime=2026-04-28 11:00:00
+              - link "11:00 - 12:00" [ref=e167] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-28 11:00:00&end_datetime=2026-04-28 12:00:00
+              - link "12:00 - 13:00" [ref=e169] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-28 12:00:00&end_datetime=2026-04-28 13:00:00
+              - link "13:00 - 14:00" [ref=e171] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-28 13:00:00&end_datetime=2026-04-28 14:00:00
+              - link "14:00 - 15:00" [ref=e173] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-28 14:00:00&end_datetime=2026-04-28 15:00:00
+              - link "15:00 - 16:00" [ref=e175] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-28 15:00:00&end_datetime=2026-04-28 16:00:00
+              - link "16:00 - 17:00" [ref=e177] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-28 16:00:00&end_datetime=2026-04-28 17:00:00
+              - link "17:00 - 18:00" [ref=e179] [cursor=pointer]:
+                - /url: /my/bookings/confirm?resource_id=2&start_datetime=2026-04-28 17:00:00&end_datetime=2026-04-28 18:00:00
+  - contentinfo [ref=e180]:
+    - generic [ref=e183]:
+      - generic [ref=e184]:
+        - generic [ref=e185]: Copyright © My Company
+        - button "English (US)" [expanded] [ref=e187] [cursor=pointer]
+      - generic [ref=e189]:
+        - text: Powered by
+        - link "Odoo" [ref=e190] [cursor=pointer]:
+          - /url: http://www.odoo.com?utm_source=db&utm_medium=portal
+          - img "Odoo" [ref=e191]
