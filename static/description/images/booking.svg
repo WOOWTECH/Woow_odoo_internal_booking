@@ -1,18 +1,51 @@
 <svg width="60" height="64" viewBox="0 0 60 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Calendar icon for "我的預定" -->
-  <rect x="6" y="10" width="48" height="46" rx="6" fill="#C1DBF6" stroke="#374874" stroke-width="2"/>
-  <rect x="6" y="10" width="48" height="14" rx="6" fill="#374874"/>
-  <rect x="6" y="18" width="48" height="6" fill="#374874"/>
+  <!-- Booking illustration: person confirming a calendar booking -->
+  <!-- Shadow/ground -->
+  <ellipse cx="30" cy="60" rx="22" ry="3" fill="#C1DBF6" opacity="0.5"/>
+  <!-- Calendar body -->
+  <rect x="4" y="12" width="36" height="34" rx="4" fill="#C1DBF6" stroke="#374874" stroke-width="1.5"/>
+  <!-- Calendar header bar -->
+  <rect x="4" y="12" width="36" height="10" rx="4" fill="#374874"/>
+  <rect x="4" y="18" width="36" height="4" fill="#374874"/>
   <!-- Calendar hooks -->
-  <rect x="18" y="4" width="4" height="12" rx="2" fill="#374874"/>
-  <rect x="38" y="4" width="4" height="12" rx="2" fill="#374874"/>
-  <!-- Calendar dots/events -->
-  <circle cx="20" cy="36" r="4" fill="#374874"/>
-  <circle cx="30" cy="36" r="4" fill="#FBDBD0"/>
-  <circle cx="40" cy="36" r="4" fill="#374874"/>
-  <circle cx="20" cy="48" r="4" fill="#FBDBD0"/>
-  <circle cx="30" cy="48" r="4" fill="#374874"/>
-  <circle cx="40" cy="48" r="4" fill="#C1DBF6" stroke="#374874" stroke-width="1.5"/>
-  <!-- Check mark on one event -->
-  <path d="M27 35 L29 38 L34 33" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <rect x="14" y="7" width="3" height="9" rx="1.5" fill="#374874"/>
+  <rect x="27" y="7" width="3" height="9" rx="1.5" fill="#374874"/>
+  <!-- Calendar grid lines -->
+  <line x1="4" y1="32" x2="40" y2="32" stroke="#374874" stroke-width="0.5" opacity="0.3"/>
+  <line x1="4" y1="38" x2="40" y2="38" stroke="#374874" stroke-width="0.5" opacity="0.3"/>
+  <line x1="17" y1="22" x2="17" y2="46" stroke="#374874" stroke-width="0.5" opacity="0.3"/>
+  <line x1="30" y1="22" x2="30" y2="46" stroke="#374874" stroke-width="0.5" opacity="0.3"/>
+  <!-- Calendar day cells with events -->
+  <rect x="7" y="24" width="8" height="6" rx="1" fill="#FBDBD0" opacity="0.6"/>
+  <rect x="20" y="24" width="8" height="6" rx="1" fill="#374874" opacity="0.15"/>
+  <rect x="33" y="24" width="5" height="6" rx="1" fill="#374874" opacity="0.15"/>
+  <rect x="7" y="34" width="8" height="3" rx="1" fill="#374874" opacity="0.15"/>
+  <rect x="20" y="34" width="8" height="3" rx="1" fill="#FBDBD0" opacity="0.6"/>
+  <!-- Highlighted booking slot -->
+  <rect x="20" y="40" width="8" height="5" rx="1.5" fill="#374874"/>
+  <path d="M22.5 42.5 L23.5 43.5 L26 41" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Person figure (standing beside calendar) -->
+  <!-- Head -->
+  <circle cx="49" cy="22" r="5" fill="#FBDBD0" stroke="#374874" stroke-width="1.2"/>
+  <!-- Hair -->
+  <path d="M44.5 20 C44.5 16.5 47 14.5 49 14.5 C51 14.5 53.5 16.5 53.5 20" stroke="#374874" stroke-width="1.5" fill="#374874" opacity="0.8"/>
+  <!-- Body/torso -->
+  <path d="M49 27 L49 42" stroke="#374874" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Arms -->
+  <path d="M49 31 L43 35" stroke="#374874" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M49 31 L55 29" stroke="#374874" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Hand pointing to calendar -->
+  <circle cx="42" cy="36" r="1.5" fill="#FBDBD0" stroke="#374874" stroke-width="0.8"/>
+  <!-- Legs -->
+  <path d="M49 42 L45 54" stroke="#374874" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M49 42 L53 54" stroke="#374874" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Feet -->
+  <path d="M45 54 L43 55" stroke="#374874" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M53 54 L55 55" stroke="#374874" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Checkmark confirmation badge -->
+  <circle cx="10" cy="8" r="5" fill="#374874"/>
+  <path d="M7.5 8 L9 9.5 L12.5 6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Small decorative clock -->
+  <circle cx="55" cy="44" r="4" fill="white" stroke="#374874" stroke-width="1"/>
+  <path d="M55 42 L55 44 L57 45" stroke="#374874" stroke-width="0.8" stroke-linecap="round"/>
 </svg>

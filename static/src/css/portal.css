@@ -101,6 +101,7 @@
 .o_portal .o_portal_wrap .btn-primary {
     background-color: var(--ws-primary);
     border-color: var(--ws-primary);
+    color: var(--custom-primary-text, #FFFFFF);
     border-radius: var(--ws-radius);
     font-family: var(--ws-font);
     font-weight: 500;
@@ -111,6 +112,7 @@
 .o_portal .o_portal_wrap .btn-primary:focus {
     background-color: var(--ws-primary-hover);
     border-color: var(--ws-primary-hover);
+    color: var(--custom-primary-text, #FFFFFF);
     box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--ws-primary) 25%, transparent);
 }
 
@@ -146,7 +148,7 @@
 .o_portal .o_portal_wrap .btn-outline-primary:focus {
     background-color: var(--ws-primary);
     border-color: var(--ws-primary);
-    color: var(--ws-white);
+    color: var(--custom-primary-text, #FFFFFF);
 }
 
 /* Buttons — Danger (Coral) */
@@ -163,7 +165,7 @@
 .o_portal .o_portal_wrap .btn-danger:focus {
     background-color: var(--ws-coral-hover);
     border-color: var(--ws-coral-hover);
-    box-shadow: 0 0 0 0.2rem rgba(244, 93, 109, 0.25);
+    box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--ws-coral) 25%, transparent);
 }
 
 /* ============================================================
@@ -252,7 +254,7 @@
 .slot-btn.btn-outline-success:hover {
     background-color: var(--ws-primary);
     border-color: var(--ws-primary);
-    color: var(--ws-white);
+    color: var(--custom-primary-text, #FFFFFF);
     box-shadow: 0 2px 8px color-mix(in srgb, var(--ws-primary) 30%, transparent);
 }
 
@@ -260,13 +262,13 @@
 .slot-btn.btn-info {
     background-color: var(--ws-cyan);
     border-color: var(--ws-cyan);
-    color: var(--ws-white);
+    color: #155658;
 }
 
 .slot-btn.btn-info:hover {
     background-color: var(--ws-cyan-hover);
     border-color: var(--ws-cyan-hover);
-    color: var(--ws-white);
+    color: #155658;
 }
 
 /* Booked slots — Light Gray disabled */
@@ -328,7 +330,7 @@
 .badge.bg-success,
 .ws-badge-confirmed {
     background-color: var(--ws-green) !important;
-    color: var(--ws-white) !important;
+    color: #1a5d12 !important;
     border-radius: var(--ws-radius-pill);
     font-family: var(--ws-font);
     font-weight: 500;
@@ -339,7 +341,7 @@
 .badge.bg-danger,
 .ws-badge-cancelled {
     background-color: var(--ws-coral) !important;
-    color: var(--ws-white) !important;
+    color: #7a1520 !important;
     border-radius: var(--ws-radius-pill);
     font-family: var(--ws-font);
     font-weight: 500;
@@ -509,7 +511,7 @@
 .o_portal .o_portal_wrap .dropdown-item.active,
 .o_portal .o_portal_wrap .dropdown-item:active {
     background-color: var(--ws-primary);
-    color: var(--ws-white);
+    color: var(--custom-primary-text, #FFFFFF);
 }
 
 .o_portal .o_portal_wrap .dropdown-item:hover {
@@ -523,6 +525,7 @@
 .o_portal .o_portal_wrap .pagination .page-item.active .page-link {
     background-color: var(--ws-primary);
     border-color: var(--ws-primary);
+    color: var(--custom-primary-text, #FFFFFF);
 }
 
 .o_portal .o_portal_wrap .pagination .page-link {
