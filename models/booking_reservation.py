@@ -9,61 +9,61 @@ _logger = logging.getLogger(__name__)
 
 class BookingReservation(models.Model):
     _name = 'booking.reservation'
-    _description = '資源預定'
+    _description = 'Resource Reservation'
     _inherit = ['mail.thread', 'portal.mixin']
     _order = 'start_datetime desc'
 
     name = fields.Char(
-        string='名稱',
+        string='Name',
         compute='_compute_name',
         store=True,
     )
 
     subject = fields.Char(
-        string='主題',
+        string='Subject',
         tracking=True,
     )
 
     resource_type_id = fields.Many2one(
         'booking.resource.type',
-        string='資源',
+        string='Resource',
         required=True,
         ondelete='restrict',
         tracking=True,
         domain="[('active', '=', True)]",
     )
 
-    # 預定時間
+    # Booking time
     start_datetime = fields.Datetime(
-        string='開始',
+        string='Start',
         required=True,
         tracking=True,
     )
     end_datetime = fields.Datetime(
-        string='結束',
+        string='End',
         required=True,
         tracking=True,
     )
     duration = fields.Float(
-        string='時長（小時）',
+        string='Duration (Hours)',
         compute='_compute_duration',
         inverse='_inverse_duration',
         store=True,
     )
 
-    # 預定者
+    # Booker
     partner_id = fields.Many2one(
         'res.partner',
-        string='預定者',
+        string='Booker',
         required=True,
         ondelete='restrict',
         tracking=True,
     )
 
-    # 舉辦方與參加者
+    # Organizer & Attendees
     organizer_id = fields.Many2one(
         'res.partner',
-        string='舉辦方',
+        string='Organizer',
         ondelete='set null',
         tracking=True,
     )
@@ -72,86 +72,86 @@ class BookingReservation(models.Model):
         'booking_reservation_attendee_rel',
         'reservation_id',
         'partner_id',
-        string='參加者',
+        string='Attendees',
     )
 
-    # 狀態
+    # State
     state = fields.Selection(
         selection=[
-            ('confirmed', '已確認'),
-            ('cancelled', '已取消'),
+            ('confirmed', 'Confirmed'),
+            ('cancelled', 'Cancelled'),
         ],
-        string='狀態',
+        string='State',
         default='confirmed',
         tracking=True,
     )
 
-    # 說明
+    # Description
     description = fields.Html(
-        string='說明',
+        string='Description',
     )
 
-    # 舊版備註欄位
+    # Legacy note field
     note = fields.Text(
-        string='備註',
+        string='Note',
     )
 
-    # 討論通道
+    # Discussion channel
     enable_discussion = fields.Boolean(
-        string='啟用討論',
+        string='Enable Discussion',
         default=False,
     )
     channel_id = fields.Many2one(
         'discuss.channel',
-        string='討論通道',
+        string='Discussion Channel',
         ondelete='set null',
     )
 
-    # 提醒
+    # Reminder
     reminder_type = fields.Selection(
         selection=[
-            ('none', '無'),
-            ('notification', '通知'),
-            ('email', '電子郵件'),
+            ('none', 'None'),
+            ('notification', 'Notification'),
+            ('email', 'Email'),
         ],
-        string='提醒',
+        string='Reminder',
         default='none',
     )
     reminder_time = fields.Integer(
-        string='提醒時間（分鐘）',
+        string='Reminder Time (Minutes)',
         default=15,
     )
 
-    # 行事曆事件連結
+    # Calendar event link
     calendar_event_id = fields.Many2one(
         'calendar.event',
-        string='行事曆事件',
+        string='Calendar Event',
         ondelete='set null',
     )
 
-    # 關聯欄位
+    # Related fields
     resource_location = fields.Char(
         related='resource_type_id.location',
-        string='地點',
+        string='Location',
     )
     resource_capacity = fields.Integer(
         related='resource_type_id.capacity',
-        string='容量',
+        string='Capacity',
     )
     resource_description = fields.Html(
         related='resource_type_id.description',
-        string='資源說明',
+        string='Resource Description',
     )
     resource_enable_discussion = fields.Boolean(
         related='resource_type_id.enable_discussion',
-        string='資源允許討論',
+        string='Resource Allows Discussion',
     )
 
     _sql_constraints = [
         (
             'check_dates',
             'CHECK(end_datetime > start_datetime)',
-            '結束時間必須在開始時間之後。',
+            'End time must be after start time.',
         ),
     ]
 
@@ -164,7 +164,7 @@ class BookingReservation(models.Model):
                 start_str = fields.Datetime.to_datetime(record.start_datetime).strftime('%Y-%m-%d %H:%M')
                 record.name = f'{record.resource_type_id.name} - {start_str}'
             else:
-                record.name = _('新預定')
+                record.name = _('New Reservation')
 
     @api.depends('start_datetime', 'end_datetime')
     def _compute_duration(self):
@@ -197,10 +197,10 @@ class BookingReservation(models.Model):
             # Allow small floating-point tolerance (1 minute)
             if abs(actual_hours - expected_hours) > (1.0 / 60):
                 raise ValidationError(
-                    _('預定時長（%.1f 小時）與資源「%s」的時段長度（%.1f 小時）不符。') % (
+                    _('Booking duration (%.1f hours) does not match the slot duration (%.1f hours) of resource "%s".') % (
                         actual_hours,
-                        record.resource_type_id.name,
                         expected_hours,
+                        record.resource_type_id.name,
                     )
                 )
 
@@ -210,7 +210,7 @@ class BookingReservation(models.Model):
         for record in self:
             if not record.resource_type_id._check_partner_access(record.partner_id):
                 raise ValidationError(
-                    _('聯絡人「%s」無權預定資源「%s」。') % (
+                    _('Contact "%s" does not have permission to book resource "%s".') % (
                         record.partner_id.name,
                         record.resource_type_id.name,
                     )
@@ -243,7 +243,7 @@ class BookingReservation(models.Model):
 
             if self.env.cr.fetchone():
                 raise ValidationError(
-                    _('資源「%s」的此時段已被預定，請選擇其他時間。') % (
+                    _('This time slot for resource "%s" is already booked. Please choose another time.') % (
                         record.resource_type_id.name,
                     )
                 )
@@ -341,7 +341,7 @@ class BookingReservation(models.Model):
                 continue
             if record.start_datetime and record.start_datetime < fields.Datetime.now():
                 raise ValidationError(
-                    _('無法預定過去的時段。')
+                    _('Cannot book a time slot in the past.')
                 )
 
     @api.model_create_multi

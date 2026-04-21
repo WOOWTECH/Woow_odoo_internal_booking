@@ -2,59 +2,59 @@
 <odoo>
     <!-- Email Template: Booking Confirmed -->
     <record id="mail_template_booking_confirmed" model="mail.template">
-        <field name="name">預定：已確認</field>
+        <field name="name">Booking: Confirmed</field>
         <field name="model_id" ref="model_booking_reservation"/>
-        <field name="subject">{{ object.name }} - 預定已確認</field>
+        <field name="subject">{{ object.name }} - Booking Confirmed</field>
         <field name="email_from">{{ (object.partner_id.company_id.email_formatted if object.partner_id.company_id and object.partner_id.company_id.email else user.email_formatted) }}</field>
         <field name="email_to">{{ object.partner_id.email_formatted }}</field>
         <field name="body_html" type="html">
 <div style="margin: 0px; padding: 0px; font-size: 14px;">
     <p style="margin: 0px 0px 16px 0px;">
-        您好 <t t-out="object.partner_id.name or ''">聯絡人</t>，
+        Hello <t t-out="object.partner_id.name or ''">Contact</t>,
     </p>
     <p style="margin: 0px 0px 16px 0px;">
-        您的預定已確認。以下為詳細資訊：
+        Your booking has been confirmed. Here are the details:
     </p>
 
     <table style="width: 100%; border-collapse: collapse; margin-bottom: 16px;">
         <tr>
-            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; width: 140px; border: 1px solid #dee2e6;">資源</td>
-            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="object.resource_type_id.name or ''">資源</t></td>
+            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; width: 140px; border: 1px solid #dee2e6;">Resource</td>
+            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="object.resource_type_id.name or ''">Resource</t></td>
         </tr>
         <t t-if="object.subject">
         <tr>
-            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;">主題</td>
-            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="object.subject">主題</t></td>
+            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;">Subject</td>
+            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="object.subject">Subject</t></td>
         </tr>
         </t>
         <t t-if="object.resource_location">
         <tr>
-            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;">地點</td>
-            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="object.resource_location">地點</t></td>
+            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;">Location</td>
+            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="object.resource_location">Location</t></td>
         </tr>
         </t>
         <tr>
-            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;">開始時間</td>
-            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="format_datetime(object.start_datetime)">開始時間</t></td>
+            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;">Start Time</td>
+            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="format_datetime(object.start_datetime)">Start Time</t></td>
         </tr>
         <tr>
-            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;">結束時間</td>
-            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="format_datetime(object.end_datetime)">結束時間</t></td>
+            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;">End Time</td>
+            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="format_datetime(object.end_datetime)">End Time</t></td>
         </tr>
         <tr>
-            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;">舉辦方</td>
-            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="object.organizer_id.name or object.partner_id.name or ''">舉辦方</t></td>
+            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;">Organizer</td>
+            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="object.organizer_id.name or object.partner_id.name or ''">Organizer</t></td>
         </tr>
     </table>
 
     <t t-if="object.channel_id">
     <p style="margin: 0px 0px 16px 0px;">
-        已為此預定建立討論通道，您可以與其他參加者協作：
+        A discussion channel has been created for this booking. You can collaborate with other attendees:
     </p>
     <p style="margin: 0px 0px 16px 0px;">
         <a t-attf-href="{{ object.get_base_url() }}/my/bookings/{{ object.id }}/discuss"
            style="display: inline-block; padding: 8px 16px; background-color: #714B67; color: #ffffff; text-decoration: none; border-radius: 4px;">
-            <span style="margin-right: 4px;">&#128172;</span> 開啟討論通道
+            <span style="margin-right: 4px;">&#128172;</span> Open Discussion Channel
         </a>
     </p>
     </t>
@@ -62,12 +62,12 @@
     <p style="margin: 0px 0px 16px 0px;">
         <a t-attf-href="{{ object.get_base_url() }}/my/bookings/{{ object.id }}"
            style="display: inline-block; padding: 8px 16px; background-color: #00A09D; color: #ffffff; text-decoration: none; border-radius: 4px;">
-            查看預定詳情
+            View Booking Details
         </a>
     </p>
 
     <p style="margin: 0px; color: #888888; font-size: 12px;">
-        這是來自預定系統的自動通知。
+        This is an automated notification from the booking system.
     </p>
 </div>
         </field>
@@ -75,54 +75,54 @@
 
     <!-- Email Template: Booking Cancelled -->
     <record id="mail_template_booking_cancelled" model="mail.template">
-        <field name="name">預定：已取消</field>
+        <field name="name">Booking: Cancelled</field>
         <field name="model_id" ref="model_booking_reservation"/>
-        <field name="subject">{{ object.name }} - 預定已取消</field>
+        <field name="subject">{{ object.name }} - Booking Cancelled</field>
         <field name="email_from">{{ (object.partner_id.company_id.email_formatted if object.partner_id.company_id and object.partner_id.company_id.email else user.email_formatted) }}</field>
         <field name="email_to">{{ object.partner_id.email_formatted }}</field>
         <field name="body_html" type="html">
 <div style="margin: 0px; padding: 0px; font-size: 14px;">
     <p style="margin: 0px 0px 16px 0px;">
-        您好 <t t-out="object.partner_id.name or ''">聯絡人</t>，
+        Hello <t t-out="object.partner_id.name or ''">Contact</t>,
     </p>
     <p style="margin: 0px 0px 16px 0px;">
-        您的預定已取消。以下為詳細資訊：
+        Your booking has been cancelled. Here are the details:
     </p>
 
     <table style="width: 100%; border-collapse: collapse; margin-bottom: 16px;">
         <tr>
-            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; width: 140px; border: 1px solid #dee2e6;">資源</td>
-            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="object.resource_type_id.name or ''">資源</t></td>
+            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; width: 140px; border: 1px solid #dee2e6;">Resource</td>
+            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="object.resource_type_id.name or ''">Resource</t></td>
         </tr>
         <t t-if="object.subject">
         <tr>
-            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;">主題</td>
-            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="object.subject">主題</t></td>
+            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;">Subject</td>
+            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="object.subject">Subject</t></td>
         </tr>
         </t>
         <tr>
-            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;">開始時間</td>
-            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="format_datetime(object.start_datetime)">開始時間</t></td>
+            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;">Start Time</td>
+            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="format_datetime(object.start_datetime)">Start Time</t></td>
         </tr>
         <tr>
-            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;">結束時間</td>
-            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="format_datetime(object.end_datetime)">結束時間</t></td>
+            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;">End Time</td>
+            <td style="padding: 8px 12px; border: 1px solid #dee2e6;"><t t-out="format_datetime(object.end_datetime)">End Time</t></td>
         </tr>
         <tr>
-            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;">狀態</td>
-            <td style="padding: 8px 12px; border: 1px solid #dee2e6; color: #dc3545; font-weight: bold;">已取消</td>
+            <td style="padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;">Status</td>
+            <td style="padding: 8px 12px; border: 1px solid #dee2e6; color: #dc3545; font-weight: bold;">Cancelled</td>
         </tr>
     </table>
 
     <p style="margin: 0px 0px 16px 0px;">
         <a t-attf-href="{{ object.get_base_url() }}/my/booking/resources/{{ object.resource_type_id.id }}"
            style="display: inline-block; padding: 8px 16px; background-color: #00A09D; color: #ffffff; text-decoration: none; border-radius: 4px;">
-            再次預定
+            Book Again
         </a>
     </p>
 
     <p style="margin: 0px; color: #888888; font-size: 12px;">
-        這是來自預定系統的自動通知。
+        This is an automated notification from the booking system.
     </p>
 </div>
         </field>

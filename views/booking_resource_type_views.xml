@@ -5,14 +5,14 @@
         <field name="name">booking.resource.type.tree</field>
         <field name="model">booking.resource.type</field>
         <field name="arch" type="xml">
-            <list string="預定資源">
+            <list string="Booking Resources">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="location"/>
                 <field name="capacity"/>
                 <field name="slot_duration"/>
                 <field name="share_type"/>
-                <field name="reservation_count" string="預定數"/>
+                <field name="reservation_count" string="Reservations"/>
                 <field name="active" widget="boolean_toggle"/>
             </list>
         </field>
@@ -23,36 +23,36 @@
         <field name="name">booking.resource.type.form</field>
         <field name="model">booking.resource.type</field>
         <field name="arch" type="xml">
-            <form string="預定資源">
+            <form string="Booking Resource">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_reservations"
                                 type="object"
                                 class="oe_stat_button"
                                 icon="fa-calendar">
-                            <field name="reservation_count" widget="statinfo" string="預定數"/>
+                            <field name="reservation_count" widget="statinfo" string="Reservations"/>
                         </button>
                     </div>
 
-                    <widget name="web_ribbon" title="已封存" bg_color="text-bg-danger" invisible="active"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
 
                     <field name="image" widget="image" class="oe_avatar" options="{'preview_image': 'image'}"/>
 
                     <div class="oe_title">
                         <label for="name"/>
                         <h1>
-                            <field name="name" placeholder="資源名稱"/>
+                            <field name="name" placeholder="Resource Name"/>
                         </h1>
                     </div>
 
                     <group>
-                        <group string="基本資訊">
-                            <field name="category_id" placeholder="選擇或建立分類..."/>
-                            <field name="location" placeholder="例如：A 棟 2 樓"/>
+                        <group string="Basic Information">
+                            <field name="category_id" placeholder="Select or create a category..."/>
+                            <field name="location" placeholder="e.g. Building A, 2nd Floor"/>
                             <field name="capacity"/>
                             <field name="active"/>
                         </group>
-                        <group string="預定設定">
+                        <group string="Booking Settings">
                             <field name="slot_duration" widget="float_time"/>
                             <field name="slot_interval" widget="float_time"/>
                             <field name="advance_days"/>
@@ -60,53 +60,53 @@
                     </group>
 
                     <notebook>
-                        <page string="說明" name="description">
-                            <field name="description" placeholder="描述此資源..."/>
+                        <page string="Description" name="description">
+                            <field name="description" placeholder="Describe this resource..."/>
                         </page>
 
-                        <page string="可用時段" name="availability">
+                        <page string="Availability" name="availability">
                             <field name="availability_ids" nolabel="1">
-                                <list string="可用時段" editable="bottom">
+                                <list string="Availability" editable="bottom">
                                     <field name="dayofweek"/>
                                     <field name="hour_from" widget="float_time"/>
                                     <field name="hour_to" widget="float_time"/>
                                 </list>
                             </field>
                             <div class="alert alert-info" role="alert">
-                                <strong>提示：</strong>定義此資源可被預定的每週循環時段。
-                                系統將根據時段長度和間隔設定自動產生可用時段。
+                                <strong>Tip:</strong> Define the weekly recurring time slots when this resource can be booked.
+                                The system will automatically generate available slots based on the slot duration and interval settings.
                             </div>
                         </page>
 
-                        <page string="存取控制" name="access">
+                        <page string="Access Control" name="access">
                             <group>
                                 <field name="share_type" widget="radio"/>
                             </group>
                             <group invisible="share_type != 'specific'">
                                 <field name="allowed_partner_ids" widget="many2many_tags"
-                                       placeholder="選擇可以預定此資源的聯絡人..."
+                                       placeholder="Select contacts who can book this resource..."
                                        options="{'no_create': True}"/>
                             </group>
                             <div class="alert alert-warning" role="alert" invisible="share_type != 'all'">
-                                <strong>注意：</strong>所有 Portal 使用者都可以預定此資源。
+                                <strong>Note:</strong> All Portal users will be able to book this resource.
                             </div>
                         </page>
 
-                        <page string="進階設定" name="advanced">
-                            <group string="討論">
+                        <page string="Advanced Settings" name="advanced">
+                            <group string="Discussion">
                                 <field name="enable_discussion"/>
                             </group>
                             <div class="alert alert-info" role="alert" invisible="not enable_discussion">
-                                <strong>注意：</strong>啟用後，預定此資源的使用者可以選擇為其預定建立討論通道。
-                                這將使舉辦方、參加者和預定者能夠即時協作。
+                                <strong>Note:</strong> When enabled, users booking this resource can create a discussion channel for their reservation.
+                                This allows the organizer, attendees, and booker to collaborate in real-time.
                             </div>
                         </page>
 
-                        <page string="屬性" name="properties">
+                        <page string="Properties" name="properties">
                             <field name="resource_properties" columns="2"/>
                             <div class="alert alert-info" role="alert">
-                                <strong>提示：</strong>點擊「+」按鈕為此資源新增自訂屬性。
-                                屬性類型可以是文字、數字、日期、核取方塊或選擇清單。
+                                <strong>Tip:</strong> Click the "+" button to add custom properties for this resource.
+                                Property types can be text, number, date, checkbox, or selection list.
                             </div>
                         </page>
                     </notebook>
@@ -122,19 +122,19 @@
         <field name="name">booking.resource.type.search</field>
         <field name="model">booking.resource.type</field>
         <field name="arch" type="xml">
-            <search string="搜尋資源">
+            <search string="Search Resources">
                 <field name="name"/>
                 <field name="location"/>
                 <separator/>
-                <filter name="filter_active" string="啟用中" domain="[('active', '=', True)]"/>
-                <filter name="filter_archived" string="已封存" domain="[('active', '=', False)]"/>
+                <filter name="filter_active" string="Active" domain="[('active', '=', True)]"/>
+                <filter name="filter_archived" string="Archived" domain="[('active', '=', False)]"/>
                 <separator/>
-                <filter name="filter_all_users" string="所有 Portal 使用者" domain="[('share_type', '=', 'all')]"/>
-                <filter name="filter_specific" string="特定聯絡人" domain="[('share_type', '=', 'specific')]"/>
+                <filter name="filter_all_users" string="All Portal Users" domain="[('share_type', '=', 'all')]"/>
+                <filter name="filter_specific" string="Specific Contacts" domain="[('share_type', '=', 'specific')]"/>
                 <separator/>
-                <group expand="0" string="分組">
-                    <filter name="group_location" string="地點" context="{'group_by': 'location'}"/>
-                    <filter name="group_share_type" string="存取類型" context="{'group_by': 'share_type'}"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_location" string="Location" context="{'group_by': 'location'}"/>
+                    <filter name="group_share_type" string="Access Type" context="{'group_by': 'share_type'}"/>
                 </group>
             </search>
         </field>
@@ -142,17 +142,17 @@
 
     <!-- Action -->
     <record id="action_booking_resource_type" model="ir.actions.act_window">
-        <field name="name">預定資源</field>
+        <field name="name">Booking Resources</field>
         <field name="res_model">booking.resource.type</field>
         <field name="view_mode">list,form</field>
         <field name="search_view_id" ref="view_booking_resource_type_search"/>
         <field name="context">{'search_default_filter_active': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                建立您的第一個預定資源
+                Create your first booking resource
             </p>
             <p>
-                定義可供 Portal 使用者預定的資源，例如會議室、設備或場地。
+                Define resources available for Portal users to book, such as meeting rooms, equipment, or venues.
             </p>
         </field>
     </record>

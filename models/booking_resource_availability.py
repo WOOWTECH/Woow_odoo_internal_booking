@@ -5,54 +5,54 @@ from odoo.tools.translate import _
 
 class BookingResourceAvailability(models.Model):
     _name = 'booking.resource.availability'
-    _description = '資源可用時段'
+    _description = 'Resource Availability'
     _order = 'dayofweek, hour_from'
 
     resource_type_id = fields.Many2one(
         'booking.resource.type',
-        string='資源',
+        string='Resource',
         required=True,
         ondelete='cascade',
     )
 
     dayofweek = fields.Selection(
         selection=[
-            ('0', '星期一'),
-            ('1', '星期二'),
-            ('2', '星期三'),
-            ('3', '星期四'),
-            ('4', '星期五'),
-            ('5', '星期六'),
-            ('6', '星期日'),
+            ('0', 'Monday'),
+            ('1', 'Tuesday'),
+            ('2', 'Wednesday'),
+            ('3', 'Thursday'),
+            ('4', 'Friday'),
+            ('5', 'Saturday'),
+            ('6', 'Sunday'),
         ],
-        string='星期',
+        string='Day of Week',
         required=True,
         default='0',
     )
 
     hour_from = fields.Float(
-        string='開始時間',
+        string='Start Time',
         required=True,
         default=9.0,
-        help='24 小時制開始時間（例如 9.0 代表 09:00，14.5 代表 14:30）',
+        help='Start time in 24-hour format (e.g. 9.0 = 09:00, 14.5 = 14:30)',
     )
 
     hour_to = fields.Float(
-        string='結束時間',
+        string='End Time',
         required=True,
         default=18.0,
-        help='24 小時制結束時間（例如 18.0 代表 18:00，17.5 代表 17:30）',
+        help='End time in 24-hour format (e.g. 18.0 = 18:00, 17.5 = 17:30)',
     )
 
     @api.constrains('hour_from', 'hour_to')
     def _check_hours(self):
         for record in self:
             if record.hour_from < 0 or record.hour_from > 24:
-                raise ValidationError(_('開始時間必須在 0 到 24 之間。'))
+                raise ValidationError(_('Start time must be between 0 and 24.'))
             if record.hour_to < 0 or record.hour_to > 24:
-                raise ValidationError(_('結束時間必須在 0 到 24 之間。'))
+                raise ValidationError(_('End time must be between 0 and 24.'))
             if record.hour_from >= record.hour_to:
-                raise ValidationError(_('開始時間必須在結束時間之前。'))
+                raise ValidationError(_('Start time must be before end time.'))
 
     @api.constrains('resource_type_id', 'dayofweek', 'hour_from', 'hour_to')
     def _check_no_overlap(self):
@@ -67,7 +67,7 @@ class BookingResourceAvailability(models.Model):
             ], limit=1)
             if overlapping:
                 raise ValidationError(
-                    _('可用時段重疊：%s 的 %s-%s 與 %s-%s 衝突。') % (
+                    _('Availability overlap: %s %s-%s conflicts with %s-%s.') % (
                         dict(self._fields['dayofweek'].selection).get(record.dayofweek),
                         record._format_hour(record.hour_from),
                         record._format_hour(record.hour_to),

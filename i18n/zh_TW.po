@@ -4,17 +4,534 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 18.0\n"
+"Project-Id-Version: Odoo Server 18.0-20260119\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-03 00:00+0000\n"
-"PO-Revision-Date: 2026-04-03 00:00+0000\n"
+"POT-Creation-Date: 2026-04-21 01:58+0000\n"
+"PO-Revision-Date: 2026-04-21 01:58+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_resource_detail
+msgid "<br/><small>Booked</small>"
+msgstr "<br/><small>已預定</small>"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_resource_detail
+msgid "<br/><small>Your Booking</small>"
+msgstr "<br/><small>您的預定</small>"
+
+#. module: odoo_booking_reservation
+#: model:mail.template,body_html:odoo_booking_reservation.mail_template_booking_cancelled
+msgid ""
+"<div style=\"margin: 0px; padding: 0px; font-size: 14px;\">\n"
+"    <p style=\"margin: 0px 0px 16px 0px;\">\n"
+"        Hello <t t-out=\"object.partner_id.name or ''\">Contact</t>,\n"
+"    </p>\n"
+"    <p style=\"margin: 0px 0px 16px 0px;\">\n"
+"        Your booking has been cancelled. Here are the details:\n"
+"    </p>\n"
+"\n"
+"    <table style=\"width: 100%; border-collapse: collapse; margin-bottom: 16px;\">\n"
+"        <tr>\n"
+"            <td style=\"padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; width: 140px; border: 1px solid #dee2e6;\">Resource</td>\n"
+"            <td style=\"padding: 8px 12px; border: 1px solid #dee2e6;\"><t t-out=\"object.resource_type_id.name or ''\">Resource</t></td>\n"
+"        </tr>\n"
+"        <t t-if=\"object.subject\">\n"
+"        <tr>\n"
+"            <td style=\"padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;\">Subject</td>\n"
+"            <td style=\"padding: 8px 12px; border: 1px solid #dee2e6;\"><t t-out=\"object.subject\">Subject</t></td>\n"
+"        </tr>\n"
+"        </t>\n"
+"        <tr>\n"
+"            <td style=\"padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;\">Start Time</td>\n"
+"            <td style=\"padding: 8px 12px; border: 1px solid #dee2e6;\"><t t-out=\"format_datetime(object.start_datetime)\">Start Time</t></td>\n"
+"        </tr>\n"
+"        <tr>\n"
+"            <td style=\"padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;\">End Time</td>\n"
+"            <td style=\"padding: 8px 12px; border: 1px solid #dee2e6;\"><t t-out=\"format_datetime(object.end_datetime)\">End Time</t></td>\n"
+"        </tr>\n"
+"        <tr>\n"
+"            <td style=\"padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;\">Status</td>\n"
+"            <td style=\"padding: 8px 12px; border: 1px solid #dee2e6; color: #dc3545; font-weight: bold;\">Cancelled</td>\n"
+"        </tr>\n"
+"    </table>\n"
+"\n"
+"    <p style=\"margin: 0px 0px 16px 0px;\">\n"
+"        <a t-attf-href=\"{{ object.get_base_url() }}/my/booking/resources/{{ object.resource_type_id.id }}\" style=\"display: inline-block; padding: 8px 16px; background-color: #00A09D; color: #ffffff; text-decoration: none; border-radius: 4px;\">\n"
+"            Book Again\n"
+"        </a>\n"
+"    </p>\n"
+"\n"
+"    <p style=\"margin: 0px; color: #888888; font-size: 12px;\">\n"
+"        This is an automated notification from the booking system.\n"
+"    </p>\n"
+"</div>\n"
+"        "
+msgstr ""
+
+#. module: odoo_booking_reservation
+#: model:mail.template,body_html:odoo_booking_reservation.mail_template_booking_confirmed
+msgid ""
+"<div style=\"margin: 0px; padding: 0px; font-size: 14px;\">\n"
+"    <p style=\"margin: 0px 0px 16px 0px;\">\n"
+"        Hello <t t-out=\"object.partner_id.name or ''\">Contact</t>,\n"
+"    </p>\n"
+"    <p style=\"margin: 0px 0px 16px 0px;\">\n"
+"        Your booking has been confirmed. Here are the details:\n"
+"    </p>\n"
+"\n"
+"    <table style=\"width: 100%; border-collapse: collapse; margin-bottom: 16px;\">\n"
+"        <tr>\n"
+"            <td style=\"padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; width: 140px; border: 1px solid #dee2e6;\">Resource</td>\n"
+"            <td style=\"padding: 8px 12px; border: 1px solid #dee2e6;\"><t t-out=\"object.resource_type_id.name or ''\">Resource</t></td>\n"
+"        </tr>\n"
+"        <t t-if=\"object.subject\">\n"
+"        <tr>\n"
+"            <td style=\"padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;\">Subject</td>\n"
+"            <td style=\"padding: 8px 12px; border: 1px solid #dee2e6;\"><t t-out=\"object.subject\">Subject</t></td>\n"
+"        </tr>\n"
+"        </t>\n"
+"        <t t-if=\"object.resource_location\">\n"
+"        <tr>\n"
+"            <td style=\"padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;\">Location</td>\n"
+"            <td style=\"padding: 8px 12px; border: 1px solid #dee2e6;\"><t t-out=\"object.resource_location\">Location</t></td>\n"
+"        </tr>\n"
+"        </t>\n"
+"        <tr>\n"
+"            <td style=\"padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;\">Start Time</td>\n"
+"            <td style=\"padding: 8px 12px; border: 1px solid #dee2e6;\"><t t-out=\"format_datetime(object.start_datetime)\">Start Time</t></td>\n"
+"        </tr>\n"
+"        <tr>\n"
+"            <td style=\"padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;\">End Time</td>\n"
+"            <td style=\"padding: 8px 12px; border: 1px solid #dee2e6;\"><t t-out=\"format_datetime(object.end_datetime)\">End Time</t></td>\n"
+"        </tr>\n"
+"        <tr>\n"
+"            <td style=\"padding: 8px 12px; background-color: #f8f9fa; font-weight: bold; border: 1px solid #dee2e6;\">Organizer</td>\n"
+"            <td style=\"padding: 8px 12px; border: 1px solid #dee2e6;\"><t t-out=\"object.organizer_id.name or object.partner_id.name or ''\">Organizer</t></td>\n"
+"        </tr>\n"
+"    </table>\n"
+"\n"
+"    <t t-if=\"object.channel_id\">\n"
+"    <p style=\"margin: 0px 0px 16px 0px;\">\n"
+"        A discussion channel has been created for this booking. You can collaborate with other attendees:\n"
+"    </p>\n"
+"    <p style=\"margin: 0px 0px 16px 0px;\">\n"
+"        <a t-attf-href=\"{{ object.get_base_url() }}/my/bookings/{{ object.id }}/discuss\" style=\"display: inline-block; padding: 8px 16px; background-color: #714B67; color: #ffffff; text-decoration: none; border-radius: 4px;\">\n"
+"            <span style=\"margin-right: 4px;\">💬</span> Open Discussion Channel\n"
+"        </a>\n"
+"    </p>\n"
+"    </t>\n"
+"\n"
+"    <p style=\"margin: 0px 0px 16px 0px;\">\n"
+"        <a t-attf-href=\"{{ object.get_base_url() }}/my/bookings/{{ object.id }}\" style=\"display: inline-block; padding: 8px 16px; background-color: #00A09D; color: #ffffff; text-decoration: none; border-radius: 4px;\">\n"
+"            View Booking Details\n"
+"        </a>\n"
+"    </p>\n"
+"\n"
+"    <p style=\"margin: 0px; color: #888888; font-size: 12px;\">\n"
+"        This is an automated notification from the booking system.\n"
+"    </p>\n"
+"</div>\n"
+"        "
+msgstr ""
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_detail
+msgid "<i class=\"fa fa-arrow-left\"/> Back"
+msgstr "<i class=\"fa fa-arrow-left\"/> 返回"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_new_booking
+msgid "<i class=\"fa fa-arrow-left\"/> Back to My Bookings"
+msgstr "<i class=\"fa fa-arrow-left\"/> 返回我的預定"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_no_resources
+msgid "<i class=\"fa fa-arrow-left\"/> Back to Portal"
+msgstr "<i class=\"fa fa-arrow-left\"/> 返回入口網站"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_resource_detail
+msgid "<i class=\"fa fa-arrow-left\"/> Back to Resources"
+msgstr "<i class=\"fa fa-arrow-left\"/> 返回資源"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_detail
+msgid "<i class=\"fa fa-calendar\"/> Book Again"
+msgstr "<i class=\"fa fa-calendar\"/> 再次預定"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
+msgid "<i class=\"fa fa-calendar\"/> View Available Slots"
+msgstr "<i class=\"fa fa-calendar\"/> 查看可用時段"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_detail
+msgid "<i class=\"fa fa-calendar-check-o\"/> Booking #"
+msgstr "<i class=\"fa fa-calendar-check-o\"/> 預定 #"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_my_resources
+msgid "<i class=\"fa fa-calendar-plus-o\"/> Book Now"
+msgstr "<i class=\"fa fa-calendar-plus-o\"/> 立即預定"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
+msgid "<i class=\"fa fa-check\"/> Confirm Booking"
+msgstr "<i class=\"fa fa-check\"/> 確認預定"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_detail
+msgid "<i class=\"fa fa-check-circle\"/> Your booking has been confirmed!"
+msgstr "<i class=\"fa fa-check-circle\"/> 您的預定已確認！"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_resource_detail
+msgid ""
+"<i class=\"fa fa-clock-o\"/> Cannot book a past time slot. Please select a "
+"future slot."
+msgstr "<i class=\"fa fa-clock-o\"/> 無法預定過去的時段，請選擇未來的時段。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_resource_detail
+msgid "<i class=\"fa fa-clock-o\"/> This slot exceeds the booking window."
+msgstr "<i class=\"fa fa-clock-o\"/> 此時段超出預定期限。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_new_booking
+msgid ""
+"<i class=\"fa fa-exclamation-circle\"/> A system error occurred. Please try "
+"again later or contact the administrator."
+msgstr "<i class=\"fa fa-exclamation-circle\"/> 系統發生錯誤，請稍後再試或聯絡管理員。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_new_booking
+msgid "<i class=\"fa fa-exclamation-circle\"/> Invalid date/time format."
+msgstr "<i class=\"fa fa-exclamation-circle\"/> 日期/時間格式無效。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_resource_detail
+msgid ""
+"<i class=\"fa fa-exclamation-circle\"/> Invalid date/time format. Please try"
+" again."
+msgstr "<i class=\"fa fa-exclamation-circle\"/> 日期/時間格式無效，請重試。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_new_booking
+msgid ""
+"<i class=\"fa fa-exclamation-circle\"/> Required fields are missing. Please "
+"try again."
+msgstr "<i class=\"fa fa-exclamation-circle\"/> 缺少必填欄位，請重試。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_new_booking
+msgid "<i class=\"fa fa-exclamation-circle\"/> The selected resource is invalid."
+msgstr "<i class=\"fa fa-exclamation-circle\"/> 所選資源無效。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_resource_detail
+msgid ""
+"<i class=\"fa fa-exclamation-circle\"/> This time slot is already booked. "
+"Please choose another available slot."
+msgstr "<i class=\"fa fa-exclamation-circle\"/> 此時段已被預定，請選擇其他可用時段。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_detail
+msgid "<i class=\"fa fa-exclamation-circle\"/> Unable to cancel this booking."
+msgstr "<i class=\"fa fa-exclamation-circle\"/> 無法取消此預定。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_no_resources
+msgid "<i class=\"fa fa-exclamation-triangle\"/> No Resources Available"
+msgstr "<i class=\"fa fa-exclamation-triangle\"/> 無可用資源"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_my_bookings
+msgid "<i class=\"fa fa-eye\"/> View"
+msgstr "<i class=\"fa fa-eye\"/> 查看"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_detail
+msgid "<i class=\"fa fa-info-circle\"/> Resource Information"
+msgstr "<i class=\"fa fa-info-circle\"/> 資源資訊"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_new_booking
+msgid ""
+"<i class=\"fa fa-info-circle\"/> Select a resource below to view available "
+"time slots and make a booking."
+msgstr "<i class=\"fa fa-info-circle\"/> 選擇下方的資源以查看可用時段並進行預定。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_my_resources
+msgid ""
+"<i class=\"fa fa-info-circle\"/> There are no resources available for "
+"booking at this time."
+msgstr "<i class=\"fa fa-info-circle\"/> 目前沒有可預定的資源。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_my_bookings
+msgid "<i class=\"fa fa-info-circle\"/> You don't have any bookings yet."
+msgstr "<i class=\"fa fa-info-circle\"/> 您還沒有任何預定。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_new_booking
+msgid ""
+"<i class=\"fa fa-lock\"/> You do not have permission to access this "
+"resource."
+msgstr "<i class=\"fa fa-lock\"/> 您沒有權限存取此資源。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_form
+msgid "<i class=\"fa fa-map-marker\" title=\"Location\"/> <strong>Location:</strong>"
+msgstr "<i class=\"fa fa-map-marker\" title=\"地點\"/> <strong>地點：</strong>"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_my_bookings
+msgid "<i class=\"fa fa-plus\"/> New Booking"
+msgstr "<i class=\"fa fa-plus\"/> 新增預定"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_detail
+msgid "<i class=\"fa fa-times\"/> Cancel Booking"
+msgstr "<i class=\"fa fa-times\"/> 取消預定"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_detail
+msgid "<i class=\"fa fa-times-circle\"/> Your booking has been cancelled."
+msgstr "<i class=\"fa fa-times-circle\"/> 您的預定已取消。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_form
+msgid "<i class=\"fa fa-users\" title=\"Capacity\"/> <strong>Capacity:</strong>"
+msgstr "<i class=\"fa fa-users\" title=\"容量\"/> <strong>容量：</strong>"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_my_resources
+msgid "<i class=\"fa fa-users\"/> Capacity:"
+msgstr "<i class=\"fa fa-users\"/> 容量："
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_detail
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_my_bookings
+msgid "<span class=\"badge bg-danger\">Cancelled</span>"
+msgstr "<span class=\"badge bg-danger\">已取消</span>"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_detail
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_my_bookings
+msgid "<span class=\"badge bg-success\">Confirmed</span>"
+msgstr "<span class=\"badge bg-success\">已確認</span>"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_my_bookings
+msgid "<span class=\"mx-1\">·</span>"
+msgstr "<span class=\"mx-1\">·</span>"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
+msgid ""
+"<span>\n"
+"                                    <i class=\"fa fa-calendar-check-o\"/> Booking Summary\n"
+"                                </span>"
+msgstr ""
+"<span>\n"
+"                                    <i class=\"fa fa-calendar-check-o\"/> 預定摘要\n"
+"                                </span>"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_resource_detail
+msgid "<span><i class=\"fa fa-calendar\"/> Available Slots</span>"
+msgstr "<span><i class=\"fa fa-calendar\"/> 可用時段</span>"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_form
+msgid ""
+"<strong>Note:</strong> All Portal users will be able to book this resource."
+msgstr "<strong>注意：</strong>所有入口網站使用者都能預定此資源。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_form
+msgid ""
+"<strong>Note:</strong> When enabled, users booking this resource can create a discussion channel for their reservation.\n"
+"                                This allows the organizer, attendees, and booker to collaborate in real-time."
+msgstr ""
+"<strong>注意：</strong>啟用後，預定此資源的使用者可為其預定建立討論通道。\n"
+"                                這允許舉辦方、參加者和預定者進行即時協作。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_form
+msgid "<strong>Resource Information</strong>"
+msgstr "<strong>資源資訊</strong>"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_form
+msgid ""
+"<strong>Tip:</strong> Click the \"+\" button to add custom properties for this resource.\n"
+"                                Property types can be text, number, date, checkbox, or selection list."
+msgstr ""
+"<strong>提示：</strong>點擊「+」按鈕為此資源新增自訂屬性。\n"
+"                                屬性類型可以是文字、數字、日期、核取方塊或選擇清單。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_category_form
+msgid ""
+"<strong>Tip:</strong> Define custom properties here that will apply to all resources in this category.\n"
+"                                Click \"+\" to add a property. Available types: text, number, date, checkbox, selection list, tags, many2one."
+msgstr ""
+"<strong>提示：</strong>在此定義將套用於此分類中所有資源的自訂屬性。\n"
+"                                點擊「+」新增屬性。可用類型：文字、數字、日期、核取方塊、選擇清單、標籤、多對一。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_form
+msgid ""
+"<strong>Tip:</strong> Define the weekly recurring time slots when this resource can be booked.\n"
+"                                The system will automatically generate available slots based on the slot duration and interval settings."
+msgstr ""
+"<strong>提示：</strong>定義此資源可預定的每週重複時段。\n"
+"                                系統將根據時段時長和間隔設定自動產生可用時段。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_form
+msgid "Access Control"
+msgstr "存取控制"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__share_type
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_search
+msgid "Access Type"
+msgstr "存取類型"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__access_warning
+msgid "Access warning"
+msgstr "存取警告"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__message_needaction
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__message_needaction
+msgid "Action Needed"
+msgstr "需要操作"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_category__active
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__active
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_search
+msgid "Active"
+msgstr "啟用"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
+msgid "Add a description or notes..."
+msgstr "新增說明或備註..."
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_form
+msgid "Add a description..."
+msgstr "新增說明..."
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__advance_days
+msgid "Advance Booking Days"
+msgstr "可提前預定天數"
+
+#. module: odoo_booking_reservation
+#. odoo-python
+#: code:addons/odoo_booking_reservation/models/booking_resource_type.py:0
+msgid "Advance booking days must be at least 1 day."
+msgstr "可提前預定天數必須至少為 1 天。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_form
+msgid "Advanced Settings"
+msgstr "進階設定"
+
+#. module: odoo_booking_reservation
+#. odoo-python
+#: code:addons/odoo_booking_reservation/controllers/portal.py:0
+msgid "All"
+msgstr "全部"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields.selection,name:odoo_booking_reservation.selection__booking_resource_type__share_type__all
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_search
+msgid "All Portal Users"
+msgstr "所有入口網站使用者"
+
+#. module: odoo_booking_reservation
+#: model:ir.actions.act_window,name:odoo_booking_reservation.action_booking_reservation_list
+msgid "All Reservations"
+msgstr "所有預定"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__enable_discussion
+msgid "Allow Discussion Channel"
+msgstr "允許討論通道"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__allowed_partner_ids
+msgid "Allowed Contacts"
+msgstr "允許的聯絡人"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_category_form
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_form
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_search
+msgid "Archived"
+msgstr "已封存"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_form
+msgid "Are you sure you want to cancel this reservation?"
+msgstr "您確定要取消此預定嗎？"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__message_attachment_count
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__message_attachment_count
+msgid "Attachment Count"
+msgstr "附件數量"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__attendee_ids
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_detail
+msgid "Attendees"
+msgstr "參加者"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__availability_ids
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_form
+msgid "Availability"
+msgstr "可用性"
+
+#. module: odoo_booking_reservation
+#. odoo-python
+#: code:addons/odoo_booking_reservation/models/booking_resource_availability.py:0
+msgid "Availability overlap: %s %s-%s conflicts with %s-%s."
+msgstr "可用性重疊：%s %s-%s 與 %s-%s 衝突。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_my_resources
+msgid "Available Resources"
+msgstr "可用資源"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_form
+msgid "Basic Information"
+msgstr "基本資訊"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__partner_id
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_detail
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_search
+msgid "Booker"
+msgstr "預定者"
 
 #. module: odoo_booking_reservation
 #: model:ir.module.category,name:odoo_booking_reservation.module_category_booking
@@ -22,621 +539,46 @@ msgid "Booking"
 msgstr "資源預定"
 
 #. module: odoo_booking_reservation
-msgid "Confirm"
-msgstr "確認"
-
-#. module: odoo_booking_reservation
-msgid "Cancel"
-msgstr "取消"
-
-#. module: odoo_booking_reservation
-msgid "Are you sure you want to cancel this reservation?"
-msgstr "確定要取消此預定嗎？"
-
-#. module: odoo_booking_reservation
-msgid "Subject"
-msgstr "預定主題"
-
-#. module: odoo_booking_reservation
-msgid "e.g. Department Weekly Meeting"
-msgstr "例如：部門週會"
-
-#. module: odoo_booking_reservation
-msgid "Resource"
-msgstr "資源"
-
-#. module: odoo_booking_reservation
-msgid "Select Resource"
-msgstr "選擇資源"
-
-#. module: odoo_booking_reservation
-msgid "Resource Info"
-msgstr "資源資訊"
-
-#. module: odoo_booking_reservation
-msgid "Location"
-msgstr "地點"
-
-#. module: odoo_booking_reservation
-msgid "Location:"
-msgstr "地點："
-
-#. module: odoo_booking_reservation
-msgid "Capacity"
-msgstr "容量"
-
-#. module: odoo_booking_reservation
-msgid "Capacity:"
-msgstr "容量："
-
-#. module: odoo_booking_reservation
-msgid "people"
-msgstr "人"
-
-#. module: odoo_booking_reservation
-msgid "Start"
-msgstr "開始"
-
-#. module: odoo_booking_reservation
-msgid "End"
-msgstr "結束"
-
-#. module: odoo_booking_reservation
-msgid "Duration (hours)"
-msgstr "時長（小時）"
-
-#. module: odoo_booking_reservation
-msgid "Duration"
-msgstr "時長"
-
-#. module: odoo_booking_reservation
-msgid "Time"
-msgstr "時間"
-
-#. module: odoo_booking_reservation
-msgid "People"
-msgstr "人員"
-
-#. module: odoo_booking_reservation
-msgid "Organizer"
-msgstr "舉辦方"
-
-#. module: odoo_booking_reservation
-msgid "Booked By"
-msgstr "預定者"
-
-#. module: odoo_booking_reservation
-msgid "Attendees"
-msgstr "參加者"
-
-#. module: odoo_booking_reservation
-msgid "Enable Discussion"
-msgstr "開啟討論通道"
-
-#. module: odoo_booking_reservation
-msgid "Discussion Channel"
-msgstr "討論通道"
-
-#. module: odoo_booking_reservation
-msgid "Discussion"
-msgstr "討論"
-
-#. module: odoo_booking_reservation
-msgid "Description"
-msgstr "說明"
-
-#. module: odoo_booking_reservation
-msgid "Add a description..."
-msgstr "新增說明..."
-
-#. module: odoo_booking_reservation
-msgid "Reminder"
-msgstr "提醒"
-
-#. module: odoo_booking_reservation
-msgid "None"
-msgstr "無"
-
-#. module: odoo_booking_reservation
-msgid "Notification"
-msgstr "通知"
-
-#. module: odoo_booking_reservation
-msgid "Email"
-msgstr "電子郵件"
-
-#. module: odoo_booking_reservation
-msgid "Reminder Time (minutes)"
-msgstr "提醒時間（分鐘）"
-
-#. module: odoo_booking_reservation
-msgid "Minutes before"
-msgstr "分鐘前"
-
-#. module: odoo_booking_reservation
-msgid "Notes"
-msgstr "備註"
-
-#. module: odoo_booking_reservation
-msgid "Status"
-msgstr "狀態"
-
-#. module: odoo_booking_reservation
-msgid "Confirmed"
-msgstr "已確認"
-
-#. module: odoo_booking_reservation
-msgid "Cancelled"
-msgstr "已取消"
-
-#. module: odoo_booking_reservation
-msgid "Name"
-msgstr "名稱"
-
-#. module: odoo_booking_reservation
-msgid "New Reservation"
-msgstr "新預定"
-
-#. module: odoo_booking_reservation
-msgid "Contact \"%s\" is not authorized to book resource \"%s\"."
-msgstr "聯絡人「%s」無權預定資源「%s」。"
-
-#. module: odoo_booking_reservation
-msgid "This time slot is already booked for resource \"%s\". Please select a different time."
-msgstr "資源「%s」的此時段已被預定，請選擇其他時間。"
-
-#. module: odoo_booking_reservation
-msgid "Slot Duration (hours)"
-msgstr "時段長度（小時）"
-
-#. module: odoo_booking_reservation
-msgid "Slot Interval (hours)"
-msgstr "時段間隔（小時）"
-
-#. module: odoo_booking_reservation
-msgid "Days Available in Advance"
-msgstr "可提前預定天數"
-
-#. module: odoo_booking_reservation
-msgid "Access Type"
-msgstr "存取類型"
-
-#. module: odoo_booking_reservation
-msgid "All Portal Users"
-msgstr "所有 Portal 使用者"
-
-#. module: odoo_booking_reservation
-msgid "Specific Contacts"
-msgstr "指定聯絡人"
-
-#. module: odoo_booking_reservation
-msgid "Allowed Contacts"
-msgstr "允許的聯絡人"
-
-#. module: odoo_booking_reservation
-msgid "Allow Discussion Channel"
-msgstr "允許討論通道"
-
-#. module: odoo_booking_reservation
-msgid "Active"
-msgstr "啟用"
-
-#. module: odoo_booking_reservation
-msgid "Reservation Count"
-msgstr "預定數量"
-
-#. module: odoo_booking_reservation
-msgid "Slot duration must be a positive number."
-msgstr "時段長度必須為正數。"
-
-#. module: odoo_booking_reservation
-msgid "Slot interval must be a positive number."
-msgstr "時段間隔必須為正數。"
-
-#. module: odoo_booking_reservation
-msgid "Advance booking days must be at least 1."
-msgstr "可提前預定天數至少為 1 天。"
-
-#. module: odoo_booking_reservation
-msgid "Reservations"
-msgstr "預定"
-
-#. module: odoo_booking_reservation
-msgid "Start hour must be between 0 and 24."
-msgstr "開始時間必須在 0 到 24 之間。"
-
-#. module: odoo_booking_reservation
-msgid "End hour must be between 0 and 24."
-msgstr "結束時間必須在 0 到 24 之間。"
-
-#. module: odoo_booking_reservation
-msgid "Start time must be before end time."
-msgstr "開始時間必須早於結束時間。"
-
-#. module: odoo_booking_reservation
-msgid "Basic Information"
-msgstr "基本資訊"
-
-#. module: odoo_booking_reservation
-msgid "Booking Settings"
-msgstr "預定設定"
-
-#. module: odoo_booking_reservation
-msgid "Available Hours"
-msgstr "可用時段"
-
-#. module: odoo_booking_reservation
-msgid "Availability"
-msgstr "可用性"
-
-#. module: odoo_booking_reservation
-msgid "Access Control"
-msgstr "存取控制"
-
-#. module: odoo_booking_reservation
-msgid "Advanced Settings"
-msgstr "進階設定"
-
-#. module: odoo_booking_reservation
-msgid "Properties"
-msgstr "屬性"
-
-#. module: odoo_booking_reservation
-msgid "Archived"
-msgstr "已封存"
-
-#. module: odoo_booking_reservation
-msgid "Resource Name"
-msgstr "資源名稱"
-
-#. module: odoo_booking_reservation
-msgid "Select or create a category..."
-msgstr "選擇或建立分類..."
-
-#. module: odoo_booking_reservation
-msgid "e.g., Building A, Floor 2"
-msgstr "例如：A 棟, 2 樓"
-
-#. module: odoo_booking_reservation
-msgid "Describe this resource..."
-msgstr "描述此資源..."
-
-#. module: odoo_booking_reservation
-msgid "Select contacts who can book this resource..."
-msgstr "選擇可以預定此資源的聯絡人..."
-
-#. module: odoo_booking_reservation
-msgid "Search Resources"
-msgstr "搜尋資源"
-
-#. module: odoo_booking_reservation
-msgid "Search Reservations"
-msgstr "搜尋預定"
-
-#. module: odoo_booking_reservation
-msgid "Today"
-msgstr "今天"
-
-#. module: odoo_booking_reservation
-msgid "This Week"
-msgstr "本週"
-
-#. module: odoo_booking_reservation
-msgid "Upcoming"
-msgstr "即將到來"
-
-#. module: odoo_booking_reservation
-msgid "Past"
-msgstr "已過期"
-
-#. module: odoo_booking_reservation
-msgid "Group By"
-msgstr "分組依據"
-
-#. module: odoo_booking_reservation
-msgid "Date"
-msgstr "日期"
-
-#. module: odoo_booking_reservation
-msgid "Resource Bookings"
-msgstr "資源預定"
-
-#. module: odoo_booking_reservation
-msgid "All Reservations"
-msgstr "所有預定"
-
-#. module: odoo_booking_reservation
-msgid "Booking Resources"
-msgstr "預定資源"
-
-#. module: odoo_booking_reservation
-msgid "No reservations yet"
-msgstr "目前沒有預定"
-
-#. module: odoo_booking_reservation
-msgid "You don't have access to this resource."
-msgstr "您沒有權限存取此資源。"
-
-#. module: odoo_booking_reservation
-msgid "All"
-msgstr "全部"
-
-#. module: odoo_booking_reservation
-msgid "Date (newest)"
-msgstr "日期（最新）"
-
-#. module: odoo_booking_reservation
-msgid "Date (oldest)"
-msgstr "日期（最舊）"
-
-#. module: odoo_booking_reservation
-msgid "This booking does not exist or you don't have access to it."
-msgstr "此預定不存在或您沒有存取權限。"
-
-#. module: odoo_booking_reservation
-msgid "My Bookings"
-msgstr "我的預定"
-
-#. module: odoo_booking_reservation
-msgid "View and manage your resource reservations"
-msgstr "查看及管理您的資源預定"
-
-#. module: odoo_booking_reservation
-msgid "Book Resources"
-msgstr "預定資源"
-
-#. module: odoo_booking_reservation
-msgid "Browse and book available resources"
-msgstr "瀏覽並預定可用資源"
-
-#. module: odoo_booking_reservation
-msgid "Available Resources"
-msgstr "可用資源"
-
-#. module: odoo_booking_reservation
-msgid "No resources are available for booking at this time."
-msgstr "目前沒有可供預定的資源。"
-
-#. module: odoo_booking_reservation
-msgid "Book Now"
-msgstr "立即預定"
-
-#. module: odoo_booking_reservation
-msgid "Available Time Slots"
-msgstr "可用時段"
-
-#. module: odoo_booking_reservation
-msgid "No available time slots for this period."
-msgstr "此期間沒有可用時段。"
-
-#. module: odoo_booking_reservation
-msgid "Your booking"
-msgstr "您的預定"
-
-#. module: odoo_booking_reservation
-msgid "Booked"
-msgstr "已預定"
-
-#. module: odoo_booking_reservation
-msgid "Back to Resources"
-msgstr "返回資源列表"
-
-#. module: odoo_booking_reservation
-msgid "New Booking"
-msgstr "新增預定"
-
-#. module: odoo_booking_reservation
-msgid "You don't have any bookings yet."
-msgstr "您目前沒有任何預定。"
-
-#. module: odoo_booking_reservation
-msgid "Browse available resources"
-msgstr "瀏覽可用資源"
-
-#. module: odoo_booking_reservation
-msgid "Date &amp; Time"
-msgstr "日期與時間"
-
-#. module: odoo_booking_reservation
-msgid "View"
-msgstr "查看"
-
-#. module: odoo_booking_reservation
-msgid "hour(s)"
-msgstr "小時"
-
-#. module: odoo_booking_reservation
-msgid "Booking Details"
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_detail
+msgid "Booking Detail"
 msgstr "預定詳情"
 
 #. module: odoo_booking_reservation
-msgid "Your booking has been confirmed!"
-msgstr "您的預定已確認！"
+#: model:ir.model,name:odoo_booking_reservation.model_booking_resource_type
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_form
+msgid "Booking Resource"
+msgstr "預定資源"
 
 #. module: odoo_booking_reservation
-msgid "Your booking has been cancelled."
-msgstr "您的預定已取消。"
-
-#. module: odoo_booking_reservation
-msgid "Back"
-msgstr "返回"
-
-#. module: odoo_booking_reservation
-msgid "Cancel Booking"
-msgstr "取消預定"
-
-#. module: odoo_booking_reservation
-msgid "Are you sure you want to cancel this booking?"
-msgstr "確定要取消此預定嗎？"
-
-#. module: odoo_booking_reservation
-msgid "Book Again"
-msgstr "再次預定"
-
-#. module: odoo_booking_reservation
-msgid "Confirm Booking"
-msgstr "確認預定"
-
-#. module: odoo_booking_reservation
-msgid "Booking Summary"
-msgstr "預定摘要"
-
-#. module: odoo_booking_reservation
-msgid "Subject (optional)"
-msgstr "預定主題（選填）"
-
-#. module: odoo_booking_reservation
-msgid "Enable Discussion Channel"
-msgstr "開啟討論通道"
-
-#. module: odoo_booking_reservation
-msgid "Create a discussion channel for this booking to collaborate with attendees."
-msgstr "為此預定建立討論通道，與參加者協作。"
-
-#. module: odoo_booking_reservation
-msgid "Description (optional)"
-msgstr "說明（選填）"
-
-#. module: odoo_booking_reservation
-msgid "Add a description or notes..."
-msgstr "新增說明或備註..."
-
-#. module: odoo_booking_reservation
-msgid "View Available Slots"
-msgstr "查看可用時段"
-
-#. module: odoo_booking_reservation
-msgid "Select a resource below to view available time slots and make a booking."
-msgstr "選擇以下資源來查看可用時段並進行預定。"
-
-#. module: odoo_booking_reservation
-msgid "Back to My Bookings"
-msgstr "返回我的預定"
-
-#. module: odoo_booking_reservation
-msgid "No Resources Available"
-msgstr "目前沒有可用資源"
-
-#. module: odoo_booking_reservation
-msgid "There are currently no resources available for you to book."
-msgstr "目前沒有可供您預定的資源。"
-
-#. module: odoo_booking_reservation
-msgid "Please contact the administrator if you believe you should have access to booking resources."
-msgstr "如果您認為應該有權限預定資源，請聯絡管理員。"
-
-#. module: odoo_booking_reservation
-msgid "Back to Portal"
-msgstr "返回 Portal"
-
-#. module: odoo_booking_reservation
-msgid "Resource Categories"
-msgstr "資源分類"
-
-#. module: odoo_booking_reservation
-msgid "Calendar Event"
-msgstr "日曆事件"
-
-#. module: odoo_booking_reservation
-msgid "Category"
-msgstr "分類"
-
-#. module: odoo_booking_reservation
-msgid "Image"
-msgstr "圖片"
-
-#. module: odoo_booking_reservation
-msgid "Sequence"
-msgstr "排序"
-
-#. module: odoo_booking_reservation
-msgid "Resource Allows Discussion"
-msgstr "資源允許討論"
-
-#. module: odoo_booking_reservation
-msgid "Resource Description"
-msgstr "資源說明"
-
-#. module: odoo_booking_reservation
-msgid "New"
-msgstr "新增"
-
-#. module: odoo_booking_reservation
-msgid "Resource Reservation"
-msgstr "資源預定"
-
-#. module: odoo_booking_reservation
-msgid "Booking Resource Type"
-msgstr "預定資源類型"
-
-#. module: odoo_booking_reservation
-msgid "Resource Availability"
-msgstr "資源可用性"
-
-#. module: odoo_booking_reservation
+#: model:ir.model,name:odoo_booking_reservation.model_booking_resource_category
 msgid "Booking Resource Category"
 msgstr "預定資源分類"
 
 #. module: odoo_booking_reservation
-msgid "Day of Week"
-msgstr "星期"
+#: model:ir.actions.act_window,name:odoo_booking_reservation.action_booking_resource_type
+#: model:ir.ui.menu,name:odoo_booking_reservation.menu_booking_resource_type
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_my_home_booking
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_tree
+msgid "Booking Resources"
+msgstr "預定資源"
 
 #. module: odoo_booking_reservation
-msgid "From"
-msgstr "從"
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_form
+msgid "Booking Settings"
+msgstr "預定設定"
 
 #. module: odoo_booking_reservation
-msgid "To"
-msgstr "到"
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
+msgid "Booking Subject (Optional)"
+msgstr "預定主題（選填）"
 
 #. module: odoo_booking_reservation
-msgid "User"
-msgstr "使用者"
-
-#. module: odoo_booking_reservation
-msgid "Manager"
-msgstr "管理員"
-
-#. module: odoo_booking_reservation
-msgid "When enabled, users booking this resource can choose to create a Discussion channel for the reservation."
-msgstr "啟用後，預定此資源的使用者可以選擇為預定建立討論通道。"
-
-#. module: odoo_booking_reservation
-msgid "Maximum capacity of the resource"
-msgstr "資源的最大容量"
-
-#. module: odoo_booking_reservation
-msgid "Duration of each booking slot in hours"
-msgstr "每個預定時段的長度（小時）"
-
-#. module: odoo_booking_reservation
-msgid "How many days in advance can users book this resource"
-msgstr "使用者可以提前多少天預定此資源"
-
-#. module: odoo_booking_reservation
-msgid "Control who can book this resource"
-msgstr "控制誰可以預定此資源"
-
-#. module: odoo_booking_reservation
-msgid "Open Discussion Channel"
-msgstr "開啟討論通道"
-
-#. module: odoo_booking_reservation
-msgid "Open Discussion"
-msgstr "開啟討論"
-
-#. module: odoo_booking_reservation
-msgid "hour slots"
-msgstr "小時時段"
-
-#. module: odoo_booking_reservation
-msgid "Select &amp; Book"
-msgstr "選擇並預定"
-
-#. module: odoo_booking_reservation
-#: model:mail.template,name:odoo_booking_reservation.mail_template_booking_confirmed
-msgid "Booking: Confirmed"
-msgstr "預定：已確認"
+#. odoo-python
+#: code:addons/odoo_booking_reservation/models/booking_reservation.py:0
+msgid ""
+"Booking duration (%.1f hours) does not match the slot duration (%.1f hours) "
+"of resource \"%s\"."
+msgstr "預定時長（%.1f 小時）與資源「%s」的時段時長（%.1f 小時）不符。"
 
 #. module: odoo_booking_reservation
 #: model:mail.template,name:odoo_booking_reservation.mail_template_booking_cancelled
@@ -644,167 +586,968 @@ msgid "Booking: Cancelled"
 msgstr "預定：已取消"
 
 #. module: odoo_booking_reservation
-msgid "Your booking has been confirmed. Here are the details:"
-msgstr "您的預定已確認。以下為詳細資訊："
+#: model:mail.template,name:odoo_booking_reservation.mail_template_booking_confirmed
+msgid "Booking: Confirmed"
+msgstr "預定：已確認"
 
 #. module: odoo_booking_reservation
-msgid "Your booking has been cancelled. Here are the details:"
-msgstr "您的預定已取消。以下為詳細資訊："
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_my_home_booking
+msgid "Browse and book available resources"
+msgstr "瀏覽並預定可用資源"
 
 #. module: odoo_booking_reservation
-msgid "A discussion channel has been created for this booking. You can collaborate with other attendees:"
-msgstr "已為此預定建立討論通道，您可以與其他參加者協作："
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_my_bookings
+msgid "Browse available resources"
+msgstr "瀏覽可用資源"
 
 #. module: odoo_booking_reservation
-msgid "View Booking Details"
-msgstr "查看預定詳情"
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__calendar_event_id
+msgid "Calendar Event"
+msgstr "行事曆活動"
 
 #. module: odoo_booking_reservation
-msgid "This is an automated notification from your booking system."
-msgstr "這是來自預定系統的自動通知。"
+#: model:res.groups,comment:odoo_booking_reservation.group_booking_user
+msgid "Can view resources and create bookings"
+msgstr "可查看資源並建立預定"
 
 #. module: odoo_booking_reservation
-msgid "Booking #"
-msgstr "預定 #"
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_form
+msgid "Cancel"
+msgstr "取消"
 
 #. module: odoo_booking_reservation
-msgid "Click the \"New\" button to create a reservation, or let Portal users book resources themselves."
-msgstr "點擊「新增」按鈕來建立預定，或讓 Portal 使用者自行預定資源。"
+#. odoo-python
+#: code:addons/odoo_booking_reservation/controllers/portal.py:0
+#: model:ir.model.fields.selection,name:odoo_booking_reservation.selection__booking_reservation__state__cancelled
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_search
+msgid "Cancelled"
+msgstr "已取消"
 
 #. module: odoo_booking_reservation
-msgid "End time must be after start time."
-msgstr "結束時間必須在開始時間之後。"
+#. odoo-python
+#: code:addons/odoo_booking_reservation/models/booking_reservation.py:0
+msgid "Cannot book a time slot in the past."
+msgstr "無法預定過去的時段。"
 
 #. module: odoo_booking_reservation
-#: model:booking.resource.availability,field:dayofweek
-msgid "Monday"
-msgstr "星期一"
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__resource_capacity
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__capacity
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_resource_detail
+msgid "Capacity"
+msgstr "容量"
 
 #. module: odoo_booking_reservation
-msgid "Tuesday"
-msgstr "星期二"
+#. odoo-python
+#: code:addons/odoo_booking_reservation/models/booking_resource_type.py:0
+msgid "Capacity must be at least 1."
+msgstr "容量必須至少為 1。"
 
 #. module: odoo_booking_reservation
-msgid "Wednesday"
-msgstr "星期三"
+#: model_terms:ir.actions.act_window,help:odoo_booking_reservation.action_booking_resource_category
+msgid ""
+"Categories allow you to define custom properties that apply to all resources"
+" within that category."
+msgstr "分類允許您定義套用於該分類中所有資源的自訂屬性。"
 
 #. module: odoo_booking_reservation
-msgid "Thursday"
-msgstr "星期四"
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__category_id
+msgid "Category"
+msgstr "分類"
 
 #. module: odoo_booking_reservation
-msgid "Friday"
-msgstr "星期五"
-
-#. module: odoo_booking_reservation
-msgid "Saturday"
-msgstr "星期六"
-
-#. module: odoo_booking_reservation
-msgid "Sunday"
-msgstr "星期日"
-
-#. module: odoo_booking_reservation
-msgid "Time interval between available slots. Set same as duration for non-overlapping slots."
-msgstr "可用時段之間的間隔時間。設定與時段長度相同可避免時段重疊。"
-
-#. module: odoo_booking_reservation
-msgid "Define recurring availability windows for each day of the week"
-msgstr "定義每週各天的可用時段"
-
-#. module: odoo_booking_reservation
-msgid "Select contacts (Portal users) who can book this resource. Only applies when Access Type is \"Specific Contacts\"."
-msgstr "選擇可以預定此資源的聯絡人（Portal 使用者）。僅在存取類型為「指定聯絡人」時適用。"
-
-#. module: odoo_booking_reservation
-msgid "Start hour in 24-hour format (e.g., 9.0 for 09:00, 14.5 for 14:30)"
-msgstr "24 小時制的開始時間（例如：9.0 表示 09:00，14.5 表示 14:30）"
-
-#. module: odoo_booking_reservation
-msgid "End hour in 24-hour format (e.g., 18.0 for 18:00, 17.5 for 17:30)"
-msgstr "24 小時制的結束時間（例如：18.0 表示 18:00，17.5 表示 17:30）"
-
-#. module: odoo_booking_reservation
-msgid "Resource Properties"
-msgstr "資源屬性"
-
-#. module: odoo_booking_reservation
-msgid "Resource Count"
-msgstr "資源數量"
-
-#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_category_form
 msgid "Category Name"
 msgstr "分類名稱"
 
 #. module: odoo_booking_reservation
-msgid "Properties Definition"
-msgstr "屬性定義"
+#: model_terms:ir.actions.act_window,help:odoo_booking_reservation.action_booking_reservation_calendar
+msgid ""
+"Click \"New\" to create a reservation, or let Portal users book resources "
+"themselves."
+msgstr "點擊「新增」以建立預定，或讓入口網站使用者自行預定資源。"
 
 #. module: odoo_booking_reservation
-msgid "Resources"
-msgstr "資源"
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_detail
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_discussions_auto_open
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_new_booking
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_resource_detail
+msgid "Close"
+msgstr "關閉"
 
 #. module: odoo_booking_reservation
-msgid "Create your first resource category"
-msgstr "建立您的第一個資源分類"
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_form
+msgid "Confirm"
+msgstr "確認"
 
 #. module: odoo_booking_reservation
-msgid "Categories allow you to define custom properties that apply to all resources within the category."
-msgstr "分類讓您定義自訂屬性，這些屬性將套用至該分類下的所有資源。"
-
-#. module: odoo_booking_reservation
-msgid "Create your first booking resource"
-msgstr "建立您的第一個預定資源"
-
-#. module: odoo_booking_reservation
-msgid "Define resources that can be booked by Portal users, such as meeting rooms, equipment, or facilities."
-msgstr "定義可供 Portal 使用者預定的資源，例如會議室、設備或場地。"
-
-#. module: odoo_booking_reservation
-msgid "Resource Availability Window"
-msgstr "資源可用時段"
-
-#. module: odoo_booking_reservation
-msgid "Reservation"
-msgstr "預定"
-
-#. module: odoo_booking_reservation
-msgid "Resource Category"
-msgstr "資源分類"
-
-#. module: odoo_booking_reservation
-msgid "Booking Resource"
-msgstr "預定資源"
-
-#. module: odoo_booking_reservation
-msgid "Show Booking Count"
-msgstr "顯示預定數量"
-
-#. module: odoo_booking_reservation
-#: Portal template strings
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
 msgid "Confirm Booking"
 msgstr "確認預定"
 
 #. module: odoo_booking_reservation
-msgid "Hello"
-msgstr "您好"
+#. odoo-python
+#: code:addons/odoo_booking_reservation/controllers/portal.py:0
+#: model:ir.model.fields.selection,name:odoo_booking_reservation.selection__booking_reservation__state__confirmed
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_search
+msgid "Confirmed"
+msgstr "已確認"
 
 #. module: odoo_booking_reservation
-msgid "Booking Confirmed"
-msgstr "預定已確認"
+#. odoo-python
+#: code:addons/odoo_booking_reservation/models/booking_reservation.py:0
+msgid "Contact \"%s\" does not have permission to book resource \"%s\"."
+msgstr "聯絡人「%s」沒有預定資源「%s」的權限。"
 
 #. module: odoo_booking_reservation
-msgid "Booking Cancelled"
-msgstr "預定已取消"
+#: model:ir.model.fields,help:odoo_booking_reservation.field_booking_resource_type__share_type
+msgid "Control who can book this resource"
+msgstr "控制誰可以預定此資源"
 
 #. module: odoo_booking_reservation
-msgid "Partner"
-msgstr "聯絡人"
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
+msgid ""
+"Create a discussion channel for this booking to collaborate with attendees."
+msgstr "為此預定建立討論通道以與參加者協作。"
 
 #. module: odoo_booking_reservation
+#: model_terms:ir.actions.act_window,help:odoo_booking_reservation.action_booking_resource_type
+msgid "Create your first booking resource"
+msgstr "建立您的第一個預定資源"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.actions.act_window,help:odoo_booking_reservation.action_booking_resource_category
+msgid "Create your first resource category"
+msgstr "建立您的第一個資源分類"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__create_uid
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_availability__create_uid
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_category__create_uid
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__create_uid
+msgid "Created by"
+msgstr "建立者"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__create_date
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_availability__create_date
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_category__create_date
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__create_date
+msgid "Created on"
+msgstr "建立時間"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,help:odoo_booking_reservation.field_booking_reservation__access_url
+msgid "Customer Portal URL"
+msgstr "客戶入口網站 URL"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_search
+msgid "Date"
+msgstr "日期"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_my_bookings
+msgid "Date &amp; Time"
+msgstr "日期與時間"
+
+#. module: odoo_booking_reservation
+#. odoo-python
+#: code:addons/odoo_booking_reservation/controllers/portal.py:0
+msgid "Date (Newest)"
+msgstr "日期（最新）"
+
+#. module: odoo_booking_reservation
+#. odoo-python
+#: code:addons/odoo_booking_reservation/controllers/portal.py:0
+msgid "Date (Oldest)"
+msgstr "日期（最舊）"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_availability__dayofweek
+msgid "Day of Week"
+msgstr "星期"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.actions.act_window,help:odoo_booking_reservation.action_booking_resource_type
+msgid ""
+"Define resources available for Portal users to book, such as meeting rooms, "
+"equipment, or venues."
+msgstr "定義入口網站使用者可預定的資源，例如會議室、設備或場地。"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,help:odoo_booking_reservation.field_booking_resource_type__availability_ids
+msgid "Define weekly recurring availability time slots"
+msgstr "定義每週重複的可用時段"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_form
+msgid "Describe this resource..."
+msgstr "描述此資源..."
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__description
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__description
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_detail
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_form
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_form
+msgid "Description"
+msgstr "說明"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
+msgid "Description (Optional)"
+msgstr "說明（選填）"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_detail
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_form
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_form
+msgid "Discussion"
+msgstr "討論"
+
+#. module: odoo_booking_reservation
+#. odoo-javascript
+#: code:addons/odoo_booking_reservation/static/src/views/booking_calendar_popover.xml:0
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__channel_id
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_discussions_auto_open
+msgid "Discussion Channel"
+msgstr "討論通道"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__display_name
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_availability__display_name
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_category__display_name
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__display_name
+msgid "Display Name"
+msgstr "顯示名稱"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_detail
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_my_bookings
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_resource_detail
+msgid "Duration"
+msgstr "時長"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__duration
+msgid "Duration (Hours)"
+msgstr "時長（小時）"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,help:odoo_booking_reservation.field_booking_resource_type__slot_duration
+msgid "Duration of each booking slot in hours"
+msgstr "每個預定時段的時長（小時）"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields.selection,name:odoo_booking_reservation.selection__booking_reservation__reminder_type__email
+msgid "Email"
+msgstr "電子郵件"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__enable_discussion
+msgid "Enable Discussion"
+msgstr "啟用討論"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
+msgid "Enable Discussion Channel"
+msgstr "啟用討論通道"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__end_datetime
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_detail
+msgid "End"
+msgstr "結束"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_availability__hour_to
+msgid "End Time"
+msgstr "結束時間"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,help:odoo_booking_reservation.field_booking_resource_availability__hour_to
+msgid "End time in 24-hour format (e.g. 18.0 = 18:00, 17.5 = 17:30)"
+msgstr "結束時間使用 24 小時制（例如 18.0 = 18:00，17.5 = 17:30）"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.constraint,message:odoo_booking_reservation.constraint_booking_reservation_check_dates
+msgid "End time must be after start time."
+msgstr "結束時間必須在開始時間之後。"
+
+#. module: odoo_booking_reservation
+#. odoo-python
+#: code:addons/odoo_booking_reservation/models/booking_resource_availability.py:0
+msgid "End time must be between 0 and 24."
+msgstr "結束時間必須介於 0 到 24 之間。"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__message_follower_ids
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__message_follower_ids
+msgid "Followers"
+msgstr "關注者"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__message_partner_ids
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "關注者（合作夥伴）"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields.selection,name:odoo_booking_reservation.selection__booking_resource_availability__dayofweek__4
+msgid "Friday"
+msgstr "星期五"
+
+#. module: odoo_booking_reservation
+#: model:res.groups,comment:odoo_booking_reservation.group_booking_manager
+msgid "Full access to booking resources and reservation management"
+msgstr "完整存取預定資源和預定管理"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_search
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_search
+msgid "Group By"
+msgstr "分組"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__has_message
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__has_message
+msgid "Has Message"
+msgstr "有訊息"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,help:odoo_booking_reservation.field_booking_resource_type__advance_days
+msgid "How many days in advance users can book this resource"
+msgstr "使用者可提前多少天預定此資源"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__id
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_availability__id
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_category__id
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__id
+msgid "ID"
+msgstr "識別碼"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,help:odoo_booking_reservation.field_booking_reservation__message_needaction
+#: model:ir.model.fields,help:odoo_booking_reservation.field_booking_resource_type__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr "若勾選，新訊息需要您的注意。"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,help:odoo_booking_reservation.field_booking_reservation__message_has_error
+#: model:ir.model.fields,help:odoo_booking_reservation.field_booking_reservation__message_has_sms_error
+#: model:ir.model.fields,help:odoo_booking_reservation.field_booking_resource_type__message_has_error
+#: model:ir.model.fields,help:odoo_booking_reservation.field_booking_resource_type__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr "若勾選，某些訊息有傳送錯誤。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_no_resources
+msgid ""
+"If you believe you should have access to booking resources, please contact "
+"the administrator."
+msgstr "如果您認為應該有權限存取預定資源，請聯絡管理員。"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__image
+msgid "Image"
+msgstr "圖片"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,help:odoo_booking_reservation.field_booking_resource_type__slot_interval
+msgid ""
+"Interval between available slots. Set equal to slot duration to avoid "
+"overlap."
+msgstr "可用時段之間的間隔。設定為與時段時長相同以避免重疊。"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__message_is_follower
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__message_is_follower
+msgid "Is Follower"
+msgstr "是關注者"
+
+#. module: odoo_booking_reservation
+#. odoo-javascript
+#: code:addons/odoo_booking_reservation/static/src/views/booking_calendar_popover.xml:0
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_form
+msgid "Join Discussion Channel"
+msgstr "加入討論通道"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__write_uid
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_availability__write_uid
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_category__write_uid
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__write_uid
+msgid "Last Updated by"
+msgstr "最後更新者"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__write_date
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_availability__write_date
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_category__write_date
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__write_date
+msgid "Last Updated on"
+msgstr "最後更新時間"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__resource_location
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__location
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_detail
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_resource_detail
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_search
+msgid "Location"
+msgstr "地點"
+
+#. module: odoo_booking_reservation
+#: model:res.groups,name:odoo_booking_reservation.group_booking_manager
+msgid "Manager"
+msgstr "管理員"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,help:odoo_booking_reservation.field_booking_reservation__resource_capacity
+#: model:ir.model.fields,help:odoo_booking_reservation.field_booking_resource_type__capacity
+msgid "Maximum capacity of the resource"
+msgstr "資源的最大容量"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__message_has_error
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__message_has_error
+msgid "Message Delivery error"
+msgstr "訊息傳送錯誤"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__message_ids
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__message_ids
+msgid "Messages"
+msgstr "訊息"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_form
+msgid "Minutes Before"
+msgstr "提前分鐘"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields.selection,name:odoo_booking_reservation.selection__booking_resource_availability__dayofweek__0
+msgid "Monday"
+msgstr "星期一"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_my_bookings
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_my_home_booking
+msgid "My Bookings"
+msgstr "我的預定"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__name
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_category__name
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__name
+msgid "Name"
+msgstr "名稱"
+
+#. module: odoo_booking_reservation
+#. odoo-javascript
+#: code:addons/odoo_booking_reservation/static/src/views/booking_calendar_controller.js:0
+msgid "New"
+msgstr "新增"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_new_booking
+msgid "New Booking"
+msgstr "新增預定"
+
+#. module: odoo_booking_reservation
+#. odoo-javascript
+#. odoo-python
+#: code:addons/odoo_booking_reservation/models/booking_reservation.py:0
+#: code:addons/odoo_booking_reservation/static/src/views/booking_calendar_controller.js:0
+msgid "New Reservation"
+msgstr "新增預定"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_no_resources
+msgid "No Resources Available"
+msgstr "無可用資源"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_resource_detail
+msgid "No available slots during this period."
+msgstr "此期間沒有可用時段。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.actions.act_window,help:odoo_booking_reservation.action_booking_reservation_calendar
+msgid "No reservations yet"
+msgstr "尚無預定"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields.selection,name:odoo_booking_reservation.selection__booking_reservation__reminder_type__none
+msgid "None"
+msgstr "無"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__note
+msgid "Note"
+msgstr "備註"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_detail
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_form
+msgid "Notes"
+msgstr "備註"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields.selection,name:odoo_booking_reservation.selection__booking_reservation__reminder_type__notification
+msgid "Notification"
+msgstr "通知"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__message_needaction_counter
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__message_needaction_counter
+msgid "Number of Actions"
+msgstr "操作數量"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__message_has_error_counter
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__message_has_error_counter
+msgid "Number of errors"
+msgstr "錯誤數量"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,help:odoo_booking_reservation.field_booking_reservation__message_needaction_counter
+#: model:ir.model.fields,help:odoo_booking_reservation.field_booking_resource_type__message_needaction_counter
+msgid "Number of messages requiring action"
+msgstr "需要操作的訊息數量"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,help:odoo_booking_reservation.field_booking_reservation__message_has_error_counter
+#: model:ir.model.fields,help:odoo_booking_reservation.field_booking_resource_type__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr "傳送錯誤的訊息數量"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__organizer_id
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_detail
+msgid "Organizer"
+msgstr "舉辦方"
+
+#. module: odoo_booking_reservation
+#. odoo-python
+#: code:addons/odoo_booking_reservation/controllers/portal.py:0
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_search
+msgid "Past"
+msgstr "過去"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_form
+msgid "People"
+msgstr "人數"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__access_url
+msgid "Portal Access URL"
+msgstr "入口網站存取 URL"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__resource_properties
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_form
+msgid "Properties"
+msgstr "屬性"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_category_form
+msgid "Properties Definition"
+msgstr "屬性定義"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__reminder_type
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_form
+msgid "Reminder"
+msgstr "提醒"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__reminder_time
+msgid "Reminder Time (Minutes)"
+msgstr "提醒時間（分鐘）"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_form
+msgid "Reservation"
+msgstr "預定"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__reservation_count
+msgid "Reservation Count"
+msgstr "預定數量"
+
+#. module: odoo_booking_reservation
+#. odoo-python
+#: code:addons/odoo_booking_reservation/models/booking_resource_type.py:0
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__reservation_ids
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_tree
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_form
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_tree
+msgid "Reservations"
+msgstr "預定"
+
+#. module: odoo_booking_reservation
+#. odoo-python
+#: code:addons/odoo_booking_reservation/controllers/portal.py:0
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__resource_type_id
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_availability__resource_type_id
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_detail
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_my_bookings
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_search
+msgid "Resource"
+msgstr "資源"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__resource_enable_discussion
+msgid "Resource Allows Discussion"
+msgstr "資源允許討論"
+
+#. module: odoo_booking_reservation
+#: model:ir.model,name:odoo_booking_reservation.model_booking_resource_availability
+msgid "Resource Availability"
+msgstr "資源可用時間"
+
+#. module: odoo_booking_reservation
+#: model:ir.actions.act_window,name:odoo_booking_reservation.action_booking_resource_category
+#: model:ir.ui.menu,name:odoo_booking_reservation.menu_booking_resource_category
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_category_tree
+msgid "Resource Categories"
+msgstr "資源分類"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_category_form
+msgid "Resource Category"
+msgstr "資源分類"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_category__resource_count
+msgid "Resource Count"
+msgstr "資源數量"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__resource_description
+msgid "Resource Description"
+msgstr "資源說明"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
+msgid "Resource Information"
+msgstr "資源資訊"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_form
+msgid "Resource Name"
+msgstr "資源名稱"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_category__resource_properties_definition
+msgid "Resource Properties"
+msgstr "資源屬性"
+
+#. module: odoo_booking_reservation
+#: model:ir.model,name:odoo_booking_reservation.model_booking_reservation
+msgid "Resource Reservation"
+msgstr "資源預定"
+
+#. module: odoo_booking_reservation
+#: model:ir.actions.act_window,name:odoo_booking_reservation.action_booking_reservation_calendar
+#: model:ir.ui.menu,name:odoo_booking_reservation.menu_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_calendar
+msgid "Resource Reservations"
+msgstr "資源預定"
+
+#. module: odoo_booking_reservation
+#: model:ir.module.category,description:odoo_booking_reservation.module_category_booking
+msgid "Resource booking and management"
+msgstr "資源預定與管理"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_category__resource_ids
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_category_form
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_category_tree
+msgid "Resources"
+msgstr "資源"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__message_has_sms_error
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "簡訊傳送錯誤"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields.selection,name:odoo_booking_reservation.selection__booking_resource_availability__dayofweek__5
+msgid "Saturday"
+msgstr "星期六"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_search
+msgid "Search Reservations"
+msgstr "搜尋預定"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_search
+msgid "Search Resources"
+msgstr "搜尋資源"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__access_token
+msgid "Security Token"
+msgstr "安全權杖"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_new_booking
+msgid "Select &amp; Book"
+msgstr "選擇並預定"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_form
+msgid "Select a resource"
+msgstr "選擇資源"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,help:odoo_booking_reservation.field_booking_resource_type__allowed_partner_ids
+msgid ""
+"Select contacts allowed to book this resource (Portal users). Only applies "
+"when access type is \"Specific Contacts\"."
+msgstr "選擇允許預定此資源的聯絡人（入口網站使用者）。僅在存取類型為「特定聯絡人」時套用。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_form
+msgid "Select contacts who can book this resource..."
+msgstr "選擇可以預定此資源的聯絡人..."
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_form
+msgid "Select or create a category..."
+msgstr "選擇或建立分類..."
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_category__sequence
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__sequence
+msgid "Sequence"
+msgstr "排序"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__slot_duration
+msgid "Slot Duration (Hours)"
+msgstr "時段時長（小時）"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__slot_interval
+msgid "Slot Interval (Hours)"
+msgstr "時段間隔（小時）"
+
+#. module: odoo_booking_reservation
+#. odoo-python
+#: code:addons/odoo_booking_reservation/models/booking_resource_type.py:0
+msgid "Slot duration must be a positive number."
+msgstr "時段時長必須為正數。"
+
+#. module: odoo_booking_reservation
+#. odoo-python
+#: code:addons/odoo_booking_reservation/models/booking_resource_type.py:0
+msgid "Slot interval cannot be less than 15 minutes (0.25 hours)."
+msgstr "時段間隔不能少於 15 分鐘（0.25 小時）。"
+
+#. module: odoo_booking_reservation
+#. odoo-python
+#: code:addons/odoo_booking_reservation/models/booking_resource_type.py:0
+msgid "Slot interval must be a positive number."
+msgstr "時段間隔必須為正數。"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields.selection,name:odoo_booking_reservation.selection__booking_resource_type__share_type__specific
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_search
+msgid "Specific Contacts"
+msgstr "特定聯絡人"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__start_datetime
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_detail
+msgid "Start"
+msgstr "開始"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_availability__hour_from
 msgid "Start Time"
 msgstr "開始時間"
 
 #. module: odoo_booking_reservation
-msgid "End Time"
-msgstr "結束時間"
+#: model:ir.model.fields,help:odoo_booking_reservation.field_booking_resource_availability__hour_from
+msgid "Start time in 24-hour format (e.g. 9.0 = 09:00, 14.5 = 14:30)"
+msgstr "開始時間使用 24 小時制（例如 9.0 = 09:00，14.5 = 14:30）"
+
+#. module: odoo_booking_reservation
+#. odoo-python
+#: code:addons/odoo_booking_reservation/models/booking_resource_availability.py:0
+msgid "Start time must be before end time."
+msgstr "開始時間必須在結束時間之前。"
+
+#. module: odoo_booking_reservation
+#. odoo-python
+#: code:addons/odoo_booking_reservation/models/booking_resource_availability.py:0
+msgid "Start time must be between 0 and 24."
+msgstr "開始時間必須介於 0 到 24 之間。"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__state
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_search
+msgid "State"
+msgstr "狀態"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_my_bookings
+msgid "Status"
+msgstr "狀態"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__subject
+msgid "Subject"
+msgstr "主題"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields.selection,name:odoo_booking_reservation.selection__booking_resource_availability__dayofweek__6
+msgid "Sunday"
+msgstr "星期日"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_no_resources
+msgid "There are currently no resources available for you to book."
+msgstr "目前沒有可供您預定的資源。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_search
+msgid "This Week"
+msgstr "本週"
+
+#. module: odoo_booking_reservation
+#. odoo-python
+#: code:addons/odoo_booking_reservation/controllers/portal.py:0
+msgid "This reservation does not exist or you do not have access."
+msgstr "此預定不存在或您沒有存取權限。"
+
+#. module: odoo_booking_reservation
+#. odoo-python
+#: code:addons/odoo_booking_reservation/models/booking_reservation.py:0
+msgid ""
+"This time slot for resource \"%s\" is already booked. Please choose another "
+"time."
+msgstr "資源「%s」的此時段已被預定，請選擇其他時間。"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields.selection,name:odoo_booking_reservation.selection__booking_resource_availability__dayofweek__3
+msgid "Thursday"
+msgstr "星期四"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_form
+msgid "Time"
+msgstr "時間"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_search
+msgid "Today"
+msgstr "今天"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields.selection,name:odoo_booking_reservation.selection__booking_resource_availability__dayofweek__1
+msgid "Tuesday"
+msgstr "星期二"
+
+#. module: odoo_booking_reservation
+#. odoo-python
+#: code:addons/odoo_booking_reservation/controllers/portal.py:0
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_search
+msgid "Upcoming"
+msgstr "即將到來"
+
+#. module: odoo_booking_reservation
+#: model:res.groups,name:odoo_booking_reservation.group_booking_user
+msgid "User"
+msgstr "使用者"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_my_home_booking
+msgid "View and manage your resource bookings"
+msgstr "查看並管理您的資源預定"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_reservation__website_message_ids
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__website_message_ids
+msgid "Website Messages"
+msgstr "網站訊息"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,help:odoo_booking_reservation.field_booking_reservation__website_message_ids
+#: model:ir.model.fields,help:odoo_booking_reservation.field_booking_resource_type__website_message_ids
+msgid "Website communication history"
+msgstr "網站溝通歷史"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields.selection,name:odoo_booking_reservation.selection__booking_resource_availability__dayofweek__2
+msgid "Wednesday"
+msgstr "星期三"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,help:odoo_booking_reservation.field_booking_reservation__resource_enable_discussion
+#: model:ir.model.fields,help:odoo_booking_reservation.field_booking_resource_type__enable_discussion
+msgid ""
+"When enabled, users booking this resource can create a discussion channel "
+"for the reservation."
+msgstr "啟用後，預定此資源的使用者可為該預定建立討論通道。"
+
+#. module: odoo_booking_reservation
+#. odoo-python
+#: code:addons/odoo_booking_reservation/controllers/portal.py:0
+msgid "You do not have permission to access this resource."
+msgstr "您沒有權限存取此資源。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_form
+msgid "e.g. Building A, 2nd Floor"
+msgstr "例如：A 棟 2 樓"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_form
+msgid "e.g. Weekly Team Meeting"
+msgstr "例如：每週團隊會議"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_new_booking
+msgid "hour slots"
+msgstr "小時時段"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_detail
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_my_bookings
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_resource_detail
+msgid "hours"
+msgstr "小時"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_my_bookings
+msgid "to make a booking."
+msgstr "以進行預定。"
+
+#. module: odoo_booking_reservation
+#: model:mail.template,subject:odoo_booking_reservation.mail_template_booking_cancelled
+msgid "{{ object.name }} - Booking Cancelled"
+msgstr "{{ object.name }} - 預定已取消"
+
+#. module: odoo_booking_reservation
+#: model:mail.template,subject:odoo_booking_reservation.mail_template_booking_confirmed
+msgid "{{ object.name }} - Booking Confirmed"
+msgstr "{{ object.name }} - 預定已確認"
