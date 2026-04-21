@@ -1,0 +1,58 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - navigation [ref=e3]:
+      - button "" [ref=e5] [cursor=pointer]:
+        - generic [ref=e6]: 
+      - menuitem "討論" [ref=e7] [cursor=pointer]
+      - menu [ref=e8]:
+        - button "配置" [ref=e9] [cursor=pointer]:
+          - generic [ref=e10]: 配置
+      - menu [ref=e11]:
+        - button "訊息 3" [ref=e13] [cursor=pointer]:
+          - img "訊息" [ref=e14]: 
+          - generic [ref=e15]: "3"
+        - button "活動" [ref=e16] [cursor=pointer]:
+          - img "活動" [ref=e17]: 
+        - button "My Company" [disabled] [ref=e19]:
+          - text: 
+          - generic [ref=e20]: My Company
+        - button "使用者" [ref=e22] [cursor=pointer]:
+          - img "使用者" [ref=e23]
+          - text: 
+  - generic [ref=e25]:
+    - generic [ref=e31]: 討論
+    - generic [ref=e32]:
+      - generic [ref=e33]:
+        - generic [ref=e35]:
+          - button "" [ref=e36] [cursor=pointer]:
+            - generic [ref=e37]: 
+          - button " 開始會議" [ref=e38] [cursor=pointer]:
+            - generic [ref=e39]: 
+            - generic [ref=e40]: 開始會議
+        - generic [ref=e41]:
+          - button " 收件箱" [ref=e42] [cursor=pointer]:
+            - generic "收件箱" [ref=e44]: 
+            - generic [ref=e45]: 收件箱
+          - button " 星標信件" [ref=e46] [cursor=pointer]:
+            - generic "最愛" [ref=e48]: 
+            - generic [ref=e49]: 星標信件
+          - button " 過往訂單" [ref=e50] [cursor=pointer]:
+            - generic "過往訂單" [ref=e52]: 
+            - generic [ref=e53]: 過往訂單
+        - generic [ref=e54]:
+          - button "頻道" [ref=e55] [cursor=pointer]:
+            - text: 
+            - generic [ref=e56]: 頻道
+          - generic [ref=e58]:
+            - button "檢視或加入頻道" [ref=e59] [cursor=pointer]:
+              - img [ref=e60]: 
+            - button "添加或加入頻道" [ref=e61] [cursor=pointer]:
+              - img [ref=e62]: 
+        - generic [ref=e63]:
+          - button "直接訊息" [ref=e64] [cursor=pointer]:
+            - text: 
+            - generic [ref=e65]: 直接訊息
+          - button "開始對話" [ref=e68] [cursor=pointer]:
+            - img [ref=e69]: 
+      - generic [ref=e72]:
+        - generic: 
