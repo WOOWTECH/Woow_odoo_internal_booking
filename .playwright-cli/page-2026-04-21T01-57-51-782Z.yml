@@ -1,0 +1,48 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - navigation [ref=e4]:
+      - generic [ref=e5]:
+        - link "Logo of My Company" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - img "Logo of My Company" [ref=e7]
+        - list [ref=e8]:
+          - listitem [ref=e9]:
+            - button "Administrator" [ref=e10] [cursor=pointer]
+            - text:   
+  - main [ref=e11]:
+    - list [ref=e14]:
+      - listitem [ref=e15]:
+        - link "首頁" [ref=e16] [cursor=pointer]:
+          - /url: /my/home
+          - generic [ref=e17]: 
+    - generic [ref=e19]:
+      - heading "My Bookings" [level=3] [ref=e20]
+      - generic [ref=e21]:
+        - link " New Booking" [ref=e22] [cursor=pointer]:
+          - /url: /my/booking/resources
+          - generic [ref=e23]: 
+          - text: New Booking
+        - generic [ref=e24]:
+          - button " Upcoming" [ref=e26] [cursor=pointer]:
+            - generic [ref=e27]: 
+            - text: Upcoming
+          - button " Date (Newest)" [ref=e29] [cursor=pointer]:
+            - generic [ref=e30]: 
+            - text: Date (Newest)
+      - alert [ref=e31]:
+        - generic [ref=e32]: 
+        - text: You don't have any bookings yet.
+        - link "Browse available resources" [ref=e33] [cursor=pointer]:
+          - /url: /my/booking/resources
+        - text: to make a booking.
+  - contentinfo [ref=e34]:
+    - generic [ref=e37]:
+      - generic [ref=e38]:
+        - generic [ref=e39]: 版權所有 © My Company
+        - button "繁體中文" [expanded] [ref=e41] [cursor=pointer]
+      - generic [ref=e43]:
+        - text: 由
+        - link "Odoo" [ref=e44] [cursor=pointer]:
+          - /url: http://www.odoo.com?utm_source=db&utm_medium=portal
+          - img "Odoo" [ref=e45]
+        - text: 驅動

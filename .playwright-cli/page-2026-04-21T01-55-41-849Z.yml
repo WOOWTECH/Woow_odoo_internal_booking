@@ -1,0 +1,364 @@
+- generic [ref=e1]:
+  - banner [ref=e2]:
+    - navigation [ref=e3]:
+      - button "" [ref=e5] [cursor=pointer]:
+        - generic [ref=e6]: 
+      - menuitem "日曆" [ref=e7] [cursor=pointer]
+      - menu [ref=e8]:
+        - menuitem "日曆" [ref=e9] [cursor=pointer]
+        - menuitem "資源預定" [ref=e10] [cursor=pointer]
+        - button "配置" [ref=e11] [cursor=pointer]:
+          - generic [ref=e12]: 配置
+      - menu [ref=e13]:
+        - button "訊息 3" [ref=e27] [cursor=pointer]:
+          - img "訊息" [ref=e16]: 
+          - generic [ref=e17]: "3"
+        - button "活動" [ref=e18] [cursor=pointer]:
+          - img "活動" [ref=e19]: 
+        - button "My Company" [disabled] [ref=e21]:
+          - text: 
+          - generic [ref=e22]: My Company
+        - button "使用者" [ref=e24] [cursor=pointer]:
+          - img "使用者" [ref=e25]
+          - text: 
+  - generic [ref=e485]:
+    - generic [ref=e487]:
+      - generic [ref=e488]:
+        - button "新增" [ref=e491] [cursor=pointer]
+        - generic [ref=e494]: 資源預定
+      - search [ref=e496]:
+        - search [ref=e497]:
+          - button "搜尋⋯" [ref=e498] [cursor=pointer]:
+            - img [ref=e499]: 
+          - generic [ref=e500]:
+            - listitem "搜尋" [ref=e501]:
+              - button " " [ref=e503] [cursor=pointer]:
+                - generic [ref=e504]: 
+                - generic [ref=e506]: 
+              - generic [ref=e507]:
+                - generic "Confirmed" [ref=e508]
+                - button "移除" [ref=e509] [cursor=pointer]: 
+            - searchbox "搜尋⋯" [active] [ref=e510]
+        - button "" [ref=e511] [cursor=pointer]
+      - navigation [ref=e513]:
+        - button "" [ref=e514] [cursor=pointer]:
+          - generic [ref=e515]: 
+        - button "" [ref=e516] [cursor=pointer]:
+          - generic [ref=e517]: 
+    - generic [ref=e519]:
+      - generic [ref=e520]:
+        - generic [ref=e521]:
+          - button "上一頁" [ref=e522] [cursor=pointer]:
+            - generic [ref=e523]: 
+          - button "下一頁" [ref=e524] [cursor=pointer]:
+            - generic [ref=e525]: 
+        - button "星期 " [ref=e527] [cursor=pointer]
+        - button "今天" [ref=e528] [cursor=pointer]
+        - heading "4 2026 星期 17" [level=5] [ref=e529]:
+          - text: 4 2026
+          - generic [ref=e530]: 星期 17
+      - button "" [ref=e532] [cursor=pointer]
+      - generic [ref=e533]:
+        - grid [ref=e538]:
+          - rowgroup [ref=e539]:
+            - row "2026年4月19日 2026年4月20日 2026年4月21日 2026年4月22日 2026年4月23日 2026年4月24日 2026年4月25日" [ref=e544]:
+              - generic [ref=e546]: Week 17
+              - columnheader "2026年4月19日" [ref=e547]:
+                - generic "2026年4月19日" [ref=e549]:
+                  - generic [ref=e550]: 週日
+                  - generic [ref=e551]: "19"
+              - columnheader "2026年4月20日" [ref=e552]:
+                - generic "2026年4月20日" [ref=e554]:
+                  - generic [ref=e555]: 週一
+                  - generic [ref=e556]: "20"
+              - columnheader "2026年4月21日" [ref=e557]:
+                - generic "2026年4月21日" [ref=e559]:
+                  - generic [ref=e560]: 週二
+                  - generic [ref=e561]: "21"
+              - columnheader "2026年4月22日" [ref=e562]:
+                - generic "2026年4月22日" [ref=e564]:
+                  - generic [ref=e565]: 週三
+                  - generic [ref=e566]: "22"
+              - columnheader "2026年4月23日" [ref=e567]:
+                - generic "2026年4月23日" [ref=e569]:
+                  - generic [ref=e570]: 週四
+                  - generic [ref=e571]: "23"
+              - columnheader "2026年4月24日" [ref=e572]:
+                - generic "2026年4月24日" [ref=e574]:
+                  - generic [ref=e575]: 週五
+                  - generic [ref=e576]: "24"
+              - columnheader "2026年4月25日" [ref=e577]:
+                - generic "2026年4月25日" [ref=e579]:
+                  - generic [ref=e580]: 週六
+                  - generic [ref=e581]: "25"
+          - rowgroup [ref=e582]:
+            - row [ref=e588]:
+              - gridcell [ref=e590]
+              - gridcell [ref=e593]
+              - gridcell [ref=e596]
+              - gridcell [ref=e599]
+              - gridcell [ref=e602]
+              - gridcell [ref=e605]
+              - gridcell [ref=e608]
+            - generic [ref=e613]:
+              - table [ref=e615]:
+                - rowgroup [ref=e618]:
+                  - row [ref=e619]:
+                    - cell [ref=e620]:
+                      - generic [ref=e622]: 00:00
+                    - cell [ref=e623]
+                  - row [ref=e624]:
+                    - cell [ref=e625]
+                    - cell [ref=e626]
+                  - row [ref=e627]:
+                    - cell [ref=e628]:
+                      - generic [ref=e630]: 01:00
+                    - cell [ref=e631]
+                  - row [ref=e632]:
+                    - cell [ref=e633]
+                    - cell [ref=e634]
+                  - row [ref=e635]:
+                    - cell [ref=e636]:
+                      - generic [ref=e638]: 02:00
+                    - cell [ref=e639]
+                  - row [ref=e640]:
+                    - cell [ref=e641]
+                    - cell [ref=e642]
+                  - row [ref=e643]:
+                    - cell [ref=e644]:
+                      - generic [ref=e646]: 03:00
+                    - cell [ref=e647]
+                  - row [ref=e648]:
+                    - cell [ref=e649]
+                    - cell [ref=e650]
+                  - row [ref=e651]:
+                    - cell [ref=e652]:
+                      - generic [ref=e654]: 04:00
+                    - cell [ref=e655]
+                  - row [ref=e656]:
+                    - cell [ref=e657]
+                    - cell [ref=e658]
+                  - row [ref=e659]:
+                    - cell [ref=e660]:
+                      - generic [ref=e662]: 05:00
+                    - cell [ref=e663]
+                  - row [ref=e664]:
+                    - cell [ref=e665]
+                    - cell [ref=e666]
+                  - row [ref=e667]:
+                    - cell [ref=e668]:
+                      - generic [ref=e670]: 06:00
+                    - cell [ref=e671]
+                  - row [ref=e672]:
+                    - cell [ref=e673]
+                    - cell [ref=e674]
+                  - row [ref=e675]:
+                    - cell [ref=e676]:
+                      - generic [ref=e678]: 07:00
+                    - cell [ref=e679]
+                  - row [ref=e680]:
+                    - cell [ref=e681]
+                    - cell [ref=e682]
+                  - row [ref=e683]:
+                    - cell [ref=e684]:
+                      - generic [ref=e686]: 08:00
+                    - cell [ref=e687]
+                  - row [ref=e688]:
+                    - cell [ref=e689]
+                    - cell [ref=e690]
+                  - row [ref=e691]:
+                    - cell [ref=e692]:
+                      - generic [ref=e694]: 09:00
+                    - cell [ref=e695]
+                  - row [ref=e696]:
+                    - cell [ref=e697]
+                    - cell [ref=e698]
+                  - row [ref=e699]:
+                    - cell [ref=e700]:
+                      - generic [ref=e702]: 10:00
+                    - cell [ref=e703]
+                  - row [ref=e704]:
+                    - cell [ref=e705]
+                    - cell [ref=e706]
+                  - row [ref=e707]:
+                    - cell [ref=e708]:
+                      - generic [ref=e710]: 11:00
+                    - cell [ref=e711]
+                  - row [ref=e712]:
+                    - cell [ref=e713]
+                    - cell [ref=e714]
+                  - row [ref=e715]:
+                    - cell [ref=e716]:
+                      - generic [ref=e718]: 12:00
+                    - cell [ref=e719]
+                  - row [ref=e720]:
+                    - cell [ref=e721]
+                    - cell [ref=e722]
+                  - row [ref=e723]:
+                    - cell [ref=e724]:
+                      - generic [ref=e726]: 13:00
+                    - cell [ref=e727]
+                  - row [ref=e728]:
+                    - cell [ref=e729]
+                    - cell [ref=e730]
+                  - row [ref=e731]:
+                    - cell [ref=e732]:
+                      - generic [ref=e734]: 14:00
+                    - cell [ref=e735]
+                  - row [ref=e736]:
+                    - cell [ref=e737]
+                    - cell [ref=e738]
+                  - row [ref=e739]:
+                    - cell [ref=e740]:
+                      - generic [ref=e742]: 15:00
+                    - cell [ref=e743]
+                  - row [ref=e744]:
+                    - cell [ref=e745]
+                    - cell [ref=e746]
+                  - row [ref=e747]:
+                    - cell [ref=e748]:
+                      - generic [ref=e750]: 16:00
+                    - cell [ref=e751]
+                  - row [ref=e752]:
+                    - cell [ref=e753]
+                    - cell [ref=e754]
+                  - row [ref=e755]:
+                    - cell [ref=e756]:
+                      - generic [ref=e758]: 17:00
+                    - cell [ref=e759]
+                  - row [ref=e760]:
+                    - cell [ref=e761]
+                    - cell [ref=e762]
+                  - row [ref=e763]:
+                    - cell [ref=e764]:
+                      - generic [ref=e766]: 18:00
+                    - cell [ref=e767]
+                  - row [ref=e768]:
+                    - cell [ref=e769]
+                    - cell [ref=e770]
+                  - row [ref=e771]:
+                    - cell [ref=e772]:
+                      - generic [ref=e774]: 19:00
+                    - cell [ref=e775]
+                  - row [ref=e776]:
+                    - cell [ref=e777]
+                    - cell [ref=e778]
+                  - row [ref=e779]:
+                    - cell [ref=e780]:
+                      - generic [ref=e782]: 20:00
+                    - cell [ref=e783]
+                  - row [ref=e784]:
+                    - cell [ref=e785]
+                    - cell [ref=e786]
+                  - row [ref=e787]:
+                    - cell [ref=e788]:
+                      - generic [ref=e790]: 21:00
+                    - cell [ref=e791]
+                  - row [ref=e792]:
+                    - cell [ref=e793]
+                    - cell [ref=e794]
+                  - row [ref=e795]:
+                    - cell [ref=e796]:
+                      - generic [ref=e798]: 22:00
+                    - cell [ref=e799]
+                  - row [ref=e800]:
+                    - cell [ref=e801]
+                    - cell [ref=e802]
+                  - row [ref=e803]:
+                    - cell [ref=e804]:
+                      - generic [ref=e806]: 23:00
+                    - cell [ref=e807]
+                  - row [ref=e808]:
+                    - cell [ref=e809]
+                    - cell [ref=e810]
+              - row [ref=e814]:
+                - gridcell [ref=e818]
+                - gridcell [ref=e821]
+                - gridcell [ref=e824]
+                - gridcell [ref=e827]
+                - gridcell [ref=e830]
+                - gridcell [ref=e833]
+                - gridcell [ref=e836]
+        - generic [ref=e841]:
+          - navigation [ref=e842]:
+            - button "" [ref=e843] [cursor=pointer]:
+              - generic "上月" [ref=e844]: 
+            - button "4月 2026" [ref=e845] [cursor=pointer]:
+              - strong [ref=e846]: 4月 2026
+            - button "" [ref=e847] [cursor=pointer]:
+              - generic "下月" [ref=e848]: 
+          - generic [ref=e850]:
+            - generic "星期日" [ref=e851]:
+              - generic [ref=e852]: 日
+            - generic "星期一" [ref=e853]:
+              - generic [ref=e854]: 一
+            - generic "星期二" [ref=e855]:
+              - generic [ref=e856]: 二
+            - generic "星期三" [ref=e857]:
+              - generic [ref=e858]: 三
+            - generic "星期四" [ref=e859]:
+              - generic [ref=e860]: 四
+            - generic "星期五" [ref=e861]:
+              - generic [ref=e862]: 五
+            - generic "星期六" [ref=e863]:
+              - generic [ref=e864]: 六
+            - button "1" [ref=e868] [cursor=pointer]:
+              - generic [ref=e869]: "1"
+            - button "2" [ref=e870] [cursor=pointer]:
+              - generic [ref=e871]: "2"
+            - button "3" [ref=e872] [cursor=pointer]:
+              - generic [ref=e873]: "3"
+            - button "4" [ref=e874] [cursor=pointer]:
+              - generic [ref=e875]: "4"
+            - button "5" [ref=e876] [cursor=pointer]:
+              - generic [ref=e877]: "5"
+            - button "6" [ref=e878] [cursor=pointer]:
+              - generic [ref=e879]: "6"
+            - button "7" [ref=e880] [cursor=pointer]:
+              - generic [ref=e881]: "7"
+            - button "8" [ref=e882] [cursor=pointer]:
+              - generic [ref=e883]: "8"
+            - button "9" [ref=e884] [cursor=pointer]:
+              - generic [ref=e885]: "9"
+            - button "10" [ref=e886] [cursor=pointer]:
+              - generic [ref=e887]: "10"
+            - button "11" [ref=e888] [cursor=pointer]:
+              - generic [ref=e889]: "11"
+            - button "12" [ref=e890] [cursor=pointer]:
+              - generic [ref=e891]: "12"
+            - button "13" [ref=e892] [cursor=pointer]:
+              - generic [ref=e893]: "13"
+            - button "14" [ref=e894] [cursor=pointer]:
+              - generic [ref=e895]: "14"
+            - button "15" [ref=e896] [cursor=pointer]:
+              - generic [ref=e897]: "15"
+            - button "16" [ref=e898] [cursor=pointer]:
+              - generic [ref=e899]: "16"
+            - button "17" [ref=e900] [cursor=pointer]:
+              - generic [ref=e901]: "17"
+            - button "18" [ref=e902] [cursor=pointer]:
+              - generic [ref=e903]: "18"
+            - button "19" [ref=e904] [cursor=pointer]:
+              - generic [ref=e905]: "19"
+            - button "20" [ref=e906] [cursor=pointer]:
+              - generic [ref=e907]: "20"
+            - button "21" [ref=e908] [cursor=pointer]:
+              - generic [ref=e909]: "21"
+            - button "22" [ref=e910] [cursor=pointer]:
+              - generic [ref=e911]: "22"
+            - button "23" [ref=e912] [cursor=pointer]:
+              - generic [ref=e913]: "23"
+            - button "24" [ref=e914] [cursor=pointer]:
+              - generic [ref=e915]: "24"
+            - button "25" [ref=e916] [cursor=pointer]:
+              - generic [ref=e917]: "25"
+            - button "26" [ref=e918] [cursor=pointer]:
+              - generic [ref=e919]: "26"
+            - button "27" [ref=e920] [cursor=pointer]:
+              - generic [ref=e921]: "27"
+            - button "28" [ref=e922] [cursor=pointer]:
+              - generic [ref=e923]: "28"
+            - button "29" [ref=e924] [cursor=pointer]:
+              - generic [ref=e925]: "29"
+            - button "30" [ref=e926] [cursor=pointer]:
+              - generic [ref=e927]: "30"

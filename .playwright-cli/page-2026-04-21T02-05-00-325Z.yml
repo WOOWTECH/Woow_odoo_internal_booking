@@ -1,0 +1,135 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - navigation [ref=e4]:
+      - generic [ref=e5]:
+        - link "Logo of My Company" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - img "Logo of My Company" [ref=e7]
+        - list [ref=e8]:
+          - listitem [ref=e9]:
+            - button "Administrator" [ref=e10] [cursor=pointer]
+            - text:   
+  - main [ref=e11]:
+    - list [ref=e14]:
+      - listitem [ref=e15]:
+        - link "首頁" [ref=e16] [cursor=pointer]:
+          - /url: /my/home
+          - generic [ref=e17]: 
+    - generic [ref=e19]:
+      - heading "可用資源" [level=3] [ref=e20]
+      - generic [ref=e21]:
+        - generic [ref=e23]:
+          - generic [ref=e25]: 
+          - generic [ref=e26]:
+            - heading "Conference Room A" [level=5] [ref=e27]
+            - paragraph [ref=e28]:
+              - generic [ref=e29]: 
+              - text: Building 1, Floor 3
+              - generic [ref=e30]: 
+              - text: 容量： 20
+          - link " 立即預定" [ref=e32] [cursor=pointer]:
+            - /url: /my/booking/resources/2
+            - generic [ref=e33]: 
+            - text: 立即預定
+        - generic [ref=e35]:
+          - generic [ref=e37]: 
+          - generic [ref=e38]:
+            - heading "Executive Boardroom" [level=5] [ref=e39]
+            - paragraph [ref=e40]:
+              - generic [ref=e41]: 
+              - text: HQ Tower, 12F
+              - generic [ref=e42]: 
+              - text: 容量： 30
+          - link " 立即預定" [ref=e44] [cursor=pointer]:
+            - /url: /my/booking/resources/225
+            - generic [ref=e45]: 
+            - text: 立即預定
+        - generic [ref=e47]:
+          - generic [ref=e49]: 
+          - generic [ref=e50]:
+            - heading "Innovation Lab" [level=5] [ref=e51]
+            - paragraph [ref=e52]:
+              - generic [ref=e53]: 
+              - text: HQ Tower, 8F - Creative Wing
+              - generic [ref=e54]: 
+              - text: 容量： 20
+          - link " 立即預定" [ref=e56] [cursor=pointer]:
+            - /url: /my/booking/resources/228
+            - generic [ref=e57]: 
+            - text: 立即預定
+        - generic [ref=e59]:
+          - generic [ref=e61]: 
+          - generic [ref=e62]:
+            - heading "Phone Booth" [level=5] [ref=e63]
+            - paragraph [ref=e64]:
+              - generic [ref=e65]: 
+              - text: Building 1, Floor 1
+              - generic [ref=e66]: 
+              - text: 容量： 1
+          - link " 立即預定" [ref=e68] [cursor=pointer]:
+            - /url: /my/booking/resources/6
+            - generic [ref=e69]: 
+            - text: 立即預定
+        - generic [ref=e71]:
+          - generic [ref=e73]: 
+          - generic [ref=e74]:
+            - heading "Projector" [level=5] [ref=e75]
+            - paragraph [ref=e76]:
+              - generic [ref=e77]: 
+              - text: IT Department
+              - generic [ref=e78]: 
+              - text: 容量： 1
+          - link " 立即預定" [ref=e80] [cursor=pointer]:
+            - /url: /my/booking/resources/5
+            - generic [ref=e81]: 
+            - text: 立即預定
+        - generic [ref=e83]:
+          - generic [ref=e85]: 
+          - generic [ref=e86]:
+            - heading "Small Meeting Room B" [level=5] [ref=e87]
+            - paragraph [ref=e88]:
+              - generic [ref=e89]: 
+              - text: Building 1, Floor 2
+              - generic [ref=e90]: 
+              - text: 容量： 6
+          - link " 立即預定" [ref=e92] [cursor=pointer]:
+            - /url: /my/booking/resources/3
+            - generic [ref=e93]: 
+            - text: 立即預定
+        - generic [ref=e95]:
+          - generic [ref=e97]: 
+          - generic [ref=e98]:
+            - heading "Training Lab" [level=5] [ref=e99]
+            - paragraph [ref=e100]:
+              - generic [ref=e101]: 
+              - text: HQ Tower, B1
+              - generic [ref=e102]: 
+              - text: 容量： 40
+          - link " 立即預定" [ref=e104] [cursor=pointer]:
+            - /url: /my/booking/resources/226
+            - generic [ref=e105]: 
+            - text: 立即預定
+        - generic [ref=e107]:
+          - generic [ref=e109]: 
+          - generic [ref=e110]:
+            - heading "Video Conference Pod" [level=5] [ref=e111]
+            - paragraph [ref=e112]:
+              - generic [ref=e113]: 
+              - text: HQ Tower, 3F (near elevator)
+              - generic [ref=e114]: 
+              - text: 容量： 2
+          - link " 立即預定" [ref=e116] [cursor=pointer]:
+            - /url: /my/booking/resources/227
+            - generic [ref=e117]: 
+            - text: 立即預定
+  - contentinfo [ref=e118]:
+    - generic [ref=e121]:
+      - generic [ref=e122]:
+        - generic [ref=e123]: 版權所有 © My Company
+        - button "繁體中文" [expanded] [ref=e125] [cursor=pointer]
+      - generic [ref=e127]:
+        - text: 由
+        - link "Odoo" [ref=e128] [cursor=pointer]:
+          - /url: http://www.odoo.com?utm_source=db&utm_medium=portal
+          - img "Odoo" [ref=e129]
+        - text: 驅動
