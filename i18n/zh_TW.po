@@ -676,6 +676,11 @@ msgid "Close"
 msgstr "關閉"
 
 #. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_detail
+msgid "Comments &amp; Discussion"
+msgstr "評論與討論"
+
+#. module: odoo_booking_reservation
 #: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_reservation_form
 msgid "Confirm"
 msgstr "確認"

@@ -472,6 +472,7 @@ class BookingPortal(CustomerPortal):
 
         values = {
             'reservation': reservation,
+            'object': reservation,
             'page_name': 'booking_detail',
             'success': success,
             'error': error,
