@@ -1,0 +1,124 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - navigation [ref=e3]:
+      - button "" [ref=e5] [cursor=pointer]:
+        - generic [ref=e6]: 
+      - menuitem "討論" [ref=e7] [cursor=pointer]
+      - menu [ref=e8]:
+        - button "配置" [ref=e9] [cursor=pointer]:
+          - generic [ref=e10]: 配置
+      - menu [ref=e11]:
+        - button "訊息 3" [ref=e13] [cursor=pointer]:
+          - img "訊息" [ref=e14]: 
+          - generic [ref=e15]: "3"
+        - button "活動" [ref=e16] [cursor=pointer]:
+          - img "活動" [ref=e17]: 
+        - button "My Company" [disabled] [ref=e19]:
+          - text: 
+          - generic [ref=e20]: My Company
+        - button "使用者" [ref=e22] [cursor=pointer]:
+          - img "使用者" [ref=e23]
+          - text: 
+  - generic [ref=e25]:
+    - generic [ref=e31]: 收件箱
+    - generic [ref=e32]:
+      - generic [ref=e33]:
+        - generic [ref=e35]:
+          - button "" [ref=e36] [cursor=pointer]:
+            - generic [ref=e37]: 
+          - button " 開始會議" [ref=e38] [cursor=pointer]:
+            - generic [ref=e39]: 
+            - generic [ref=e40]: 開始會議
+        - generic [ref=e41]:
+          - button " 收件箱" [ref=e42] [cursor=pointer]:
+            - generic "收件箱" [ref=e44]: 
+            - generic [ref=e45]: 收件箱
+          - button " 星標信件" [ref=e46] [cursor=pointer]:
+            - generic "最愛" [ref=e48]: 
+            - generic [ref=e49]: 星標信件
+          - button " 歷史" [ref=e50] [cursor=pointer]:
+            - generic "歷史" [ref=e52]: 
+            - generic [ref=e53]: 歷史
+        - generic [ref=e54]:
+          - button " 頻道" [ref=e55] [cursor=pointer]:
+            - generic [ref=e56]: 
+            - generic [ref=e57]: 頻道
+          - generic [ref=e59]:
+            - button "檢視或加入頻道" [ref=e60] [cursor=pointer]:
+              - img [ref=e61]: 
+            - button "添加或加入頻道" [ref=e62] [cursor=pointer]:
+              - img [ref=e63]: 
+        - button "線程圖像 [Conference Room A] Conference Room A - 2026-04-09 16:00" [ref=e65] [cursor=pointer]:
+          - generic "[Conference Room A] Conference Room A - 2026-04-09 16:00" [ref=e66]:
+            - img "線程圖像" [ref=e68]
+            - generic [ref=e69]: "[Conference Room A] Conference Room A - 2026-04-09 16:00"
+          - text:  
+        - button "線程圖像 [Conference Room A] Conference Room A - 2026-04-09 16:00" [ref=e71] [cursor=pointer]:
+          - generic "[Conference Room A] Conference Room A - 2026-04-09 16:00" [ref=e72]:
+            - img "線程圖像" [ref=e74]
+            - generic [ref=e75]: "[Conference Room A] Conference Room A - 2026-04-09 16:00"
+          - text:  
+        - button "線程圖像 [Conference Room A] Discussion Test Meeting" [ref=e77] [cursor=pointer]:
+          - generic "[Conference Room A] Discussion Test Meeting" [ref=e78]:
+            - img "線程圖像" [ref=e80]
+            - generic [ref=e81]: "[Conference Room A] Discussion Test Meeting"
+          - text:  
+        - button "線程圖像 [Conference Room A] Discussion Test Meeting" [ref=e83] [cursor=pointer]:
+          - generic "[Conference Room A] Discussion Test Meeting" [ref=e84]:
+            - img "線程圖像" [ref=e86]
+            - generic [ref=e87]: "[Conference Room A] Discussion Test Meeting"
+          - text:  
+        - button "線程圖像 [Conference Room A] ㄙaserdtfyguh" [ref=e89] [cursor=pointer]:
+          - generic "[Conference Room A] ㄙaserdtfyguh" [ref=e90]:
+            - img "線程圖像" [ref=e92]
+            - generic [ref=e93]: "[Conference Room A] ㄙaserdtfyguh"
+          - text:  
+        - button "線程圖像 [Conference Room A] 在自身需求選擇" [ref=e95] [cursor=pointer]:
+          - generic "[Conference Room A] 在自身需求選擇" [ref=e96]:
+            - img "線程圖像" [ref=e98]
+            - generic [ref=e99]: "[Conference Room A] 在自身需求選擇"
+          - text:  
+        - button "線程圖像 [Conference Room A] 蛇舌惡此次" [ref=e101] [cursor=pointer]:
+          - generic "[Conference Room A] 蛇舌惡此次" [ref=e102]:
+            - img "線程圖像" [ref=e104]
+            - generic [ref=e105]: "[Conference Room A] 蛇舌惡此次"
+          - text:  
+        - button "線程圖像 [Executive Boardroom] Q2 Strategy Planning" [ref=e107] [cursor=pointer]:
+          - generic "[Executive Boardroom] Q2 Strategy Planning" [ref=e108]:
+            - img "線程圖像" [ref=e110]
+            - generic [ref=e111]: "[Executive Boardroom] Q2 Strategy Planning"
+          - text:  
+        - button "線程圖像 Administrators" [ref=e113] [cursor=pointer]:
+          - generic "Administrators" [ref=e114]:
+            - img "線程圖像" [ref=e116]
+            - generic [ref=e117]: Administrators
+          - text: 
+        - button "線程圖像 general " [ref=e119] [cursor=pointer]:
+          - generic "general" [ref=e120]:
+            - img "線程圖像" [ref=e122]
+            - generic [ref=e123]: general
+          - text: 
+          - generic "對話串有未讀訊息" [ref=e124]:
+            - generic [ref=e125]: 
+        - generic [ref=e126]:
+          - button " 直接訊息" [ref=e127] [cursor=pointer]:
+            - generic [ref=e128]: 
+            - generic [ref=e129]: 直接訊息
+          - button "開始對話" [ref=e132] [cursor=pointer]:
+            - img [ref=e133]: 
+        - button "線程圖像  OdooBot 1" [ref=e135] [cursor=pointer]:
+          - generic "OdooBot" [ref=e136]:
+            - generic [ref=e137]:
+              - img "線程圖像" [ref=e138]
+              - generic "Bot" [ref=e140]: 
+            - generic [ref=e141]: OdooBot
+          - generic [ref=e142]: "1"
+      - generic [ref=e144]:
+        - generic "收件箱" [ref=e146]: 
+        - textbox "收件箱" [disabled] [ref=e148]:
+          - /placeholder: ""
+        - generic [ref=e149]:
+          - generic [ref=e150]:
+            - button "標記全部為已讀" [disabled]
+          - button "" [ref=e152] [cursor=pointer]:
+            - generic [ref=e153]: 

@@ -1,0 +1,61 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - navigation [ref=e4]:
+      - generic [ref=e5]:
+        - link "Logo of My Company" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - img "Logo of My Company" [ref=e7]
+        - list [ref=e8]:
+          - listitem [ref=e9]:
+            - button "Administrator" [ref=e10] [cursor=pointer]
+            - text:   
+  - main [ref=e11]:
+    - generic [ref=e13]:
+      - heading "My account" [level=3] [ref=e15]
+      - generic [ref=e16]:
+        - generic [ref=e19]:
+          - link "Discussions Chat, collaborate, and review shared discussions" [ref=e22] [cursor=pointer]:
+            - /url: /my/discussions
+            - img [ref=e24]
+            - generic [ref=e25]:
+              - generic [ref=e27]: Discussions
+              - generic [ref=e28]: Chat, collaborate, and review shared discussions
+          - generic [ref=e29]:
+            - link "Connection & Security Configure your connection parameters" [ref=e31] [cursor=pointer]:
+              - /url: /my/security
+              - img [ref=e33]
+              - generic [ref=e34]:
+                - generic [ref=e35]: Connection & Security
+                - generic [ref=e36]: Configure your connection parameters
+            - link "My Bookings View and manage your resource bookings" [ref=e38] [cursor=pointer]:
+              - /url: /my/bookings
+              - img [ref=e40]
+              - generic [ref=e41]:
+                - generic [ref=e43]: My Bookings
+                - generic [ref=e44]: View and manage your resource bookings
+            - link "Booking Resources Browse and book available resources" [ref=e46] [cursor=pointer]:
+              - /url: /my/booking/resources
+              - img [ref=e48]
+              - generic [ref=e49]:
+                - generic [ref=e50]: Booking Resources
+                - generic [ref=e51]: Browse and book available resources
+        - generic [ref=e54]:
+          - generic [ref=e55]:
+            - img "Contact" [ref=e56]
+            - heading "Administrator" [level=5] [ref=e58]
+          - generic [ref=e63]:
+            - img "Email" [ref=e64]: 
+            - generic [ref=e65]: admin@example.com
+          - button " Edit information" [ref=e66] [cursor=pointer]:
+            - generic [ref=e67]: 
+            - text: Edit information
+  - contentinfo [ref=e68]:
+    - generic [ref=e71]:
+      - generic [ref=e72]:
+        - generic [ref=e73]: Copyright © My Company
+        - button "English (US)" [expanded] [ref=e75] [cursor=pointer]
+      - generic [ref=e77]:
+        - text: Powered by
+        - link "Odoo" [ref=e78] [cursor=pointer]:
+          - /url: http://www.odoo.com?utm_source=db&utm_medium=portal
+          - img "Odoo" [ref=e79]
