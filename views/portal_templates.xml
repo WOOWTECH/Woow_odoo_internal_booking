@@ -5,22 +5,14 @@
     <!-- ============================================================ -->
 
     <template id="portal_my_home_booking" name="Show Booking Count" inherit_id="portal.portal_my_home" priority="30">
-        <!-- Add booking cards inside the existing portal_common_category -->
+        <!-- Add Internal Resource card inside the existing portal_common_category -->
         <xpath expr="//div[@id='portal_common_category']" position="inside">
             <t t-call="portal.portal_docs_entry">
-                <t t-set="icon" t-value="'/odoo_booking_reservation/static/description/images/booking.svg'"/>
-                <t t-set="title">My Bookings</t>
-                <t t-set="url" t-value="'/my/bookings'"/>
-                <t t-set="text">View and manage your resource bookings</t>
+                <t t-set="icon" t-value="'/odoo_booking_reservation/static/description/images/internal_resource.svg'"/>
+                <t t-set="title">Internal Resource</t>
+                <t t-set="url" t-value="'/my/internal-resources'"/>
+                <t t-set="text">Browse resources and manage your bookings</t>
                 <t t-set="placeholder_count" t-value="'booking_count'"/>
-                <t t-set="config_card" t-value="True"/>
-            </t>
-            <t t-call="portal.portal_docs_entry">
-                <t t-set="icon" t-value="'/odoo_booking_reservation/static/description/images/resource.svg'"/>
-                <t t-set="title">Booking Resources</t>
-                <t t-set="url" t-value="'/my/booking/resources'"/>
-                <t t-set="text">Browse and book available resources</t>
-                <t t-set="config_card" t-value="True"/>
             </t>
         </xpath>
     </template>
@@ -80,6 +72,220 @@
                             </div>
                         </div>
                     </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- ============================================================ -->
+    <!-- INTERNAL RESOURCES (Integrated Page) -->
+    <!-- ============================================================ -->
+
+    <template id="portal_internal_resources" name="Internal Resources">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="False"/>
+
+            <h3 class="mb-4">Internal Resource</h3>
+
+            <!-- ===== Available Resources Section ===== -->
+            <h5 class="mb-3"><i class="fa fa-building-o"/> Available Resources</h5>
+
+            <t t-if="not resources">
+                <div class="alert alert-info" role="alert">
+                    <i class="fa fa-info-circle"/> There are no resources available for booking at this time.
+                </div>
+            </t>
+
+            <t t-if="resources">
+                <div class="row">
+                    <t t-foreach="resources" t-as="resource">
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card h-100 booking-resource-card">
+                                <t t-if="resource.image">
+                                    <img t-attf-src="/web/image/booking.resource.type/#{resource.id}/image"
+                                         class="card-img-top"
+                                         style="height: 180px; object-fit: cover;"
+                                         t-att-alt="resource.name"/>
+                                </t>
+                                <t t-else="">
+                                    <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center"
+                                         style="height: 180px;">
+                                        <i class="fa fa-building-o fa-4x text-white"/>
+                                    </div>
+                                </t>
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <t t-esc="resource.name"/>
+                                    </h5>
+                                    <p class="card-text text-muted">
+                                        <t t-if="resource.location">
+                                            <i class="fa fa-map-marker"/> <t t-esc="resource.location"/><br/>
+                                        </t>
+                                        <t t-if="resource.capacity">
+                                            <i class="fa fa-users"/> Capacity: <t t-esc="resource.capacity"/>
+                                        </t>
+                                    </p>
+                                </div>
+                                <div class="card-footer bg-transparent">
+                                    <a t-attf-href="/my/booking/resources/#{resource.id}"
+                                       class="btn btn-primary btn-block">
+                                        <i class="fa fa-calendar-plus-o"/> Book Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </t>
+
+            <hr class="my-4"/>
+
+            <!-- ===== My Bookings Section ===== -->
+            <h5 class="mb-3"><i class="fa fa-calendar-check-o"/> My Bookings</h5>
+
+            <!-- Actions Bar -->
+            <div class="d-flex flex-column flex-sm-row justify-content-end align-items-start align-items-sm-center gap-2 mb-3">
+                <div class="d-flex gap-2">
+                    <!-- Filter Dropdown -->
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" data-bs-toggle="dropdown">
+                            <i class="fa fa-filter"/> <t t-esc="filter_options[filterby]['label']"/>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <t t-foreach="filter_options.items()" t-as="option">
+                                <li>
+                                    <a class="dropdown-item"
+                                       t-att-class="'active' if filterby == option[0] else ''"
+                                       t-attf-href="/my/internal-resources?filterby=#{option[0]}&amp;sortby=#{sortby}">
+                                        <t t-esc="option[1]['label']"/>
+                                    </a>
+                                </li>
+                            </t>
+                        </ul>
+                    </div>
+
+                    <!-- Sort Dropdown -->
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" data-bs-toggle="dropdown">
+                            <i class="fa fa-sort"/> <t t-esc="sort_options[sortby]['label']"/>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <t t-foreach="sort_options.items()" t-as="option">
+                                <li>
+                                    <a class="dropdown-item"
+                                       t-att-class="'active' if sortby == option[0] else ''"
+                                       t-attf-href="/my/internal-resources?sortby=#{option[0]}&amp;filterby=#{filterby}">
+                                        <t t-esc="option[1]['label']"/>
+                                    </a>
+                                </li>
+                            </t>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bookings: card list on mobile, table on md+ -->
+            <t t-if="not reservations">
+                <div class="alert alert-info" role="alert">
+                    <i class="fa fa-info-circle"/> You don't have any bookings yet.
+                    Select a resource above to make a booking.
+                </div>
+            </t>
+
+            <t t-if="reservations">
+                <!-- Mobile card layout (visible below md) -->
+                <div class="d-md-none">
+                    <t t-foreach="reservations" t-as="res">
+                        <a t-attf-href="/my/bookings/#{res.id}" class="text-decoration-none">
+                            <div t-att-class="'ws-booking-card mb-2' + (' ws-booking-card-cancelled' if res.state == 'cancelled' else ' ws-booking-card-confirmed')">
+                                <div class="card-body py-2 px-3">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div class="flex-grow-1 me-2">
+                                            <div class="ws-resource-name">
+                                                <t t-esc="res.resource_type_id.name"/>
+                                            </div>
+                                            <small class="text-muted">
+                                                <i class="fa fa-clock-o"/>
+                                                <t t-esc="res.start_datetime" t-options="{'widget': 'datetime', 'format': 'MM/dd HH:mm'}"/>
+                                                <span class="mx-1">·</span>
+                                                <t t-esc="'%.1f' % res.duration"/>h
+                                            </small>
+                                            <t t-if="res.resource_location">
+                                                <br/>
+                                                <small class="text-muted">
+                                                    <i class="fa fa-map-marker"/> <t t-esc="res.resource_location"/>
+                                                </small>
+                                            </t>
+                                        </div>
+                                        <div class="text-end">
+                                            <t t-if="res.state == 'confirmed'">
+                                                <span class="badge bg-success">Confirmed</span>
+                                            </t>
+                                            <t t-if="res.state == 'cancelled'">
+                                                <span class="badge bg-danger">Cancelled</span>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </t>
+                </div>
+
+                <!-- Desktop table layout (visible md+) -->
+                <div class="d-none d-md-block table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Resource</th>
+                                <th>Date &amp; Time</th>
+                                <th>Duration</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="reservations" t-as="res">
+                                <tr t-att-class="'text-muted' if res.state == 'cancelled' else ''">
+                                    <td>
+                                        <a t-attf-href="/my/bookings/#{res.id}">
+                                            <t t-esc="res.resource_type_id.name"/>
+                                        </a>
+                                        <t t-if="res.resource_location">
+                                            <br/>
+                                            <small class="text-muted">
+                                                <i class="fa fa-map-marker"/> <t t-esc="res.resource_location"/>
+                                            </small>
+                                        </t>
+                                    </td>
+                                    <td>
+                                        <t t-esc="res.start_datetime" t-options="{'widget': 'datetime', 'format': 'MMM dd, yyyy HH:mm'}"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="'%.1f' % res.duration"/> hours
+                                    </td>
+                                    <td>
+                                        <t t-if="res.state == 'confirmed'">
+                                            <span class="badge bg-success">Confirmed</span>
+                                        </t>
+                                        <t t-if="res.state == 'cancelled'">
+                                            <span class="badge bg-danger">Cancelled</span>
+                                        </t>
+                                    </td>
+                                    <td class="text-end">
+                                        <a t-attf-href="/my/bookings/#{res.id}" class="btn btn-sm btn-outline-primary">
+                                            <i class="fa fa-eye"/> View
+                                        </a>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pager -->
+                <div class="d-flex justify-content-center mt-3">
+                    <t t-call="portal.pager"/>
                 </div>
             </t>
         </t>
@@ -153,7 +359,7 @@
                     </div>
 
                     <div class="mt-3">
-                        <a href="/my/booking/resources" class="btn btn-secondary btn-block">
+                        <a href="/my/internal-resources" class="btn btn-secondary btn-block">
                             <i class="fa fa-arrow-left"/> Back to Resources
                         </a>
                     </div>
@@ -536,7 +742,7 @@
                         </div>
                         <div class="card-footer">
                             <div class="d-flex flex-column-reverse flex-sm-row justify-content-between gap-2">
-                                <a href="/my/bookings" class="btn btn-secondary">
+                                <a href="/my/internal-resources" class="btn btn-secondary">
                                     <i class="fa fa-arrow-left"/> Back
                                 </a>
                                 <t t-if="reservation.state == 'confirmed'">
@@ -673,8 +879,8 @@
             </div>
 
             <div class="mt-3">
-                <a href="/my/bookings" class="btn btn-secondary">
-                    <i class="fa fa-arrow-left"/> Back to My Bookings
+                <a href="/my/internal-resources" class="btn btn-secondary">
+                    <i class="fa fa-arrow-left"/> Back
                 </a>
             </div>
         </t>

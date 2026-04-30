@@ -121,6 +121,74 @@ class BookingPortal(CustomerPortal):
         return request.render('odoo_booking_reservation.portal_my_resources', values)
 
     # ============================================================
+    # INTERNAL RESOURCES (Integrated Page)
+    # ============================================================
+
+    @http.route(['/my/internal-resources', '/my/internal-resources/page/<int:page>'],
+                type='http', auth='user', website=True)
+    def portal_internal_resources(self, page=1, sortby='date_desc', filterby='upcoming', **kw):
+        """Display integrated page: resources + bookings."""
+        partner = request.env.user.partner_id
+
+        # Resources section
+        resources = self._get_accessible_resources(partner)
+
+        # Bookings section
+        Reservation = request.env['booking.reservation'].sudo()
+        domain = [('partner_id', '=', partner.id)]
+
+        filter_options = {
+            'all': {'label': _('All'), 'domain': []},
+            'upcoming': {'label': _('Upcoming'), 'domain': [('start_datetime', '>=', fields.Datetime.now()), ('state', '=', 'confirmed')]},
+            'past': {'label': _('Past'), 'domain': [('start_datetime', '<', fields.Datetime.now())]},
+            'confirmed': {'label': _('Confirmed'), 'domain': [('state', '=', 'confirmed')]},
+            'cancelled': {'label': _('Cancelled'), 'domain': [('state', '=', 'cancelled')]},
+        }
+
+        if filterby not in filter_options:
+            filterby = 'upcoming'
+        domain += filter_options[filterby]['domain']
+
+        sort_options = {
+            'date_desc': {'label': _('Date (Newest)'), 'order': 'start_datetime desc'},
+            'date_asc': {'label': _('Date (Oldest)'), 'order': 'start_datetime asc'},
+            'resource': {'label': _('Resource'), 'order': 'resource_type_id, start_datetime desc'},
+        }
+
+        if sortby not in sort_options:
+            sortby = 'date_desc'
+        order = sort_options[sortby]['order']
+
+        booking_count = Reservation.search_count(domain)
+        pager = portal_pager(
+            url='/my/internal-resources',
+            url_args={'sortby': sortby, 'filterby': filterby},
+            total=booking_count,
+            page=page,
+            step=10,
+        )
+
+        reservations = Reservation.search(
+            domain,
+            order=order,
+            limit=10,
+            offset=pager['offset'],
+        )
+
+        values = {
+            'resources': resources,
+            'reservations': reservations,
+            'pager': pager,
+            'sortby': sortby,
+            'filterby': filterby,
+            'sort_options': sort_options,
+            'filter_options': filter_options,
+            'page_name': 'internal_resources',
+        }
+
+        return request.render('odoo_booking_reservation.portal_internal_resources', values)
+
+    # ============================================================
     # RESOURCE DETAIL & BOOKING
     # ============================================================
 

@@ -1,0 +1,45 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Internal Resource: building with calendar and checkmark -->
+  <!-- Ground shadow -->
+  <ellipse cx="32" cy="59" rx="24" ry="3" fill="#C1DBF6" opacity="0.5"/>
+  <!-- Building body -->
+  <rect x="6" y="14" width="28" height="42" rx="3" fill="#C1DBF6" stroke="#374874" stroke-width="1.5"/>
+  <!-- Building roof/header -->
+  <rect x="6" y="14" width="28" height="8" rx="3" fill="#374874"/>
+  <rect x="6" y="19" width="28" height="3" fill="#374874"/>
+  <!-- Building windows row 1 -->
+  <rect x="10" y="26" width="6" height="5" rx="1" fill="white" stroke="#374874" stroke-width="0.8"/>
+  <rect x="19" y="26" width="6" height="5" rx="1" fill="white" stroke="#374874" stroke-width="0.8"/>
+  <rect x="28" y="26" width="4" height="5" rx="1" fill="white" stroke="#374874" stroke-width="0.8"/>
+  <!-- Building windows row 2 -->
+  <rect x="10" y="34" width="6" height="5" rx="1" fill="white" stroke="#374874" stroke-width="0.8"/>
+  <rect x="19" y="34" width="6" height="5" rx="1" fill="#FBDBD0" stroke="#374874" stroke-width="0.8"/>
+  <rect x="28" y="34" width="4" height="5" rx="1" fill="white" stroke="#374874" stroke-width="0.8"/>
+  <!-- Building door -->
+  <rect x="15" y="46" width="10" height="10" rx="2" fill="white" stroke="#374874" stroke-width="1"/>
+  <circle cx="23" cy="51" r="0.8" fill="#374874"/>
+  <!-- Calendar overlay (floating, right side) -->
+  <rect x="34" y="8" width="24" height="26" rx="3" fill="white" stroke="#374874" stroke-width="1.5"/>
+  <!-- Calendar header -->
+  <rect x="34" y="8" width="24" height="8" rx="3" fill="#374874"/>
+  <rect x="34" y="13" width="24" height="3" fill="#374874"/>
+  <!-- Calendar hooks -->
+  <rect x="40" y="5" width="2.5" height="6" rx="1.25" fill="#374874"/>
+  <rect x="50" y="5" width="2.5" height="6" rx="1.25" fill="#374874"/>
+  <!-- Calendar grid -->
+  <line x1="34" y1="24" x2="58" y2="24" stroke="#374874" stroke-width="0.4" opacity="0.3"/>
+  <line x1="42" y1="16" x2="42" y2="34" stroke="#374874" stroke-width="0.4" opacity="0.3"/>
+  <line x1="50" y1="16" x2="50" y2="34" stroke="#374874" stroke-width="0.4" opacity="0.3"/>
+  <!-- Calendar cells -->
+  <rect x="36" y="18" width="4.5" height="4" rx="1" fill="#FBDBD0" opacity="0.6"/>
+  <rect x="44" y="18" width="4.5" height="4" rx="1" fill="#374874" opacity="0.15"/>
+  <rect x="52" y="18" width="4.5" height="4" rx="1" fill="#374874" opacity="0.15"/>
+  <rect x="36" y="26" width="4.5" height="4" rx="1" fill="#374874" opacity="0.15"/>
+  <!-- Highlighted booking slot -->
+  <rect x="44" y="26" width="4.5" height="4" rx="1" fill="#374874"/>
+  <path d="M45.2 28 L46.2 29 L48 27" stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <rect x="52" y="26" width="4.5" height="4" rx="1" fill="#FBDBD0" opacity="0.6"/>
+  <!-- Checkmark badge -->
+  <circle cx="54" cy="40" r="6" fill="#374874"/>
+  <path d="M51 40 L53 42 L57 38" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>
