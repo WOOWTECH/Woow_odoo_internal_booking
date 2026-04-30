@@ -963,6 +963,20 @@
                                     <dd class="col-7 col-sm-8"><t t-esc="partner.name"/></dd>
                                 </dl>
 
+                                <!-- Attendees -->
+                                <div class="mb-3">
+                                    <label for="attendee_search" class="form-label fw-bold">Attendees (Optional)</label>
+                                    <div class="position-relative" id="attendee-widget">
+                                        <div id="attendee-tags" class="d-flex flex-wrap gap-1 mb-2"/>
+                                        <input type="text" id="attendee_search" class="form-control"
+                                               placeholder="Search colleagues by name..."
+                                               autocomplete="off"/>
+                                        <div id="attendee-dropdown" class="dropdown-menu w-100" style="max-height:200px;overflow-y:auto;"/>
+                                        <input type="hidden" name="attendee_ids" id="attendee_ids" value=""/>
+                                    </div>
+                                    <div class="form-text">Add colleagues from your company as meeting attendees.</div>
+                                </div>
+
                                 <!-- Discussion Channel Option (only if resource allows) -->
                                 <t t-if="resource.enable_discussion">
                                     <hr/>

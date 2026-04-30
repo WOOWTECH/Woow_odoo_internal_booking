@@ -502,6 +502,21 @@ msgid "Attendees"
 msgstr "參加者"
 
 #. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
+msgid "Attendees (Optional)"
+msgstr "參加者（選填）"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
+msgid "Add colleagues from your company as meeting attendees."
+msgstr "新增公司同事為會議參加者。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
+msgid "Search colleagues by name..."
+msgstr "搜尋同事姓名..."
+
+#. module: odoo_booking_reservation
 #: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__availability_ids
 #: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.view_booking_resource_type_form
 msgid "Availability"

@@ -254,6 +254,33 @@ class BookingPortal(CustomerPortal):
 
         return request.render('odoo_booking_reservation.portal_resource_detail', values)
 
+    @http.route('/my/booking/attendees/search', type='json', auth='user')
+    def portal_search_attendees(self, query='', **kw):
+        """API: Search same-company partners for attendee selection."""
+        partner = request.env.user.partner_id
+        company = request.env.user.company_id
+
+        if not company:
+            return {'attendees': []}
+
+        domain = [
+            ('id', '!=', partner.id),
+            ('is_company', '=', False),
+            '|',
+            ('company_id', '=', company.id),
+            ('parent_id', '=', company.partner_id.id),
+        ]
+        if query:
+            domain = [('name', 'ilike', query)] + domain
+
+        partners = request.env['res.partner'].sudo().search(domain, limit=20, order='name')
+        return {
+            'attendees': [
+                {'id': p.id, 'name': p.name, 'email': p.email or ''}
+                for p in partners
+            ]
+        }
+
     @http.route('/my/booking/resources/<int:resource_id>/slots', type='json', auth='user')
     def portal_get_slots(self, resource_id, date_from=None, date_to=None, **kw):
         """API: Get available slots for a resource (JSON)."""
@@ -441,6 +468,16 @@ class BookingPortal(CustomerPortal):
                 vals['description'] = html_sanitize(description)
             if enable_discussion and resource.enable_discussion:
                 vals['enable_discussion'] = True
+
+            # Process attendees
+            attendee_ids_str = post.get('attendee_ids', '')
+            if attendee_ids_str:
+                try:
+                    att_ids = [int(x) for x in attendee_ids_str.split(',') if x.strip()]
+                    if att_ids:
+                        vals['attendee_ids'] = [(6, 0, att_ids)]
+                except (ValueError, TypeError):
+                    pass
 
             # Create reservation
             reservation = request.env['booking.reservation'].sudo().create(vals)

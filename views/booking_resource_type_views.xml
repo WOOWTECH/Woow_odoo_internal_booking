@@ -102,14 +102,10 @@
                             </div>
                         </page>
 
-                        <page string="Properties" name="properties">
-                            <field name="resource_properties" columns="2"/>
-                            <div class="alert alert-info" role="alert">
-                                <strong>Tip:</strong> Click the "+" button to add custom properties for this resource.
-                                Property types can be text, number, date, checkbox, or selection list.
-                            </div>
-                        </page>
                     </notebook>
+
+                    <separator string="Properties"/>
+                    <field name="resource_properties" columns="2"/>
                 </sheet>
 
                 <chatter/>
