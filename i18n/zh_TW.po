@@ -1559,18 +1559,13 @@ msgstr "以進行預定。"
 
 #. module: odoo_booking_reservation
 #: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_internal_resources
-msgid "Select a resource above to make a booking."
-msgstr "選擇上方的資源以進行預定。"
+msgid "Browse and book available resources"
+msgstr "瀏覽並預定可用資源"
 
 #. module: odoo_booking_reservation
 #: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_internal_resources
-msgid "<i class=\"fa fa-building-o\"/> Available Resources"
-msgstr "<i class=\"fa fa-building-o\"/> 可用資源"
-
-#. module: odoo_booking_reservation
-#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_internal_resources
-msgid "<i class=\"fa fa-calendar-check-o\"/> My Bookings"
-msgstr "<i class=\"fa fa-calendar-check-o\"/> 我的預定"
+msgid "View and manage your booking history"
+msgstr "查看並管理您的預約紀錄"
 
 #. module: odoo_booking_reservation
 #: model:mail.template,subject:odoo_booking_reservation.mail_template_booking_cancelled

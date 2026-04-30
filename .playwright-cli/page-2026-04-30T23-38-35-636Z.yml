@@ -1,0 +1,227 @@
+- generic [ref=e2]:
+  - link "Skip to Content" [ref=e3] [cursor=pointer]:
+    - /url: "#wrap"
+  - banner [ref=e4]:
+    - navigation [ref=e5]:
+      - generic [ref=e6]:
+        - link "Logo of My Company" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - img "Logo of My Company" [ref=e8]
+        - list [ref=e9]:
+          - listitem [ref=e10]:
+            - button "Portal User 1" [ref=e11] [cursor=pointer]
+            - text:  
+  - main [ref=e12]:
+    - list [ref=e15]:
+      - listitem [ref=e16]:
+        - link "Home" [ref=e17] [cursor=pointer]:
+          - /url: /my/home
+          - generic [ref=e18]: 
+    - generic [ref=e20]:
+      - heading "My Bookings" [level=3] [ref=e21]
+      - generic [ref=e22]:
+        - link " New Booking" [ref=e23] [cursor=pointer]:
+          - /url: /my/booking/resources
+          - generic [ref=e24]: 
+          - text: New Booking
+        - generic [ref=e25]:
+          - button " Upcoming" [ref=e27] [cursor=pointer]:
+            - generic [ref=e28]: 
+            - text: Upcoming
+          - button " Date (Newest)" [ref=e30] [cursor=pointer]:
+            - generic [ref=e31]: 
+            - text: Date (Newest)
+      - text:                    
+      - table [ref=e33]:
+        - rowgroup [ref=e34]:
+          - row "Resource Date & Time Duration Status" [ref=e35]:
+            - columnheader "Resource" [ref=e36]
+            - columnheader "Date & Time" [ref=e37]
+            - columnheader "Duration" [ref=e38]
+            - columnheader "Status" [ref=e39]
+            - columnheader [ref=e40]
+        - rowgroup [ref=e41]:
+          - row "Phone Booth  Building 1, Floor 1 May 08, 2026 19:00 0.2 hours Confirmed  View" [ref=e42]:
+            - cell "Phone Booth  Building 1, Floor 1" [ref=e43]:
+              - link "Phone Booth" [ref=e44] [cursor=pointer]:
+                - /url: /my/bookings/440
+              - generic [ref=e45]:
+                - generic [ref=e46]: 
+                - text: Building 1, Floor 1
+            - cell "May 08, 2026 19:00" [ref=e47]
+            - cell "0.2 hours" [ref=e48]
+            - cell "Confirmed" [ref=e49]:
+              - generic [ref=e50]: Confirmed
+            - cell " View" [ref=e51]:
+              - link " View" [ref=e52] [cursor=pointer]:
+                - /url: /my/bookings/440
+                - generic [ref=e53]: 
+                - text: View
+          - row "Video Conference Pod  HQ Tower, 3F (near elevator) May 07, 2026 23:00 0.2 hours Confirmed  View" [ref=e54]:
+            - cell "Video Conference Pod  HQ Tower, 3F (near elevator)" [ref=e55]:
+              - link "Video Conference Pod" [ref=e56] [cursor=pointer]:
+                - /url: /my/bookings/439
+              - generic [ref=e57]:
+                - generic [ref=e58]: 
+                - text: HQ Tower, 3F (near elevator)
+            - cell "May 07, 2026 23:00" [ref=e59]
+            - cell "0.2 hours" [ref=e60]
+            - cell "Confirmed" [ref=e61]:
+              - generic [ref=e62]: Confirmed
+            - cell " View" [ref=e63]:
+              - link " View" [ref=e64] [cursor=pointer]:
+                - /url: /my/bookings/439
+                - generic [ref=e65]: 
+                - text: View
+          - row "Training Lab  HQ Tower, B1 May 05, 2026 17:00 4.0 hours Confirmed  View" [ref=e66]:
+            - cell "Training Lab  HQ Tower, B1" [ref=e67]:
+              - link "Training Lab" [ref=e68] [cursor=pointer]:
+                - /url: /my/bookings/438
+              - generic [ref=e69]:
+                - generic [ref=e70]: 
+                - text: HQ Tower, B1
+            - cell "May 05, 2026 17:00" [ref=e71]
+            - cell "4.0 hours" [ref=e72]
+            - cell "Confirmed" [ref=e73]:
+              - generic [ref=e74]: Confirmed
+            - cell " View" [ref=e75]:
+              - link " View" [ref=e76] [cursor=pointer]:
+                - /url: /my/bookings/438
+                - generic [ref=e77]: 
+                - text: View
+          - row "Conference Room A  Building 1, Floor 3 May 05, 2026 17:00 1.0 hours Confirmed  View" [ref=e78]:
+            - cell "Conference Room A  Building 1, Floor 3" [ref=e79]:
+              - link "Conference Room A" [ref=e80] [cursor=pointer]:
+                - /url: /my/bookings/441
+              - generic [ref=e81]:
+                - generic [ref=e82]: 
+                - text: Building 1, Floor 3
+            - cell "May 05, 2026 17:00" [ref=e83]
+            - cell "1.0 hours" [ref=e84]
+            - cell "Confirmed" [ref=e85]:
+              - generic [ref=e86]: Confirmed
+            - cell " View" [ref=e87]:
+              - link " View" [ref=e88] [cursor=pointer]:
+                - /url: /my/bookings/441
+                - generic [ref=e89]: 
+                - text: View
+          - row "Innovation Lab  HQ Tower, 8F - Creative Wing May 05, 2026 08:00 3.0 hours Confirmed  View" [ref=e90]:
+            - cell "Innovation Lab  HQ Tower, 8F - Creative Wing" [ref=e91]:
+              - link "Innovation Lab" [ref=e92] [cursor=pointer]:
+                - /url: /my/bookings/442
+              - generic [ref=e93]:
+                - generic [ref=e94]: 
+                - text: HQ Tower, 8F - Creative Wing
+            - cell "May 05, 2026 08:00" [ref=e95]
+            - cell "3.0 hours" [ref=e96]
+            - cell "Confirmed" [ref=e97]:
+              - generic [ref=e98]: Confirmed
+            - cell " View" [ref=e99]:
+              - link " View" [ref=e100] [cursor=pointer]:
+                - /url: /my/bookings/442
+                - generic [ref=e101]: 
+                - text: View
+          - row "Small Meeting Room B  Building 1, Floor 2 May 03, 2026 18:00 0.5 hours Confirmed  View" [ref=e102]:
+            - cell "Small Meeting Room B  Building 1, Floor 2" [ref=e103]:
+              - link "Small Meeting Room B" [ref=e104] [cursor=pointer]:
+                - /url: /my/bookings/436
+              - generic [ref=e105]:
+                - generic [ref=e106]: 
+                - text: Building 1, Floor 2
+            - cell "May 03, 2026 18:00" [ref=e107]
+            - cell "0.5 hours" [ref=e108]
+            - cell "Confirmed" [ref=e109]:
+              - generic [ref=e110]: Confirmed
+            - cell " View" [ref=e111]:
+              - link " View" [ref=e112] [cursor=pointer]:
+                - /url: /my/bookings/436
+                - generic [ref=e113]: 
+                - text: View
+          - row "Executive Boardroom  HQ Tower, 12F May 02, 2026 22:00 2.0 hours Confirmed  View" [ref=e114]:
+            - cell "Executive Boardroom  HQ Tower, 12F" [ref=e115]:
+              - link "Executive Boardroom" [ref=e116] [cursor=pointer]:
+                - /url: /my/bookings/435
+              - generic [ref=e117]:
+                - generic [ref=e118]: 
+                - text: HQ Tower, 12F
+            - cell "May 02, 2026 22:00" [ref=e119]
+            - cell "2.0 hours" [ref=e120]
+            - cell "Confirmed" [ref=e121]:
+              - generic [ref=e122]: Confirmed
+            - cell " View" [ref=e123]:
+              - link " View" [ref=e124] [cursor=pointer]:
+                - /url: /my/bookings/435
+                - generic [ref=e125]: 
+                - text: View
+          - row "Conference Room A  Building 1, Floor 3 May 02, 2026 10:00 1.0 hours Confirmed  View" [ref=e126]:
+            - cell "Conference Room A  Building 1, Floor 3" [ref=e127]:
+              - link "Conference Room A" [ref=e128] [cursor=pointer]:
+                - /url: /my/bookings/445
+              - generic [ref=e129]:
+                - generic [ref=e130]: 
+                - text: Building 1, Floor 3
+            - cell "May 02, 2026 10:00" [ref=e131]
+            - cell "1.0 hours" [ref=e132]
+            - cell "Confirmed" [ref=e133]:
+              - generic [ref=e134]: Confirmed
+            - cell " View" [ref=e135]:
+              - link " View" [ref=e136] [cursor=pointer]:
+                - /url: /my/bookings/445
+                - generic [ref=e137]: 
+                - text: View
+          - row "Conference Room A  Building 1, Floor 3 May 02, 2026 09:00 1.0 hours Confirmed  View" [ref=e138]:
+            - cell "Conference Room A  Building 1, Floor 3" [ref=e139]:
+              - link "Conference Room A" [ref=e140] [cursor=pointer]:
+                - /url: /my/bookings/444
+              - generic [ref=e141]:
+                - generic [ref=e142]: 
+                - text: Building 1, Floor 3
+            - cell "May 02, 2026 09:00" [ref=e143]
+            - cell "1.0 hours" [ref=e144]
+            - cell "Confirmed" [ref=e145]:
+              - generic [ref=e146]: Confirmed
+            - cell " View" [ref=e147]:
+              - link " View" [ref=e148] [cursor=pointer]:
+                - /url: /my/bookings/444
+                - generic [ref=e149]: 
+                - text: View
+          - row "Conference Room A  Building 1, Floor 3 May 01, 2026 09:00 1.0 hours Confirmed  View" [ref=e150]:
+            - cell "Conference Room A  Building 1, Floor 3" [ref=e151]:
+              - link "Conference Room A" [ref=e152] [cursor=pointer]:
+                - /url: /my/bookings/443
+              - generic [ref=e153]:
+                - generic [ref=e154]: 
+                - text: Building 1, Floor 3
+            - cell "May 01, 2026 09:00" [ref=e155]
+            - cell "1.0 hours" [ref=e156]
+            - cell "Confirmed" [ref=e157]:
+              - generic [ref=e158]: Confirmed
+            - cell " View" [ref=e159]:
+              - link " View" [ref=e160] [cursor=pointer]:
+                - /url: /my/bookings/443
+                - generic [ref=e161]: 
+                - text: View
+      - list [ref=e163]:
+        - listitem [ref=e164]:
+          - generic:
+            - img "Previous": 
+        - listitem [ref=e165]:
+          - link "1" [ref=e166] [cursor=pointer]:
+            - /url: /my/bookings?sortby=date_desc&filterby=upcoming
+        - listitem [ref=e167]:
+          - link "2" [ref=e168] [cursor=pointer]:
+            - /url: /my/bookings/page/2?sortby=date_desc&filterby=upcoming
+        - listitem [ref=e169]:
+          - link "Next" [ref=e170] [cursor=pointer]:
+            - /url: /my/bookings/page/2?sortby=date_desc&filterby=upcoming
+            - img "Next" [ref=e171]: 
+  - contentinfo [ref=e172]:
+    - generic [ref=e175]:
+      - generic [ref=e176]:
+        - generic [ref=e177]: Copyright © My Company
+        - button "English (US)" [expanded] [ref=e179] [cursor=pointer]
+      - generic [ref=e181]:
+        - text: Powered by
+        - link "Odoo" [ref=e182] [cursor=pointer]:
+          - /url: http://www.odoo.com?utm_source=db&utm_medium=portal
+          - img "Odoo" [ref=e183]

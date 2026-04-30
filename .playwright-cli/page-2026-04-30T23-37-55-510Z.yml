@@ -1,0 +1,48 @@
+- generic [ref=e2]:
+  - link "Skip to Content" [ref=e3] [cursor=pointer]:
+    - /url: "#wrap"
+  - banner [ref=e4]:
+    - navigation [ref=e5]:
+      - generic [ref=e6]:
+        - link "Logo of My Company" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - img "Logo of My Company" [ref=e8]
+        - list [ref=e9]:
+          - listitem [ref=e10]:
+            - button "Portal User 1" [ref=e11] [cursor=pointer]
+            - text:  
+  - main [ref=e12]:
+    - list [ref=e15]:
+      - listitem [ref=e16]:
+        - link "Home" [ref=e17] [cursor=pointer]:
+          - /url: /my/home
+          - generic [ref=e18]: 
+    - generic [ref=e20]:
+      - heading "Internal Resource" [level=3] [ref=e21]
+      - generic [ref=e22]:
+        - link "9 Available Resources Browse and book available resources" [ref=e24] [cursor=pointer]:
+          - /url: /my/booking/resources
+          - img [ref=e26]
+          - generic [ref=e27]:
+            - generic [ref=e28]:
+              - text: "9"
+              - generic [ref=e29]: Available Resources
+            - generic [ref=e30]: Browse and book available resources
+        - link "47 My Bookings View and manage your booking history" [ref=e32] [cursor=pointer]:
+          - /url: /my/bookings
+          - img [ref=e34]
+          - generic [ref=e35]:
+            - generic [ref=e36]:
+              - text: "47"
+              - generic [ref=e37]: My Bookings
+            - generic [ref=e38]: View and manage your booking history
+  - contentinfo [ref=e39]:
+    - generic [ref=e42]:
+      - generic [ref=e43]:
+        - generic [ref=e44]: Copyright © My Company
+        - button "English (US)" [expanded] [ref=e46] [cursor=pointer]
+      - generic [ref=e48]:
+        - text: Powered by
+        - link "Odoo" [ref=e49] [cursor=pointer]:
+          - /url: http://www.odoo.com?utm_source=db&utm_medium=portal
+          - img "Odoo" [ref=e50]
