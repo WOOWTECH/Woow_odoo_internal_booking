@@ -18,12 +18,72 @@
     </template>
 
     <!-- ============================================================ -->
+    <!-- PORTAL BREADCRUMBS -->
+    <!-- ============================================================ -->
+
+    <template id="portal_breadcrumbs_booking" name="Booking Portal Breadcrumbs"
+              inherit_id="portal.portal_breadcrumbs" priority="30">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <!-- Level 1: Internal Resource hub -->
+            <li t-if="page_name in ('internal_resources', 'booking_resources', 'booking_resource_detail', 'my_bookings', 'booking_detail', 'booking_new', 'booking_confirm')"
+                t-attf-class="breadcrumb-item #{'active' if page_name == 'internal_resources' else ''}">
+                <a t-if="page_name != 'internal_resources'" href="/my/internal-resources">
+                    Internal Resource
+                </a>
+                <t t-else="">Internal Resource</t>
+            </li>
+
+            <!-- Level 2a: Available Resources -->
+            <li t-if="page_name in ('booking_resources', 'booking_resource_detail', 'booking_confirm')"
+                t-attf-class="breadcrumb-item #{'active' if page_name == 'booking_resources' else ''}">
+                <a t-if="page_name != 'booking_resources'" href="/my/booking/resources">
+                    Available Resources
+                </a>
+                <t t-else="">Available Resources</t>
+            </li>
+
+            <!-- Level 3a: Specific Resource -->
+            <li t-if="page_name in ('booking_resource_detail', 'booking_confirm') and resource"
+                t-attf-class="breadcrumb-item #{'active' if page_name == 'booking_resource_detail' else ''}">
+                <a t-if="page_name != 'booking_resource_detail'"
+                   t-attf-href="/my/booking/resources/#{resource.id}">
+                    <t t-esc="resource.name"/>
+                </a>
+                <t t-else=""><t t-esc="resource.name"/></t>
+            </li>
+
+            <!-- Level 4a: Confirm Booking -->
+            <li t-if="page_name == 'booking_confirm'" class="breadcrumb-item active">
+                Confirm Booking
+            </li>
+
+            <!-- Level 2b: My Bookings -->
+            <li t-if="page_name in ('my_bookings', 'booking_detail')"
+                t-attf-class="breadcrumb-item #{'active' if page_name == 'my_bookings' else ''}">
+                <a t-if="page_name != 'my_bookings'" href="/my/bookings">
+                    My Bookings
+                </a>
+                <t t-else="">My Bookings</t>
+            </li>
+
+            <!-- Level 3b: Specific Booking -->
+            <li t-if="page_name == 'booking_detail' and reservation" class="breadcrumb-item active">
+                Booking #<t t-esc="reservation.id"/>
+            </li>
+
+            <!-- Level 2c: New Booking (from /my/bookings/new) -->
+            <li t-if="page_name == 'booking_new'" class="breadcrumb-item active">
+                New Booking
+            </li>
+        </xpath>
+    </template>
+
+    <!-- ============================================================ -->
     <!-- RESOURCE LIST PAGE -->
     <!-- ============================================================ -->
 
     <template id="portal_my_resources" name="Booking Resources">
         <t t-call="portal.portal_layout">
-            <t t-set="breadcrumbs_searchbar" t-value="False"/>
 
             <h3 class="mb-4">Available Resources</h3>
 
@@ -83,7 +143,7 @@
 
     <template id="portal_internal_resources" name="Internal Resources">
         <t t-call="portal.portal_layout">
-            <t t-set="breadcrumbs_searchbar" t-value="False"/>
+
 
             <h3 class="mb-4">Internal Resource</h3>
 
@@ -117,7 +177,7 @@
 
     <template id="portal_resource_detail" name="Resource Detail">
         <t t-call="portal.portal_layout">
-            <t t-set="breadcrumbs_searchbar" t-value="False"/>
+
 
             <h3 class="mb-4"><t t-esc="resource.name"/></h3>
 
@@ -270,7 +330,7 @@
 
     <template id="portal_my_bookings" name="My Bookings">
         <t t-call="portal.portal_layout">
-            <t t-set="breadcrumbs_searchbar" t-value="False"/>
+
 
             <h3 class="mb-3">My Bookings</h3>
 
@@ -431,7 +491,7 @@
 
     <template id="portal_booking_detail" name="Booking Detail">
         <t t-call="portal.portal_layout">
-            <t t-set="breadcrumbs_searchbar" t-value="False"/>
+
 
             <h3 class="mb-4">Booking Detail</h3>
 
@@ -630,7 +690,7 @@
 
     <template id="portal_new_booking" name="New Booking">
         <t t-call="portal.portal_layout">
-            <t t-set="breadcrumbs_searchbar" t-value="False"/>
+
 
             <h3 class="mb-4">New Booking</h3>
 
@@ -712,7 +772,7 @@
 
     <template id="portal_booking_confirm" name="Confirm Booking">
         <t t-call="portal.portal_layout">
-            <t t-set="breadcrumbs_searchbar" t-value="False"/>
+
 
             <h3 class="mb-4">Confirm Booking</h3>
 
@@ -869,7 +929,7 @@
 
     <template id="portal_no_resources" name="No Resources Available">
         <t t-call="portal.portal_layout">
-            <t t-set="breadcrumbs_searchbar" t-value="False"/>
+
 
             <h3 class="mb-4">No Resources Available</h3>
 
