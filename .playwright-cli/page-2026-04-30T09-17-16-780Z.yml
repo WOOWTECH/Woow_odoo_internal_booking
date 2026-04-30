@@ -1,0 +1,90 @@
+- generic [ref=e2]:
+  - link "Skip to Content" [ref=e3] [cursor=pointer]:
+    - /url: "#wrap"
+  - banner [ref=e4]:
+    - navigation [ref=e5]:
+      - generic [ref=e6]:
+        - link "Logo of My Company" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - img "Logo of My Company" [ref=e8]
+        - list [ref=e9]:
+          - listitem [ref=e10]:
+            - button "Portal User 1" [ref=e11] [cursor=pointer]
+            - text:  
+  - main [ref=e12]:
+    - list [ref=e15]:
+      - listitem [ref=e16]:
+        - link "Home" [ref=e17] [cursor=pointer]:
+          - /url: /my/home
+          - generic [ref=e18]: 
+    - generic [ref=e20]:
+      - heading "Confirm Booking" [level=3] [ref=e21]
+      - generic [ref=e22]:
+        - generic [ref=e25]:
+          - generic [ref=e27]:
+            - generic [ref=e28]: 
+            - text: Booking Summary
+          - generic [ref=e29]:
+            - generic [ref=e30]:
+              - generic [ref=e31]: Booking Subject (Optional)
+              - textbox "Booking Subject (Optional)" [ref=e32]:
+                - /placeholder: e.g. Weekly Team Meeting
+            - heading "Resource Information" [level=6] [ref=e33]
+            - generic [ref=e34]:
+              - term [ref=e35]: Resource
+              - definition [ref=e36]: Conference Room A
+              - term [ref=e37]: Location
+              - definition [ref=e38]: Building 1, Floor 3
+              - term [ref=e39]: Capacity
+              - definition [ref=e40]: "20"
+            - separator [ref=e41]
+            - heading "Time" [level=6] [ref=e42]
+            - generic [ref=e43]:
+              - term [ref=e44]: Start
+              - definition [ref=e45]: Friday, May 01, 2026 09:00
+              - term [ref=e46]: End
+              - definition [ref=e47]: Friday, May 01, 2026 10:00
+              - term [ref=e48]: Duration
+              - definition [ref=e49]: 1.0 hours
+            - separator [ref=e50]
+            - heading "People" [level=6] [ref=e51]
+            - generic [ref=e52]:
+              - term [ref=e53]: Organizer
+              - definition [ref=e54]: Portal User 1
+            - separator [ref=e55]
+            - generic [ref=e56]:
+              - checkbox "Enable Discussion Channel" [ref=e57] [cursor=pointer]
+              - generic [ref=e58] [cursor=pointer]: Enable Discussion Channel
+              - generic [ref=e59]: Create a discussion channel for this booking to collaborate with attendees.
+            - separator [ref=e60]
+            - generic [ref=e61]:
+              - generic [ref=e62]: Description (Optional)
+              - textbox "Description (Optional)" [ref=e63]:
+                - /placeholder: Add a description or notes...
+          - generic [ref=e65]:
+            - link " Back" [ref=e66] [cursor=pointer]:
+              - /url: /my/booking/resources/2
+              - generic [ref=e67]: 
+              - text: Back
+            - button " Confirm Booking" [ref=e68] [cursor=pointer]:
+              - generic [ref=e69]: 
+              - text: Confirm Booking
+        - generic [ref=e71]:
+          - generic [ref=e72]:
+            - generic [ref=e73]: 
+            - text: Resource Information
+          - heading "Conference Room A" [level=6] [ref=e75]
+          - link " View Available Slots" [ref=e77] [cursor=pointer]:
+            - /url: /my/booking/resources/2
+            - generic [ref=e78]: 
+            - text: View Available Slots
+  - contentinfo [ref=e79]:
+    - generic [ref=e82]:
+      - generic [ref=e83]:
+        - generic [ref=e84]: Copyright © My Company
+        - button "English (US)" [expanded] [ref=e86] [cursor=pointer]
+      - generic [ref=e88]:
+        - text: Powered by
+        - link "Odoo" [ref=e89] [cursor=pointer]:
+          - /url: http://www.odoo.com?utm_source=db&utm_medium=portal
+          - img "Odoo" [ref=e90]
