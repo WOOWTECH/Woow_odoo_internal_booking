@@ -1,0 +1,270 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - navigation [ref=e4]:
+      - generic [ref=e5]:
+        - link "Logo of My Company" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - img "Logo of My Company" [ref=e7]
+        - list [ref=e8]:
+          - listitem [ref=e9]:
+            - button "Administrator" [ref=e10] [cursor=pointer]
+            - text:   
+  - main [ref=e11]:
+    - list [ref=e14]:
+      - listitem [ref=e15]:
+        - link "Home" [ref=e16] [cursor=pointer]:
+          - /url: /my/home
+          - generic [ref=e17]: 
+    - generic [ref=e19]:
+      - heading "Internal Resource" [level=3] [ref=e20]
+      - heading " Available Resources" [level=5] [ref=e21]:
+        - generic [ref=e22]: 
+        - text: Available Resources
+      - generic [ref=e23]:
+        - generic [ref=e25]:
+          - generic [ref=e27]: 
+          - generic [ref=e28]:
+            - heading "Conference Room A" [level=5] [ref=e29]
+            - paragraph [ref=e30]:
+              - generic [ref=e31]: 
+              - text: Building 1, Floor 3
+              - generic [ref=e32]: 
+              - text: "Capacity: 20"
+          - link " Book Now" [ref=e34] [cursor=pointer]:
+            - /url: /my/booking/resources/2
+            - generic [ref=e35]: 
+            - text: Book Now
+        - generic [ref=e37]:
+          - generic [ref=e39]: 
+          - generic [ref=e40]:
+            - heading "Executive Boardroom" [level=5] [ref=e41]
+            - paragraph [ref=e42]:
+              - generic [ref=e43]: 
+              - text: HQ Tower, 12F
+              - generic [ref=e44]: 
+              - text: "Capacity: 30"
+          - link " Book Now" [ref=e46] [cursor=pointer]:
+            - /url: /my/booking/resources/225
+            - generic [ref=e47]: 
+            - text: Book Now
+        - generic [ref=e49]:
+          - generic [ref=e51]: 
+          - generic [ref=e52]:
+            - heading "Innovation Lab" [level=5] [ref=e53]
+            - paragraph [ref=e54]:
+              - generic [ref=e55]: 
+              - text: HQ Tower, 8F - Creative Wing
+              - generic [ref=e56]: 
+              - text: "Capacity: 20"
+          - link " Book Now" [ref=e58] [cursor=pointer]:
+            - /url: /my/booking/resources/228
+            - generic [ref=e59]: 
+            - text: Book Now
+        - generic [ref=e61]:
+          - generic [ref=e63]: 
+          - generic [ref=e64]:
+            - heading "Phone Booth" [level=5] [ref=e65]
+            - paragraph [ref=e66]:
+              - generic [ref=e67]: 
+              - text: Building 1, Floor 1
+              - generic [ref=e68]: 
+              - text: "Capacity: 1"
+          - link " Book Now" [ref=e70] [cursor=pointer]:
+            - /url: /my/booking/resources/6
+            - generic [ref=e71]: 
+            - text: Book Now
+        - generic [ref=e73]:
+          - generic [ref=e75]: 
+          - generic [ref=e76]:
+            - heading "Projector" [level=5] [ref=e77]
+            - paragraph [ref=e78]:
+              - generic [ref=e79]: 
+              - text: IT Department
+              - generic [ref=e80]: 
+              - text: "Capacity: 1"
+          - link " Book Now" [ref=e82] [cursor=pointer]:
+            - /url: /my/booking/resources/5
+            - generic [ref=e83]: 
+            - text: Book Now
+        - generic [ref=e85]:
+          - generic [ref=e87]: 
+          - generic [ref=e88]:
+            - heading "Small Meeting Room B" [level=5] [ref=e89]
+            - paragraph [ref=e90]:
+              - generic [ref=e91]: 
+              - text: Building 1, Floor 2
+              - generic [ref=e92]: 
+              - text: "Capacity: 6"
+          - link " Book Now" [ref=e94] [cursor=pointer]:
+            - /url: /my/booking/resources/3
+            - generic [ref=e95]: 
+            - text: Book Now
+        - generic [ref=e97]:
+          - generic [ref=e99]: 
+          - generic [ref=e100]:
+            - heading "Training Lab" [level=5] [ref=e101]
+            - paragraph [ref=e102]:
+              - generic [ref=e103]: 
+              - text: HQ Tower, B1
+              - generic [ref=e104]: 
+              - text: "Capacity: 40"
+          - link " Book Now" [ref=e106] [cursor=pointer]:
+            - /url: /my/booking/resources/226
+            - generic [ref=e107]: 
+            - text: Book Now
+        - generic [ref=e109]:
+          - generic [ref=e111]: 
+          - generic [ref=e112]:
+            - heading "Video Conference Pod" [level=5] [ref=e113]
+            - paragraph [ref=e114]:
+              - generic [ref=e115]: 
+              - text: HQ Tower, 3F (near elevator)
+              - generic [ref=e116]: 
+              - text: "Capacity: 2"
+          - link " Book Now" [ref=e118] [cursor=pointer]:
+            - /url: /my/booking/resources/227
+            - generic [ref=e119]: 
+            - text: Book Now
+      - separator [ref=e120]
+      - heading " My Bookings" [level=5] [ref=e121]:
+        - generic [ref=e122]: 
+        - text: My Bookings
+      - generic [ref=e124]:
+        - button " All" [ref=e126] [cursor=pointer]:
+          - generic [ref=e127]: 
+          - text: All
+        - button " Date (Newest)" [ref=e129] [cursor=pointer]:
+          - generic [ref=e130]: 
+          - text: Date (Newest)
+      - text:              
+      - table [ref=e132]:
+        - rowgroup [ref=e133]:
+          - row "Resource Date & Time Duration Status" [ref=e134]:
+            - columnheader "Resource" [ref=e135]
+            - columnheader "Date & Time" [ref=e136]
+            - columnheader "Duration" [ref=e137]
+            - columnheader "Status" [ref=e138]
+            - columnheader [ref=e139]
+        - rowgroup [ref=e140]:
+          - row "Conference Room A  Building 1, Floor 3 Apr 22, 2026 10:00 1.0 hours Confirmed  View" [ref=e141]:
+            - cell "Conference Room A  Building 1, Floor 3" [ref=e142]:
+              - link "Conference Room A" [ref=e143] [cursor=pointer]:
+                - /url: /my/bookings/429
+              - generic [ref=e144]:
+                - generic [ref=e145]: 
+                - text: Building 1, Floor 3
+            - cell "Apr 22, 2026 10:00" [ref=e146]
+            - cell "1.0 hours" [ref=e147]
+            - cell "Confirmed" [ref=e148]:
+              - generic [ref=e149]: Confirmed
+            - cell " View" [ref=e150]:
+              - link " View" [ref=e151] [cursor=pointer]:
+                - /url: /my/bookings/429
+                - generic [ref=e152]: 
+                - text: View
+          - row "Conference Room A  Building 1, Floor 3 Apr 22, 2026 09:00 1.0 hours Confirmed  View" [ref=e153]:
+            - cell "Conference Room A  Building 1, Floor 3" [ref=e154]:
+              - link "Conference Room A" [ref=e155] [cursor=pointer]:
+                - /url: /my/bookings/428
+              - generic [ref=e156]:
+                - generic [ref=e157]: 
+                - text: Building 1, Floor 3
+            - cell "Apr 22, 2026 09:00" [ref=e158]
+            - cell "1.0 hours" [ref=e159]
+            - cell "Confirmed" [ref=e160]:
+              - generic [ref=e161]: Confirmed
+            - cell " View" [ref=e162]:
+              - link " View" [ref=e163] [cursor=pointer]:
+                - /url: /my/bookings/428
+                - generic [ref=e164]: 
+                - text: View
+          - row "Conference Room A  Building 1, Floor 3 Apr 11, 2026 04:00 1.0 hours Confirmed  View" [ref=e165]:
+            - cell "Conference Room A  Building 1, Floor 3" [ref=e166]:
+              - link "Conference Room A" [ref=e167] [cursor=pointer]:
+                - /url: /my/bookings/358
+              - generic [ref=e168]:
+                - generic [ref=e169]: 
+                - text: Building 1, Floor 3
+            - cell "Apr 11, 2026 04:00" [ref=e170]
+            - cell "1.0 hours" [ref=e171]
+            - cell "Confirmed" [ref=e172]:
+              - generic [ref=e173]: Confirmed
+            - cell " View" [ref=e174]:
+              - link " View" [ref=e175] [cursor=pointer]:
+                - /url: /my/bookings/358
+                - generic [ref=e176]: 
+                - text: View
+          - row "Executive Boardroom  HQ Tower, 12F Apr 07, 2026 02:00 2.0 hours Cancelled  View" [ref=e177]:
+            - cell "Executive Boardroom  HQ Tower, 12F" [ref=e178]:
+              - link "Executive Boardroom" [ref=e179] [cursor=pointer]:
+                - /url: /my/bookings/422
+              - generic [ref=e180]:
+                - generic [ref=e181]: 
+                - text: HQ Tower, 12F
+            - cell "Apr 07, 2026 02:00" [ref=e182]
+            - cell "2.0 hours" [ref=e183]
+            - cell "Cancelled" [ref=e184]:
+              - generic [ref=e185]: Cancelled
+            - cell " View" [ref=e186]:
+              - link " View" [ref=e187] [cursor=pointer]:
+                - /url: /my/bookings/422
+                - generic [ref=e188]: 
+                - text: View
+          - row "Conference Room A  Building 1, Floor 3 Apr 06, 2026 00:00 24.0 hours Confirmed  View" [ref=e189]:
+            - cell "Conference Room A  Building 1, Floor 3" [ref=e190]:
+              - link "Conference Room A" [ref=e191] [cursor=pointer]:
+                - /url: /my/bookings/427
+              - generic [ref=e192]:
+                - generic [ref=e193]: 
+                - text: Building 1, Floor 3
+            - cell "Apr 06, 2026 00:00" [ref=e194]
+            - cell "24.0 hours" [ref=e195]
+            - cell "Confirmed" [ref=e196]:
+              - generic [ref=e197]: Confirmed
+            - cell " View" [ref=e198]:
+              - link " View" [ref=e199] [cursor=pointer]:
+                - /url: /my/bookings/427
+                - generic [ref=e200]: 
+                - text: View
+          - row "Conference Room A  Building 1, Floor 3 Apr 03, 2026 17:00 24.0 hours Confirmed  View" [ref=e201]:
+            - cell "Conference Room A  Building 1, Floor 3" [ref=e202]:
+              - link "Conference Room A" [ref=e203] [cursor=pointer]:
+                - /url: /my/bookings/424
+              - generic [ref=e204]:
+                - generic [ref=e205]: 
+                - text: Building 1, Floor 3
+            - cell "Apr 03, 2026 17:00" [ref=e206]
+            - cell "24.0 hours" [ref=e207]
+            - cell "Confirmed" [ref=e208]:
+              - generic [ref=e209]: Confirmed
+            - cell " View" [ref=e210]:
+              - link " View" [ref=e211] [cursor=pointer]:
+                - /url: /my/bookings/424
+                - generic [ref=e212]: 
+                - text: View
+          - row "Conference Room A  Building 1, Floor 3 Apr 02, 2026 11:30 1.0 hours Confirmed  View" [ref=e213]:
+            - cell "Conference Room A  Building 1, Floor 3" [ref=e214]:
+              - link "Conference Room A" [ref=e215] [cursor=pointer]:
+                - /url: /my/bookings/426
+              - generic [ref=e216]:
+                - generic [ref=e217]: 
+                - text: Building 1, Floor 3
+            - cell "Apr 02, 2026 11:30" [ref=e218]
+            - cell "1.0 hours" [ref=e219]
+            - cell "Confirmed" [ref=e220]:
+              - generic [ref=e221]: Confirmed
+            - cell " View" [ref=e222]:
+              - link " View" [ref=e223] [cursor=pointer]:
+                - /url: /my/bookings/426
+                - generic [ref=e224]: 
+                - text: View
+  - contentinfo [ref=e225]:
+    - generic [ref=e228]:
+      - generic [ref=e229]:
+        - generic [ref=e230]: Copyright © My Company
+        - button "English (US)" [expanded] [ref=e232] [cursor=pointer]
+      - generic [ref=e234]:
+        - text: Powered by
+        - link "Odoo" [ref=e235] [cursor=pointer]:
+          - /url: http://www.odoo.com?utm_source=db&utm_medium=portal
+          - img "Odoo" [ref=e236]

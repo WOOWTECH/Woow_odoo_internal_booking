@@ -1,0 +1,48 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - navigation [ref=e4]:
+      - generic [ref=e5]:
+        - link "Logo of My Company" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - img "Logo of My Company" [ref=e7]
+        - list [ref=e8]:
+          - listitem [ref=e9]:
+            - button "Administrator" [ref=e10] [cursor=pointer]
+            - text:   
+  - main [ref=e11]:
+    - generic [ref=e13]:
+      - heading "My account" [level=3] [ref=e15]
+      - generic [ref=e16]:
+        - generic [ref=e19]:
+          - link "Discussions Chat, collaborate, and review shared discussions" [ref=e22] [cursor=pointer]:
+            - /url: /my/discussions
+            - img [ref=e24]
+            - generic [ref=e25]:
+              - generic [ref=e27]: Discussions
+              - generic [ref=e28]: Chat, collaborate, and review shared discussions
+          - link "Connection & Security Configure your connection parameters" [ref=e31] [cursor=pointer]:
+            - /url: /my/security
+            - img [ref=e33]
+            - generic [ref=e34]:
+              - generic [ref=e35]: Connection & Security
+              - generic [ref=e36]: Configure your connection parameters
+        - generic [ref=e39]:
+          - generic [ref=e40]:
+            - img "Contact" [ref=e41]
+            - heading "Administrator" [level=5] [ref=e43]
+          - generic [ref=e48]:
+            - img "Email" [ref=e49]: 
+            - generic [ref=e50]: admin@example.com
+          - button " Edit information" [ref=e51] [cursor=pointer]:
+            - generic [ref=e52]: 
+            - text: Edit information
+  - contentinfo [ref=e53]:
+    - generic [ref=e56]:
+      - generic [ref=e57]:
+        - generic [ref=e58]: Copyright © My Company
+        - button "English (US)" [expanded] [ref=e60] [cursor=pointer]
+      - generic [ref=e62]:
+        - text: Powered by
+        - link "Odoo" [ref=e63] [cursor=pointer]:
+          - /url: http://www.odoo.com?utm_source=db&utm_medium=portal
+          - img "Odoo" [ref=e64]

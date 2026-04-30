@@ -1,0 +1,168 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - navigation [ref=e4]:
+      - generic [ref=e5]:
+        - link "Logo of My Company" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - img "Logo of My Company" [ref=e7]
+        - list [ref=e8]:
+          - listitem [ref=e9]:
+            - button "Administrator" [ref=e10] [cursor=pointer]
+            - text:   
+  - main [ref=e11]:
+    - list [ref=e14]:
+      - listitem [ref=e15]:
+        - link "Home" [ref=e16] [cursor=pointer]:
+          - /url: /my/home
+          - generic [ref=e17]: 
+    - generic [ref=e19]:
+      - heading "Internal Resource" [level=3] [ref=e20]
+      - heading " Available Resources" [level=5] [ref=e21]:
+        - generic [ref=e22]: 
+        - text: Available Resources
+      - generic [ref=e23]:
+        - generic [ref=e25]:
+          - generic [ref=e27]: 
+          - generic [ref=e28]:
+            - heading "Conference Room A" [level=5] [ref=e29]
+            - paragraph [ref=e30]:
+              - generic [ref=e31]: 
+              - text: Building 1, Floor 3
+              - generic [ref=e32]: 
+              - text: "Capacity: 20"
+          - link " Book Now" [ref=e34] [cursor=pointer]:
+            - /url: /my/booking/resources/2
+            - generic [ref=e35]: 
+            - text: Book Now
+        - generic [ref=e37]:
+          - generic [ref=e39]: 
+          - generic [ref=e40]:
+            - heading "Executive Boardroom" [level=5] [ref=e41]
+            - paragraph [ref=e42]:
+              - generic [ref=e43]: 
+              - text: HQ Tower, 12F
+              - generic [ref=e44]: 
+              - text: "Capacity: 30"
+          - link " Book Now" [ref=e46] [cursor=pointer]:
+            - /url: /my/booking/resources/225
+            - generic [ref=e47]: 
+            - text: Book Now
+        - generic [ref=e49]:
+          - generic [ref=e51]: 
+          - generic [ref=e52]:
+            - heading "Innovation Lab" [level=5] [ref=e53]
+            - paragraph [ref=e54]:
+              - generic [ref=e55]: 
+              - text: HQ Tower, 8F - Creative Wing
+              - generic [ref=e56]: 
+              - text: "Capacity: 20"
+          - link " Book Now" [ref=e58] [cursor=pointer]:
+            - /url: /my/booking/resources/228
+            - generic [ref=e59]: 
+            - text: Book Now
+        - generic [ref=e61]:
+          - generic [ref=e63]: 
+          - generic [ref=e64]:
+            - heading "Phone Booth" [level=5] [ref=e65]
+            - paragraph [ref=e66]:
+              - generic [ref=e67]: 
+              - text: Building 1, Floor 1
+              - generic [ref=e68]: 
+              - text: "Capacity: 1"
+          - link " Book Now" [ref=e70] [cursor=pointer]:
+            - /url: /my/booking/resources/6
+            - generic [ref=e71]: 
+            - text: Book Now
+        - generic [ref=e73]:
+          - generic [ref=e75]: 
+          - generic [ref=e76]:
+            - heading "Projector" [level=5] [ref=e77]
+            - paragraph [ref=e78]:
+              - generic [ref=e79]: 
+              - text: IT Department
+              - generic [ref=e80]: 
+              - text: "Capacity: 1"
+          - link " Book Now" [ref=e82] [cursor=pointer]:
+            - /url: /my/booking/resources/5
+            - generic [ref=e83]: 
+            - text: Book Now
+        - generic [ref=e85]:
+          - generic [ref=e87]: 
+          - generic [ref=e88]:
+            - heading "Small Meeting Room B" [level=5] [ref=e89]
+            - paragraph [ref=e90]:
+              - generic [ref=e91]: 
+              - text: Building 1, Floor 2
+              - generic [ref=e92]: 
+              - text: "Capacity: 6"
+          - link " Book Now" [ref=e94] [cursor=pointer]:
+            - /url: /my/booking/resources/3
+            - generic [ref=e95]: 
+            - text: Book Now
+        - generic [ref=e97]:
+          - generic [ref=e99]: 
+          - generic [ref=e100]:
+            - heading "Training Lab" [level=5] [ref=e101]
+            - paragraph [ref=e102]:
+              - generic [ref=e103]: 
+              - text: HQ Tower, B1
+              - generic [ref=e104]: 
+              - text: "Capacity: 40"
+          - link " Book Now" [ref=e106] [cursor=pointer]:
+            - /url: /my/booking/resources/226
+            - generic [ref=e107]: 
+            - text: Book Now
+        - generic [ref=e109]:
+          - generic [ref=e111]: 
+          - generic [ref=e112]:
+            - heading "Video Conference Pod" [level=5] [ref=e113]
+            - paragraph [ref=e114]:
+              - generic [ref=e115]: 
+              - text: HQ Tower, 3F (near elevator)
+              - generic [ref=e116]: 
+              - text: "Capacity: 2"
+          - link " Book Now" [ref=e118] [cursor=pointer]:
+            - /url: /my/booking/resources/227
+            - generic [ref=e119]: 
+            - text: Book Now
+      - separator [ref=e120]
+      - heading " My Bookings" [level=5] [ref=e121]:
+        - generic [ref=e122]: 
+        - text: My Bookings
+      - generic [ref=e124]:
+        - generic [ref=e125]:
+          - button " Upcoming" [expanded] [active] [ref=e126] [cursor=pointer]:
+            - generic [ref=e127]: 
+            - text: Upcoming
+          - list [ref=e145]:
+            - listitem [ref=e146]:
+              - link "All" [ref=e147] [cursor=pointer]:
+                - /url: /my/internal-resources?filterby=all&sortby=date_desc
+            - listitem [ref=e148]:
+              - link "Upcoming" [ref=e149] [cursor=pointer]:
+                - /url: /my/internal-resources?filterby=upcoming&sortby=date_desc
+            - listitem [ref=e150]:
+              - link "Past" [ref=e151] [cursor=pointer]:
+                - /url: /my/internal-resources?filterby=past&sortby=date_desc
+            - listitem [ref=e152]:
+              - link "Confirmed" [ref=e153] [cursor=pointer]:
+                - /url: /my/internal-resources?filterby=confirmed&sortby=date_desc
+            - listitem [ref=e154]:
+              - link "Cancelled" [ref=e155] [cursor=pointer]:
+                - /url: /my/internal-resources?filterby=cancelled&sortby=date_desc
+        - button " Date (Newest)" [ref=e129] [cursor=pointer]:
+          - generic [ref=e130]: 
+          - text: Date (Newest)
+      - alert [ref=e131]:
+        - generic [ref=e132]: 
+        - text: You don't have any bookings yet. Select a resource above to make a booking.
+  - contentinfo [ref=e133]:
+    - generic [ref=e136]:
+      - generic [ref=e137]:
+        - generic [ref=e138]: Copyright © My Company
+        - button "English (US)" [expanded] [ref=e140] [cursor=pointer]
+      - generic [ref=e142]:
+        - text: Powered by
+        - link "Odoo" [ref=e143] [cursor=pointer]:
+          - /url: http://www.odoo.com?utm_source=db&utm_medium=portal
+          - img "Odoo" [ref=e144]
