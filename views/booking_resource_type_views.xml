@@ -59,6 +59,9 @@
                         </group>
                     </group>
 
+                    <separator string="Properties"/>
+                    <field name="resource_properties" columns="2"/>
+
                     <notebook>
                         <page string="Description" name="description">
                             <field name="description" placeholder="Describe this resource..."/>
@@ -103,9 +106,6 @@
                         </page>
 
                     </notebook>
-
-                    <separator string="Properties"/>
-                    <field name="resource_properties" columns="2"/>
                 </sheet>
 
                 <chatter/>
