@@ -1,0 +1,57 @@
+- generic [ref=e2]:
+  - link "Skip to Content" [ref=e3] [cursor=pointer]:
+    - /url: "#wrap"
+  - banner [ref=e4]:
+    - navigation [ref=e5]:
+      - generic [ref=e6]:
+        - link "Logo of My Company" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - img "Logo of My Company" [ref=e8]
+        - list [ref=e9]:
+          - listitem [ref=e10]:
+            - button "Portal User 1" [ref=e11] [cursor=pointer]
+            - text:  
+  - main [ref=e12]:
+    - generic [ref=e14]:
+      - heading "My account" [level=3] [ref=e16]
+      - generic [ref=e17]:
+        - generic [ref=e20]:
+          - link "Discussions Chat, collaborate, and review shared discussions" [ref=e23] [cursor=pointer]:
+            - /url: /my/discussions
+            - img [ref=e25]
+            - generic [ref=e26]:
+              - generic [ref=e28]: Discussions
+              - generic [ref=e29]: Chat, collaborate, and review shared discussions
+          - generic [ref=e30]:
+            - link "Connection & Security Configure your connection parameters" [ref=e32] [cursor=pointer]:
+              - /url: /my/security
+              - img [ref=e34]
+              - generic [ref=e35]:
+                - generic [ref=e36]: Connection & Security
+                - generic [ref=e37]: Configure your connection parameters
+            - link "Internal Resource Browse resources and manage your bookings" [ref=e39] [cursor=pointer]:
+              - /url: /my/internal-resources
+              - img [ref=e41]
+              - generic [ref=e42]:
+                - generic [ref=e44]: Internal Resource
+                - generic [ref=e45]: Browse resources and manage your bookings
+        - generic [ref=e47]:
+          - generic [ref=e48]:
+            - img "Contact" [ref=e49]
+            - heading "Portal User 1" [level=5] [ref=e51]
+          - generic [ref=e56]:
+            - img "Email" [ref=e57]: 
+            - generic [ref=e58]: portal1@test.com
+          - button " Edit information" [ref=e59] [cursor=pointer]:
+            - generic [ref=e60]: 
+            - text: Edit information
+  - contentinfo [ref=e61]:
+    - generic [ref=e64]:
+      - generic [ref=e65]:
+        - generic [ref=e66]: Copyright © My Company
+        - button "English (US)" [expanded] [ref=e68] [cursor=pointer]
+      - generic [ref=e70]:
+        - text: Powered by
+        - link "Odoo" [ref=e71] [cursor=pointer]:
+          - /url: http://www.odoo.com?utm_source=db&utm_medium=portal
+          - img "Odoo" [ref=e72]
