@@ -127,20 +127,9 @@ class BookingPortal(CustomerPortal):
     @http.route('/my/internal-resources', type='http', auth='user', website=True)
     def portal_internal_resources(self, **kw):
         """Display two-card hub: available resources + my bookings."""
-        partner = request.env.user.partner_id
-
-        resource_count = self._get_accessible_resources(partner).__len__()
-        booking_count = request.env['booking.reservation'].sudo().search_count([
-            ('partner_id', '=', partner.id),
-            ('state', '=', 'confirmed'),
-        ])
-
         values = {
-            'resource_count': resource_count,
-            'booking_count': booking_count,
             'page_name': 'internal_resources',
         }
-
         return request.render('odoo_booking_reservation.portal_internal_resources', values)
 
     # ============================================================

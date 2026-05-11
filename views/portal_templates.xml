@@ -154,7 +154,6 @@
                     <t t-set="title">Available Resources</t>
                     <t t-set="url" t-value="'/my/booking/resources'"/>
                     <t t-set="text">Browse and book available resources</t>
-                    <t t-set="count" t-value="resource_count"/>
                     <t t-set="config_card" t-value="True"/>
                 </t>
 
@@ -164,7 +163,6 @@
                     <t t-set="title">My Bookings</t>
                     <t t-set="url" t-value="'/my/bookings'"/>
                     <t t-set="text">View and manage your booking history</t>
-                    <t t-set="count" t-value="booking_count"/>
                     <t t-set="config_card" t-value="True"/>
                 </t>
             </div>
