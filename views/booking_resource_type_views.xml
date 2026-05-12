@@ -102,11 +102,6 @@
                             </div>
                         </page>
 
-                        <page string="Properties Definition" name="properties_definition"
-                              groups="odoo_booking_reservation.group_booking_manager">
-                            <field name="resource_properties_definition"/>
-                        </page>
-
                     </notebook>
                 </sheet>
 
