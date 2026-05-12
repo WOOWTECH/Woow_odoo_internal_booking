@@ -86,6 +86,13 @@ class BookingReservation(models.Model):
         tracking=True,
     )
 
+    # Dynamic properties (values per reservation, definition from resource)
+    resource_properties = fields.Properties(
+        string='Properties',
+        definition='resource_type_id.resource_properties_definition',
+        copy=True,
+    )
+
     # Description
     description = fields.Html(
         string='Description',

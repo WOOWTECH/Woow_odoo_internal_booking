@@ -63,6 +63,8 @@
                         </group>
                     </group>
 
+                    <field name="resource_properties" columns="2"/>
+
                     <!-- Discussion Channel (only when resource allows it) -->
                     <field name="resource_enable_discussion" invisible="1"/>
                     <group string="Discussion" invisible="not resource_enable_discussion">

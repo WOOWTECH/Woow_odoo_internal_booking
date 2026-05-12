@@ -14,6 +14,7 @@ Features:
 - Automatic conflict detection to prevent double bookings
 - Backend calendar view integration
 - Category tagging with color support
+- Dynamic properties support (Odoo 18 native feature)
 - Does not depend on the website module
     ''',
     'author': 'WOOWTECH',

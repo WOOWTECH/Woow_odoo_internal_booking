@@ -111,6 +111,13 @@ class BookingResourceType(models.Model):
         string='Categories',
     )
 
+    # Dynamic properties definition (Odoo 18 native)
+    # Defines what properties are available for reservations of this resource.
+    # Actual property values are stored on booking.reservation via resource_properties field.
+    resource_properties_definition = fields.PropertiesDefinition(
+        string='Properties Definition',
+    )
+
     # Related reservations
     reservation_ids = fields.One2many(
         'booking.reservation',
