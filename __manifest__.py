@@ -13,7 +13,7 @@ Features:
 - Administrators can control access by selecting authorized contacts
 - Automatic conflict detection to prevent double bookings
 - Backend calendar view integration
-- Dynamic properties support (Odoo 18 native feature)
+- Category tagging with color support
 - Does not depend on the website module
     ''',
     'author': 'WOOWTECH',

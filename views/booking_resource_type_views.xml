@@ -47,7 +47,7 @@
 
                     <group>
                         <group string="Basic Information">
-                            <field name="category_id" placeholder="Select or create a category..."/>
+                            <field name="category_ids" widget="many2many_tags" options="{'color_field': 'color'}" placeholder="Select or create categories..."/>
                             <field name="location" placeholder="e.g. Building A, 2nd Floor"/>
                             <field name="capacity"/>
                             <field name="active"/>
@@ -58,9 +58,6 @@
                             <field name="advance_days"/>
                         </group>
                     </group>
-
-                    <separator string="Properties"/>
-                    <field name="resource_properties" columns="2"/>
 
                     <notebook>
                         <page string="Description" name="description">
@@ -121,6 +118,7 @@
             <search string="Search Resources">
                 <field name="name"/>
                 <field name="location"/>
+                <field name="category_ids"/>
                 <separator/>
                 <filter name="filter_active" string="Active" domain="[('active', '=', True)]"/>
                 <filter name="filter_archived" string="Archived" domain="[('active', '=', False)]"/>
@@ -129,6 +127,7 @@
                 <filter name="filter_specific" string="Specific Contacts" domain="[('share_type', '=', 'specific')]"/>
                 <separator/>
                 <group expand="0" string="Group By">
+                    <filter name="group_category" string="Category" context="{'group_by': 'category_ids'}"/>
                     <filter name="group_location" string="Location" context="{'group_by': 'location'}"/>
                     <filter name="group_share_type" string="Access Type" context="{'group_by': 'share_type'}"/>
                 </group>

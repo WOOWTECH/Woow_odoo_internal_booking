@@ -5,11 +5,9 @@
         <field name="name">booking.resource.category.tree</field>
         <field name="model">booking.resource.category</field>
         <field name="arch" type="xml">
-            <list string="Resource Categories">
-                <field name="sequence" widget="handle"/>
+            <list string="Resource Categories" editable="bottom">
                 <field name="name"/>
-                <field name="resource_count" string="Resources"/>
-                <field name="active" widget="boolean_toggle"/>
+                <field name="color" widget="color_picker"/>
             </list>
         </field>
     </record>
@@ -21,40 +19,14 @@
         <field name="arch" type="xml">
             <form string="Resource Category">
                 <sheet>
-                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
-
-                    <div class="oe_title">
-                        <label for="name"/>
-                        <h1>
-                            <field name="name" placeholder="Category Name"/>
-                        </h1>
-                    </div>
-
                     <group>
                         <group>
-                            <field name="active"/>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="color" widget="color_picker"/>
                         </group>
                     </group>
-
-                    <notebook>
-                        <page string="Properties Definition" name="properties">
-                            <field name="resource_properties_definition"/>
-                            <div class="alert alert-info" role="alert">
-                                <strong>Tip:</strong> Define custom properties here that will apply to all resources in this category.
-                                Click "+" to add a property. Available types: text, number, date, checkbox, selection list, tags, many2one.
-                            </div>
-                        </page>
-
-                        <page string="Resources" name="resources">
-                            <field name="resource_ids" nolabel="1">
-                                <list string="Resources">
-                                    <field name="name"/>
-                                    <field name="location"/>
-                                    <field name="capacity"/>
-                                </list>
-                            </field>
-                        </page>
-                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -70,7 +42,7 @@
                 Create your first resource category
             </p>
             <p>
-                Categories allow you to define custom properties that apply to all resources within that category.
+                Categorize your booking resources with colored tags for easy identification.
             </p>
         </field>
     </record>
