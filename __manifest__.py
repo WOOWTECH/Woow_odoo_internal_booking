@@ -47,7 +47,6 @@ Features:
             'odoo_booking_reservation/static/src/views/**/*',
         ],
         'web.assets_frontend': [
-            'odoo_booking_reservation/static/src/css/portal.css',
             'odoo_booking_reservation/static/src/js/portal_attendee.js',
         ],
     },

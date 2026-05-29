@@ -108,14 +108,47 @@ class BookingPortal(CustomerPortal):
     # ============================================================
 
     @http.route('/my/booking/resources', type='http', auth='user', website=True)
-    def portal_my_resources(self, **kw):
+    def portal_my_resources(self, sortby=None, search=None, search_in='all', **kw):
         """Display list of resources available to the user."""
         partner = request.env.user.partner_id
         resources = self._get_accessible_resources(partner)
 
+        # Sorting
+        searchbar_sortings = {
+            'name': {'label': _('Name'), 'order': 'name'},
+            'location': {'label': _('Location'), 'order': 'location'},
+        }
+        if not sortby:
+            sortby = 'name'
+
+        # Search
+        searchbar_inputs = {
+            'all': {'input': 'all', 'label': _('Search in All')},
+            'name': {'input': 'name', 'label': _('Resource Name')},
+        }
+
+        # Apply search filter
+        if search and search_in:
+            if search_in in ('name', 'all'):
+                resources = resources.filtered(
+                    lambda r: search.lower() in (r.name or '').lower()
+                )
+
+        # Apply sort
+        sort_order = searchbar_sortings[sortby]['order']
+        if sort_order == 'name':
+            resources = resources.sorted(key=lambda r: r.name or '')
+        elif sort_order == 'location':
+            resources = resources.sorted(key=lambda r: r.location or '')
+
         values = {
             'resources': resources,
             'page_name': 'booking_resources',
+            'searchbar_sortings': searchbar_sortings,
+            'sortby': sortby,
+            'searchbar_inputs': searchbar_inputs,
+            'search_in': search_in,
+            'search': search,
         }
 
         return request.render('odoo_booking_reservation.portal_my_resources', values)
@@ -439,7 +472,7 @@ class BookingPortal(CustomerPortal):
     # ============================================================
 
     @http.route(['/my/bookings', '/my/bookings/page/<int:page>'], type='http', auth='user', website=True)
-    def portal_my_bookings(self, page=1, sortby='date_desc', filterby='upcoming', **kw):
+    def portal_my_bookings(self, page=1, sortby=None, filterby=None, search=None, search_in='all', **kw):
         """Display user's bookings list."""
         partner = request.env.user.partner_id
         Reservation = request.env['booking.reservation'].sudo()
@@ -447,37 +480,46 @@ class BookingPortal(CustomerPortal):
         # Domain base
         domain = [('partner_id', '=', partner.id)]
 
-        # Filter options
-        filter_options = {
+        # Sorting
+        searchbar_sortings = {
+            'date_desc': {'label': _('Date (Newest)'), 'order': 'start_datetime desc'},
+            'date_asc': {'label': _('Date (Oldest)'), 'order': 'start_datetime asc'},
+            'resource': {'label': _('Resource'), 'order': 'resource_type_id, start_datetime desc'},
+        }
+        if not sortby:
+            sortby = 'date_desc'
+        if sortby not in searchbar_sortings:
+            sortby = 'date_desc'
+        order = searchbar_sortings[sortby]['order']
+
+        # Filtering
+        searchbar_filters = {
             'all': {'label': _('All'), 'domain': []},
             'upcoming': {'label': _('Upcoming'), 'domain': [('start_datetime', '>=', fields.Datetime.now()), ('state', '=', 'confirmed')]},
             'past': {'label': _('Past'), 'domain': [('start_datetime', '<', fields.Datetime.now())]},
             'confirmed': {'label': _('Confirmed'), 'domain': [('state', '=', 'confirmed')]},
             'cancelled': {'label': _('Cancelled'), 'domain': [('state', '=', 'cancelled')]},
         }
+        if not filterby:
+            filterby = 'all'
+        if filterby not in searchbar_filters:
+            filterby = 'all'
+        domain += searchbar_filters[filterby]['domain']
 
-        if filterby not in filter_options:
-            filterby = 'upcoming'
-
-        domain += filter_options[filterby]['domain']
-
-        # Sort options
-        sort_options = {
-            'date_desc': {'label': _('Date (Newest)'), 'order': 'start_datetime desc'},
-            'date_asc': {'label': _('Date (Oldest)'), 'order': 'start_datetime asc'},
-            'resource': {'label': _('Resource'), 'order': 'resource_type_id, start_datetime desc'},
+        # Search
+        searchbar_inputs = {
+            'all': {'input': 'all', 'label': _('Search in All')},
+            'resource': {'input': 'resource', 'label': _('Resource Name')},
         }
-
-        if sortby not in sort_options:
-            sortby = 'date_desc'
-
-        order = sort_options[sortby]['order']
+        if search and search_in:
+            if search_in in ('resource', 'all'):
+                domain += [('resource_type_id.name', 'ilike', search)]
 
         # Pager
         booking_count = Reservation.search_count(domain)
         pager = portal_pager(
             url='/my/bookings',
-            url_args={'sortby': sortby, 'filterby': filterby},
+            url_args={'sortby': sortby, 'filterby': filterby, 'search_in': search_in, 'search': search},
             total=booking_count,
             page=page,
             step=10,
@@ -496,9 +538,13 @@ class BookingPortal(CustomerPortal):
             'pager': pager,
             'sortby': sortby,
             'filterby': filterby,
-            'sort_options': sort_options,
-            'filter_options': filter_options,
+            'searchbar_sortings': searchbar_sortings,
+            'searchbar_filters': searchbar_filters,
+            'searchbar_inputs': searchbar_inputs,
+            'search_in': search_in,
+            'search': search,
             'page_name': 'my_bookings',
+            'default_url': '/my/bookings',
         }
 
         return request.render('odoo_booking_reservation.portal_my_bookings', values)
@@ -519,12 +565,25 @@ class BookingPortal(CustomerPortal):
         success = kw.get('success')
         error = kw.get('error')
 
+        # Record pager (prev/next)
+        all_ids = request.env['booking.reservation'].sudo().search([
+            ('partner_id', '=', partner.id),
+        ], order='start_datetime desc').ids
+        try:
+            idx = all_ids.index(booking_id)
+        except ValueError:
+            idx = 0
+        prev_record = '/my/bookings/%d' % all_ids[idx - 1] if idx > 0 else None
+        next_record = '/my/bookings/%d' % all_ids[idx + 1] if idx < len(all_ids) - 1 else None
+
         values = {
             'reservation': reservation,
             'object': reservation,
             'page_name': 'booking_detail',
             'success': success,
             'error': error,
+            'prev_record': prev_record,
+            'next_record': next_record,
         }
 
         return request.render('odoo_booking_reservation.portal_booking_detail', values)
