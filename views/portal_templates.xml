@@ -5,11 +5,11 @@
          Portal Home — Internal Resource entry card
          ============================================================ -->
     <template id="portal_my_home_booking" name="Show Booking Count"
-              inherit_id="portal.portal_my_home" priority="30">
+              inherit_id="portal.portal_my_home" priority="25">
         <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
-            <t t-set="portal_client_category_enable" t-value="True"/>
+            <t t-set="portal_service_category_enable" t-value="True"/>
         </xpath>
-        <xpath expr="//div[@id='portal_client_category']" position="inside">
+        <xpath expr="//div[@id='portal_service_category']" position="inside">
             <t t-call="portal.portal_docs_entry">
                 <t t-set="icon" t-value="'/odoo_booking_reservation/static/description/images/internal_resource.svg'"/>
                 <t t-set="title">Internal Resource</t>
