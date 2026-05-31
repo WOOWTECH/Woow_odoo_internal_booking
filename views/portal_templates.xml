@@ -240,12 +240,12 @@
                                 <div class="d-flex align-items-center">
                                     <t t-if="show_prev">
                                         <a t-attf-href="/my/booking/resources/#{resource.id}?date=#{prev_week}"
-                                           class="btn btn-sm btn-outline-secondary">
+                                           class="btn btn-sm btn-light">
                                             <i class="fa fa-chevron-left"/>
                                         </a>
                                     </t>
                                     <t t-else="">
-                                        <span class="btn btn-sm btn-outline-secondary disabled">
+                                        <span class="btn btn-sm btn-light disabled">
                                             <i class="fa fa-chevron-left"/>
                                         </span>
                                     </t>
@@ -254,12 +254,12 @@
                                     </span>
                                     <t t-if="show_next">
                                         <a t-attf-href="/my/booking/resources/#{resource.id}?date=#{next_week}"
-                                           class="btn btn-sm btn-outline-secondary">
+                                           class="btn btn-sm btn-light">
                                             <i class="fa fa-chevron-right"/>
                                         </a>
                                     </t>
                                     <t t-else="">
-                                        <span class="btn btn-sm btn-outline-secondary disabled">
+                                        <span class="btn btn-sm btn-light disabled">
                                             <i class="fa fa-chevron-right"/>
                                         </span>
                                     </t>
@@ -430,7 +430,7 @@
                             <!-- Actions -->
                             <div class="d-flex flex-column gap-2">
                                 <a t-attf-href="/my/booking/resources/#{reservation.resource_type_id.id}"
-                                   class="btn btn-outline-primary btn-sm">
+                                   class="btn btn-light btn-sm">
                                     <i class="fa fa-calendar"/> Book Again
                                 </a>
                                 <t t-if="reservation.state == 'confirmed'">
@@ -753,7 +753,7 @@
                                        class="btn btn-secondary">
                                         <i class="fa fa-arrow-left"/> Back
                                     </a>
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" class="btn btn-light">
                                         <i class="fa fa-check"/> Confirm Booking
                                     </button>
                                 </div>
@@ -781,7 +781,7 @@
                         </div>
                         <div class="card-footer">
                             <a t-attf-href="/my/booking/resources/#{resource.id}"
-                               class="btn btn-outline-primary btn-sm w-100">
+                               class="btn btn-light btn-sm w-100">
                                 <i class="fa fa-calendar"/> View Available Slots
                             </a>
                         </div>
