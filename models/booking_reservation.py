@@ -191,6 +191,16 @@ class BookingReservation(models.Model):
                 start = fields.Datetime.to_datetime(record.start_datetime)
                 record.end_datetime = start + timedelta(hours=record.duration)
 
+    @api.constrains('start_datetime', 'end_datetime')
+    def _check_start_before_end(self):
+        """Ensure start datetime is strictly before end datetime."""
+        for record in self:
+            if record.start_datetime and record.end_datetime:
+                if record.start_datetime >= record.end_datetime:
+                    raise ValidationError(
+                        _('End time must be after start time.')
+                    )
+
     @api.constrains('resource_type_id', 'start_datetime', 'end_datetime')
     def _check_duration_matches_slot(self):
         """Ensure booking duration matches the resource's configured slot_duration."""
@@ -204,11 +214,12 @@ class BookingReservation(models.Model):
             # Allow small floating-point tolerance (1 minute)
             if abs(actual_hours - expected_hours) > (1.0 / 60):
                 raise ValidationError(
-                    _('Booking duration (%.1f hours) does not match the slot duration (%.1f hours) of resource "%s".') % (
-                        actual_hours,
-                        expected_hours,
-                        record.resource_type_id.name,
-                    )
+                    _('Booking duration (%(actual).1f hours) does not match '
+                      'the slot duration (%(expected).1f hours) of resource "%(resource)s".') % {
+                        'actual': actual_hours,
+                        'expected': expected_hours,
+                        'resource': record.resource_type_id.name or '',
+                    }
                 )
 
     @api.constrains('resource_type_id', 'partner_id')
@@ -217,10 +228,10 @@ class BookingReservation(models.Model):
         for record in self:
             if not record.resource_type_id._check_partner_access(record.partner_id):
                 raise ValidationError(
-                    _('Contact "%s" does not have permission to book resource "%s".') % (
-                        record.partner_id.name,
-                        record.resource_type_id.name,
-                    )
+                    _('Contact "%(partner)s" does not have permission to book resource "%(resource)s".') % {
+                        'partner': record.partner_id.name or '',
+                        'resource': record.resource_type_id.name or '',
+                    }
                 )
 
     @api.constrains('resource_type_id', 'start_datetime', 'end_datetime', 'state')
@@ -284,7 +295,11 @@ class BookingReservation(models.Model):
             if record.state == 'confirmed':
                 continue
             record._check_no_overlap()
-        self.filtered(lambda r: r.state != 'confirmed').write({'state': 'confirmed'})
+        to_confirm = self.filtered(lambda r: r.state != 'confirmed')
+        to_confirm.write({'state': 'confirmed'})
+        for record in to_confirm:
+            if not record.calendar_event_id:
+                record._create_calendar_event()
         return True
 
     def _compute_access_url(self):
@@ -302,6 +317,40 @@ class BookingReservation(models.Model):
             template.send_mail(self.id, force_send=False)
         except Exception as e:
             _logger.warning('Failed to send booking email for reservation %s: %s', self.id, e)
+
+    def _create_calendar_event(self):
+        """Create a linked calendar.event for this reservation."""
+        self.ensure_one()
+        if self.calendar_event_id:
+            return
+
+        # Build attendee partner list
+        attendee_partners = self.env['res.partner']
+        if self.partner_id:
+            attendee_partners |= self.partner_id
+        if self.organizer_id and self.organizer_id != self.partner_id:
+            attendee_partners |= self.organizer_id
+        if self.attendee_ids:
+            attendee_partners |= self.attendee_ids
+
+        event_name = self.name or self.subject or _('Reservation')
+        vals = {
+            'name': event_name,
+            'start': self.start_datetime,
+            'stop': self.end_datetime,
+            'partner_ids': [(6, 0, attendee_partners.ids)],
+            'description': self.description or '',
+            'location': self.resource_location or '',
+        }
+
+        try:
+            event = self.env['calendar.event'].sudo().create(vals)
+            self.calendar_event_id = event
+        except Exception as e:
+            _logger.warning(
+                'Failed to create calendar event for reservation %s: %s',
+                self.id, e,
+            )
 
     def _create_discussion_channel(self):
         """Create a discuss.channel for this reservation if enabled."""
@@ -366,6 +415,8 @@ class BookingReservation(models.Model):
         for reservation in reservations:
             if reservation.enable_discussion and reservation.resource_enable_discussion:
                 reservation._create_discussion_channel()
+            if reservation.state == 'confirmed':
+                reservation._create_calendar_event()
             reservation._send_booking_email('odoo_booking_reservation.mail_template_booking_confirmed')
 
         return reservations
