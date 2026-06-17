@@ -1567,3 +1567,38 @@ msgstr "{{ object.name }} - 預定已取消"
 #: model:mail.template,subject:odoo_booking_reservation.mail_template_booking_confirmed
 msgid "{{ object.name }} - Booking Confirmed"
 msgstr "{{ object.name }} - 預定已確認"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__well_space_type
+msgid "WELL Space Type"
+msgstr "WELL 空間類型"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,help:odoo_booking_reservation.field_booking_resource_type__well_space_type
+msgid "WELL Building Standard space type classification"
+msgstr "WELL 建築標準空間類型分類"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields.selection,name:odoo_booking_reservation.field_booking_resource_type__well_space_type__V08
+msgid "V08 - Physical Activity Space"
+msgstr "V08 - 體能活動空間"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields.selection,name:odoo_booking_reservation.field_booking_resource_type__well_space_type__M04
+msgid "M04 - Mindfulness Space"
+msgstr "M04 - 正念靜心空間"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields.selection,name:odoo_booking_reservation.field_booking_resource_type__well_space_type__M06
+msgid "M06 - Community Space"
+msgstr "M06 - 社區交流空間"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields.selection,name:odoo_booking_reservation.field_booking_resource_type__well_space_type__C01
+msgid "C01 - Family Support Space"
+msgstr "C01 - 家庭支持空間"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields.selection,name:odoo_booking_reservation.field_booking_resource_type__well_space_type__none
+msgid "General Space"
+msgstr "一般空間"

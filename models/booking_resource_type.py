@@ -36,6 +36,16 @@ class BookingResourceType(models.Model):
         tracking=True,
     )
 
+    # WELL Building Standard space classification
+    well_space_type = fields.Selection([
+        ('V08', 'V08 - Physical Activity Space'),
+        ('M04', 'M04 - Mindfulness Space'),
+        ('M06', 'M06 - Community Space'),
+        ('C01', 'C01 - Family Support Space'),
+        ('none', 'General Space'),
+    ], string='WELL Space Type', default='none',
+        help='WELL Building Standard space type classification')
+
     # Resource details
     location = fields.Char(
         string='Location',

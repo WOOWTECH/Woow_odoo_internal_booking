@@ -48,6 +48,7 @@
                     <group>
                         <group string="Basic Information">
                             <field name="category_ids" widget="many2many_tags" options="{'color_field': 'color'}" placeholder="Select or create categories..."/>
+                            <field name="well_space_type"/>
                             <field name="location" placeholder="e.g. Building A, 2nd Floor"/>
                             <field name="capacity"/>
                             <field name="active"/>
