@@ -358,7 +358,7 @@ class BookingReservation(models.Model):
         if not self.enable_discussion or self.channel_id:
             return
 
-        # Check if discuss.channel model exists (cs_portal_discuss may not be installed)
+        # Check if discuss.channel model exists (woow_odoo_portal_discuss may not be installed)
         if 'discuss.channel' not in self.env:
             return
 

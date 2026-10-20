@@ -137,7 +137,7 @@ odoo_booking_reservation
     ├── mail          (討論通道、郵件通知)
     ├── calendar      (行事曆視圖整合)
     ├── portal        (Portal 使用者介面)
-    └── cs_portal_discuss  (Portal 討論頁面)
+    └── woow_odoo_portal_discuss  (Portal 討論頁面)
 ```
 
 ---
@@ -265,7 +265,7 @@ Portal 首頁顯示「我的預定」和「預定資源」兩張卡片。
 - **Odoo 18.0**（社區版或企業版）
 - **PostgreSQL 13+**
 - **Python 3.10+**
-- **相依模組：** `mail`, `calendar`, `portal`, `cs_portal_discuss`
+- **相依模組：** `mail`, `calendar`, `portal`, `woow_odoo_portal_discuss`
 
 ### 安裝步驟
 
