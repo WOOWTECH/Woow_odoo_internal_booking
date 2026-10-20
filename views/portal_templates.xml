@@ -817,7 +817,7 @@
          (Preserved from booking module — IDOR protection overlay)
          ============================================================ -->
     <template id="portal_discussions_auto_open"
-              inherit_id="cs_portal_discuss.portal_discuss_channels"
+              inherit_id="woow_odoo_portal_discuss.portal_discuss_channels"
               name="Auto-open Discussion Channel Modal">
         <xpath expr="//t[@t-call='portal.portal_layout']" position="inside">
             <!-- Modal for discuss channel iframe -->

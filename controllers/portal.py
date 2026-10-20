@@ -640,7 +640,7 @@ class BookingPortal(CustomerPortal):
             if not reservation:
                 return request.redirect('/my/discussions')
 
-        # Call parent's portal_discussions (from cs_portal_discuss)
+        # Call parent's portal_discussions (from woow_odoo_portal_discuss)
         return super().portal_discussions(page=page, **kw)
 
     # ============================================================

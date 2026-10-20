@@ -137,7 +137,7 @@ odoo_booking_reservation
     ├── mail          (Discussion channels, email notifications)
     ├── calendar      (Calendar view integration)
     ├── portal        (Portal user interface)
-    └── cs_portal_discuss  (Portal discussion page)
+    └── woow_odoo_portal_discuss  (Portal discussion page)
 ```
 
 ---
@@ -265,7 +265,7 @@ Configure resource access type: "All Portal Users" or "Specific Contacts".
 - **Odoo 18.0** (Community or Enterprise)
 - **PostgreSQL 13+**
 - **Python 3.10+**
-- **Dependencies:** `mail`, `calendar`, `portal`, `cs_portal_discuss`
+- **Dependencies:** `mail`, `calendar`, `portal`, `woow_odoo_portal_discuss`
 
 ### Steps
 
