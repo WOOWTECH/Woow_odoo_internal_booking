@@ -16,11 +16,10 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(__file__))
 
-from odoo_rpc import OdooRPC
+from odoo_rpc import OdooRPC, password_for, URL
 import requests
 from datetime import datetime, timedelta
 
-URL = "http://localhost:9071"
 results = []
 
 def record(test_id, name, passed, detail=""):
@@ -54,9 +53,9 @@ def test_bug001_portal_isolation():
     print("BUG-001 Regression: Portal reservation isolation (ir.rule)")
     print("=" * 60)
 
-    rpc_admin = OdooRPC("admin", "admin")
-    rpc_portal1 = OdooRPC("portal1", "portal1")
-    rpc_portal2 = OdooRPC("portal2", "portal2")
+    rpc_admin = OdooRPC("admin")
+    rpc_portal1 = OdooRPC("portal1")
+    rpc_portal2 = OdooRPC("portal2")
 
     # Get partner IDs
     p1_partner = rpc_admin.read("res.users", [rpc_portal1.uid], ["partner_id"])[0]["partner_id"][0]
@@ -149,7 +148,7 @@ def test_bug002_invalid_resource():
     print("BUG-002 Regression: Invalid resource_id in portal create")
     print("=" * 60)
 
-    session, _ = get_session("portal1", "portal1")
+    session, _ = get_session("portal1", password_for("portal1"))
 
     # Get fresh CSRF token from bookings/new page
     import re

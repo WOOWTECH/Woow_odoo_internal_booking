@@ -13,11 +13,10 @@ import json
 from datetime import datetime, timedelta
 sys.path.insert(0, os.path.dirname(__file__))
 
-from odoo_rpc import OdooRPC
+from odoo_rpc import OdooRPC, password_for, URL
 import requests
 from html.parser import HTMLParser
 
-URL = "http://localhost:9071"
 results = []
 
 
@@ -89,12 +88,12 @@ print("\n" + "=" * 70)
 print("SECTION 1: Portal 使用者帳號資訊")
 print("=" * 70)
 
-rpc_admin = OdooRPC("admin", "admin")
+rpc_admin = OdooRPC("admin")
 
 portal_accounts = [
-    ("portal1", "portal1", 8),
-    ("portal2", "portal2", 9),
-    ("portal3", "portal3", 10),
+    ("portal1", password_for("portal1"), 8),
+    ("portal2", password_for("portal2"), 9),
+    ("portal3", password_for("portal3"), 10),
 ]
 
 print("\n  ┌──────────┬──────────┬─────────┬────────────┬───────────────┐")
@@ -157,7 +156,7 @@ print("\n" + "=" * 70)
 print("SECTION 3: Portal 首頁 (/my)")
 print("=" * 70)
 
-session, _, _ = get_session("portal1", "portal1")
+session, _, _ = get_session("portal1", password_for("portal1"))
 
 resp = session.get(f"{URL}/my")
 texts = extract_text_from_html(resp.text)
@@ -221,7 +220,7 @@ record("4.5", "每個資源有詳情連結",
        f"找到 {len(resource_links)} 個資源連結, IDs={list(set(resource_links))}")
 
 # portal3 should NOT see VIP Room C
-session3, _, _ = get_session("portal3", "portal3")
+session3, _, _ = get_session("portal3", password_for("portal3"))
 resp3 = session3.get(f"{URL}/my/booking/resources")
 has_vip_p3 = "VIP Room C" in resp3.text
 record("4.6", "portal3 不可見 VIP Room C (share_type=specific)",
@@ -547,7 +546,7 @@ record("7.7", "無效 resource_id 被友善處理 (非 500)",
        f"status={create_invalid.status_code}, url={create_invalid.url}")
 
 # 7.8 Create as portal2
-session2, _, _ = get_session("portal2", "portal2")
+session2, _, _ = get_session("portal2", password_for("portal2"))
 resp_r8 = session2.get(f"{URL}/my/booking/resources/2", params={"date": day_after})
 slot_form8 = extract_slot_form(resp_r8.text)
 token_p2, _ = get_csrf_from_resource_page(session2, 2)
@@ -719,7 +718,7 @@ if booking_id2:
            f"cancelled={is_cancelled}")
 
     # Verify via RPC
-    rpc_p1 = OdooRPC("portal1", "portal1")
+    rpc_p1 = OdooRPC("portal1")
     booking_state = rpc_p1.read("booking.reservation", [booking_id2], ["state"])[0]["state"]
     record("10.4", "RPC 確認預約狀態為 cancelled",
            booking_state == "cancelled",
@@ -746,8 +745,8 @@ print("\n" + "=" * 70)
 print("SECTION 11: XML-RPC 隱私隔離驗證 (ir.rule)")
 print("=" * 70)
 
-rpc_p1 = OdooRPC("portal1", "portal1")
-rpc_p2 = OdooRPC("portal2", "portal2")
+rpc_p1 = OdooRPC("portal1")
+rpc_p2 = OdooRPC("portal2")
 
 # 11.1 portal1 search own bookings
 p1_bookings = rpc_p1.search("booking.reservation", [])

@@ -1,10 +1,26 @@
 import logging
 
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import AccessError, ValidationError
 from odoo.tools.translate import _
 
 _logger = logging.getLogger(__name__)
+
+# Fields of a reservation that portal (share) users may never change through
+# a direct ORM call (JSON-RPC call_kw). Portal users keep the write ACL only
+# because the portal chatter (/mail/message/post) requires write access on the
+# document; every legitimate change goes through the portal controllers, which
+# validate the input and then write with sudo().
+PORTAL_PROTECTED_FIELDS = frozenset({
+    'name', 'subject', 'resource_type_id', 'start_datetime', 'end_datetime',
+    'duration', 'partner_id', 'organizer_id', 'attendee_ids', 'state',
+    'resource_properties', 'description', 'note', 'enable_discussion',
+    'channel_id', 'reminder_type', 'reminder_time', 'calendar_event_id',
+    'access_token',
+    # followers / messages go through the guarded mail.thread API only
+    'message_follower_ids', 'message_partner_ids', 'message_ids',
+    'website_message_ids',
+})
 
 
 class BookingReservation(models.Model):
@@ -234,19 +250,142 @@ class BookingReservation(models.Model):
                     }
                 )
 
+    # ------------------------------------------------------------
+    # Portal (share user) helpers
+    # ------------------------------------------------------------
+
+    def _is_portal_booker(self):
+        """True when the current user is a portal/share user.
+
+        ``sudo()`` keeps ``env.user``, so the portal controllers (which write
+        with sudo) are still recognised as portal requests.
+        """
+        return bool(self.env.user.share)
+
+    @api.model
+    def _get_portal_attendee_domain(self, partner):
+        """Contacts a portal booker may invite as attendees.
+
+        Shared by the attendee search (/my/booking/attendees/search) and the
+        attendee validation, so both always agree:
+
+        * partners of active internal users (share=False), and
+        * contacts of the booker's own commercial entity
+          (same commercial_partner_id),
+
+        never the booker, companies or archived contacts.
+        """
+        commercial = partner.commercial_partner_id or partner
+        return [
+            ('id', '!=', partner.id),
+            ('active', '=', True),
+            ('is_company', '=', False),
+            '|',
+            ('user_ids', 'any', [('share', '=', False), ('active', '=', True)]),
+            ('commercial_partner_id', '=', commercial.id),
+        ]
+
+    @api.model
+    def _filter_portal_attendees(self, partner, partner_ids):
+        """Return the subset of ``partner_ids`` the booker may invite."""
+        if not partner_ids:
+            return self.env['res.partner']
+        domain = [('id', 'in', list(partner_ids))] + self._get_portal_attendee_domain(partner)
+        return self.env['res.partner'].sudo().search(domain)
+
+    @api.model
+    def _is_portal_slot(self, resource, start_local, end_local):
+        """True when [start_local, end_local) (naive, resource timezone) is
+        exactly one of the slots offered by ``resource._generate_slots``.
+
+        The comparison is exact: a start or end that is off the grid by even
+        a second is refused (a booking ending at 11:00:59 would otherwise
+        also block the next slot). The slot values are compared at the
+        precision the portal posts them (whole seconds, see the slot links).
+        """
+        if not resource or not start_local or not end_local:
+            return False
+        day = start_local.date()
+        for slot in resource.sudo()._generate_slots(day, day):
+            if (slot['start'].replace(microsecond=0) == start_local
+                    and slot['end'].replace(microsecond=0) == end_local):
+                return True
+        return False
+
+    @api.constrains('attendee_ids')
+    def _check_portal_attendees(self):
+        """Portal bookers may only invite contacts from the shared attendee
+        domain (internal users, own commercial entity)."""
+        if not self._is_portal_booker():
+            return
+        requester = self.env.user.partner_id
+        for record in self:
+            invited = record.sudo().attendee_ids - requester
+            if not invited:
+                continue
+            allowed = self._filter_portal_attendees(requester, invited.ids)
+            if invited - allowed:
+                raise ValidationError(
+                    _('You can only invite your colleagues or internal users as attendees.')
+                )
+
+    @api.constrains('resource_type_id', 'start_datetime', 'end_datetime')
+    def _check_portal_slot_alignment(self):
+        """Portal bookings must match a slot of the resource's availability
+        grid (availability_ids + slot_interval, resource timezone). Backend
+        users keep free scheduling."""
+        if not self._is_portal_booker():
+            return
+        for record in self:
+            if record.state == 'cancelled' or not record.start_datetime or not record.end_datetime:
+                continue
+            resource = record.sudo().resource_type_id
+            # the grid lives in the resource timezone, never in the portal
+            # user's own (self-writeable) timezone
+            start_local = resource._booking_utc_to_local(record.start_datetime)
+            end_local = resource._booking_utc_to_local(record.end_datetime)
+            if not self._is_portal_slot(resource, start_local, end_local):
+                raise ValidationError(
+                    _('The selected time is not an available slot of resource "%s".')
+                    % (resource.name or '')
+                )
+
+    def _lock_resources_for_booking(self):
+        """Serialise bookings per resource.
+
+        Touch the booking_resource_type row of every resource involved with a
+        real (no-op) UPDATE before the overlap check. Two transactions booking
+        the same resource then queue on that row lock, and the later one fails
+        with a serialization error (REPEATABLE READ: the row was updated by a
+        transaction that committed after its snapshot); Odoo retries the
+        request with a fresh snapshot and the overlap check then sees the
+        first booking. A plain SELECT ... FOR UPDATE / advisory lock would only
+        make the second transaction wait and then check against its stale
+        snapshot. FOR NO KEY UPDATE (taken by this UPDATE) does not conflict
+        with the KEY SHARE lock the reservation INSERT holds on the resource,
+        so two concurrent creates cannot deadlock on it.
+        """
+        resource_ids = sorted(set(self.mapped('resource_type_id').ids))
+        if not resource_ids:
+            return
+        self.env.cr.execute(
+            "UPDATE booking_resource_type SET write_date = write_date WHERE id IN %s",
+            [tuple(resource_ids)],
+        )
+
     @api.constrains('resource_type_id', 'start_datetime', 'end_datetime', 'state')
     def _check_no_overlap(self):
         """Ensure no overlapping reservations for the same resource.
 
-        Uses a raw SQL query with FOR UPDATE to prevent race conditions
-        from concurrent booking attempts. The second concurrent transaction
-        will block until the first commits, then correctly detect the overlap.
+        Bookings are serialised per resource (see _lock_resources_for_booking)
+        before the parameterised overlap query, so concurrent requests for the
+        same slot cannot both be committed.
         """
+        self.filtered(lambda r: r.state != 'cancelled')._lock_resources_for_booking()
         for record in self:
             if record.state == 'cancelled':
                 continue
 
-            # Use SQL with row-level locking to prevent race conditions
             self.env.cr.execute("""
                 SELECT id FROM booking_reservation
                 WHERE id != %s
@@ -376,10 +515,13 @@ class BookingReservation(models.Model):
             members |= self.partner_id
 
         try:
+            # A members-only conversation: core record rules only let members
+            # read/join a non-'channel' discuss.channel, whereas a 'channel'
+            # with group_public_id=base.group_portal is readable and joinable
+            # by every portal user through the core /discuss/channel/* routes.
             channel = self.env['discuss.channel'].sudo().create({
                 'name': full_name,
-                'channel_type': 'channel',
-                'group_public_id': self.env.ref('base.group_portal').id,
+                'channel_type': 'group',
             })
             # Add members to the channel
             for partner in members:
@@ -400,9 +542,90 @@ class BookingReservation(models.Model):
                     _('Cannot book a time slot in the past.')
                 )
 
+    def _check_portal_direct_write(self, field_names):
+        """Refuse direct (non-sudo) ORM changes of reservation fields by
+        portal users; the portal controllers validate and write with sudo."""
+        if self.env.su or not self._is_portal_booker():
+            return
+        forbidden = PORTAL_PROTECTED_FIELDS.intersection(field_names)
+        if forbidden:
+            raise AccessError(
+                _('Portal users cannot modify reservations directly (%s).')
+                % ', '.join(sorted(forbidden))
+            )
+
+    # ------------------------------------------------------------
+    # Mail recipients of portal users
+    # ------------------------------------------------------------
+    # Portal users keep the write ACL for the portal chatter, which is also
+    # what the public mail.thread API (message_subscribe, message_post,
+    # message_notify ... callable through /web/dataset/call_kw) checks. Without
+    # the guards below a portal booker could make any partner of the database
+    # a follower or a recipient of their reservation and have it e-mailed on
+    # every chatter post (the attendee check, by another field).
+
+    def _portal_mail_guard_active(self):
+        """Direct (non-sudo) mail.thread calls of a portal/share user."""
+        return not self.env.su and self._is_portal_booker()
+
+    def _get_portal_allowed_recipients(self, partner_ids):
+        """Subset of ``partner_ids`` a portal user may add as followers /
+        recipients of ``self``: themselves, the participants of the
+        reservations and the contacts of the shared attendee domain."""
+        requester = self.env.user.partner_id
+        wanted = {
+            pid for pid in partner_ids
+            if isinstance(pid, int) and not isinstance(pid, bool) and 0 < pid < 2 ** 31
+        }
+        allowed = requester
+        for record in self.sudo():
+            allowed |= record.partner_id | record.organizer_id | record.attendee_ids
+        candidates = list(wanted - set(allowed.ids))
+        if candidates:
+            allowed |= self.env['res.partner'].sudo().search(
+                [('id', 'in', candidates)] + self._get_portal_attendee_domain(requester))
+        return allowed.filtered(lambda p: p.id in wanted)
+
+    def _filter_portal_recipient_ids(self, partner_ids):
+        """Keep only the allowed partner ids (order kept)."""
+        if not partner_ids or not self._portal_mail_guard_active():
+            return partner_ids
+        allowed = set(self._get_portal_allowed_recipients(partner_ids).ids)
+        kept = [pid for pid in partner_ids if pid in allowed]
+        if len(kept) != len(partner_ids):
+            _logger.info(
+                'booking.reservation %s: portal user %s tried to add recipients %r; dropped',
+                self.ids, self.env.uid, [pid for pid in partner_ids if pid not in allowed])
+        return kept
+
+    def message_subscribe(self, partner_ids=None, subtype_ids=None):
+        if partner_ids and self._portal_mail_guard_active():
+            partner_ids = self._filter_portal_recipient_ids(list(partner_ids))
+            if not partner_ids:
+                return True
+        return super().message_subscribe(partner_ids=partner_ids, subtype_ids=subtype_ids)
+
+    def message_unsubscribe(self, partner_ids=None):
+        if (partner_ids and self._portal_mail_guard_active()
+                and set(partner_ids) != {self.env.user.partner_id.id}):
+            raise AccessError(_('Portal users can only unfollow reservations themselves.'))
+        return super().message_unsubscribe(partner_ids=partner_ids)
+
+    def message_post(self, *, partner_ids=None, **kwargs):
+        if partner_ids and self._portal_mail_guard_active():
+            partner_ids = self._filter_portal_recipient_ids(list(partner_ids))
+        return super().message_post(partner_ids=partner_ids, **kwargs)
+
+    def message_notify(self, *, partner_ids=False, **kwargs):
+        if partner_ids and self._portal_mail_guard_active():
+            partner_ids = self._filter_portal_recipient_ids(list(partner_ids))
+        return super().message_notify(partner_ids=partner_ids, **kwargs)
+
     @api.model_create_multi
     def create(self, vals_list):
         """Override create to handle defaults and discussion channel."""
+        for vals in vals_list:
+            self._check_portal_direct_write(vals.keys())
         for vals in vals_list:
             # Default organizer to creator's partner
             if not vals.get('organizer_id') and not vals.get('partner_id'):
@@ -423,6 +646,7 @@ class BookingReservation(models.Model):
 
     def write(self, vals):
         """Override write to handle discussion channel creation."""
+        self._check_portal_direct_write(vals.keys())
         result = super().write(vals)
 
         if vals.get('enable_discussion'):

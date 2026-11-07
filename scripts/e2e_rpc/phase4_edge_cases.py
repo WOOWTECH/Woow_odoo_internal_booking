@@ -10,7 +10,7 @@ import time
 import traceback
 
 sys.path.insert(0, '.')
-from tests.odoo_rpc import OdooRPC
+from odoo_rpc import OdooRPC, password_for, CONFIG_PATH
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -57,7 +57,7 @@ print("=" * 70)
 print("Phase 4: Edge Cases & Conflict Detection")
 print("=" * 70)
 
-rpc = OdooRPC("admin", "admin")
+rpc = OdooRPC("admin")
 admin_partner = rpc.read('res.users', [rpc.uid], ['partner_id'])[0]['partner_id'][0]
 print(f"Logged in as admin (uid={rpc.uid}, partner_id={admin_partner})")
 

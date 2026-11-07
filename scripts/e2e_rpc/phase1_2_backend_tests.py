@@ -6,7 +6,7 @@ Phase 1: Manager tests (test_manager) - full CRUD on all models.
 Phase 2: User permission tests (test_user) - verify access restrictions.
 
 Run from project root:
-    python3 tests/phase1_2_backend_tests.py
+    python3 scripts/e2e_rpc/phase1_2_backend_tests.py
 """
 import sys
 import json
@@ -14,7 +14,7 @@ import traceback
 import xmlrpc.client
 
 sys.path.insert(0, '.')
-from tests.odoo_rpc import OdooRPC
+from odoo_rpc import OdooRPC, password_for, CONFIG_PATH
 
 
 def is_access_error(exc):
@@ -54,7 +54,7 @@ def call_action(rpc, model, method, record_ids):
 # ---------------------------------------------------------------------------
 # Config
 # ---------------------------------------------------------------------------
-with open('tests/test_config.json') as f:
+with open(CONFIG_PATH) as f:
     CONFIG = json.load(f)
 
 RESOURCE_CONF_A = CONFIG['resources']['Conference Room A']
@@ -84,7 +84,7 @@ def section(title):
 # ===================================================================
 section("PHASE 1: Manager CRUD Tests (test_manager)")
 
-mgr = OdooRPC("test_manager", "test_manager")
+mgr = OdooRPC("test_manager")
 print(f"  Authenticated as test_manager (uid={mgr.uid})")
 
 # Track IDs to clean up
@@ -470,7 +470,7 @@ except Exception as e:
 # ===================================================================
 section("PHASE 2: User Permission Tests (test_user)")
 
-usr = OdooRPC("test_user", "test_user")
+usr = OdooRPC("test_user")
 print(f"  Authenticated as test_user (uid={usr.uid})")
 usr_partner = usr.read('res.users', [usr.uid], fields=['partner_id'])[0]['partner_id'][0]
 

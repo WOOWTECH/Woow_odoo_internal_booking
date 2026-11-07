@@ -308,6 +308,7 @@ odoo -u odoo_booking_reservation -d your_database
 | 時段長度 | 每個預定時段的長度（小時） |
 | 時段間隔 | 時段之間的間隔（最小 0.25 小時） |
 | 可預定天數 | 允許提前預定的天數 |
+| 時區 | 可用時段所用的時區。Portal 時段一律以此時區顯示、預定與檢查，與 Portal 使用者自選的時區無關（預設為公司時區） |
 
 ### 3. 設定可用時段
 
@@ -334,9 +335,13 @@ odoo -u odoo_booking_reservation -d your_database
 | 安全項目 | 實作方式 |
 |----------|----------|
 | XSS 防護 | `html_sanitize()` 處理使用者輸入，`t-out` 取代 `t-raw` |
-| 競態條件防護 | SQL `FOR UPDATE` 行級鎖定 |
+| 競態條件防護 | 重疊檢查前先依資源串行化（鎖資源列，序列化衝突時由 Odoo 重試）；被拒的預定以 savepoint 回滾，不會被寫入 |
 | IDOR 防護 | 討論通道存取驗證，檢查預定擁有權 |
-| RPC 繞過防護 | `@api.constrains` 模型層驗證（過去時段、重疊、時長） |
+| 討論僅限成員 | 預定討論改為 `group` 對話（不設 `group_public_id`）：只有成員能透過 `/discuss/channel/*` 開啟、讀取、加入；Odoo 核心不允許在其中建立討論串 |
+| 參加者驗證 | 參加者搜尋與驗證共用同一網域：內部使用者＋預定者同一公司（同 commercial partner）的聯絡人；搜尋只回傳姓名（不含 email），至少 2 個字，LIKE 萬用字元視為一般字元；其他對象在 Portal 被濾掉、在模型層被拒絕 |
+| 時段網格驗證 | Portal 預定必須與資源可用時段＋時段間隔產生的時段完全相同（精確到秒），時段以資源時區（`booking_tz`）計算；使用者自己的時區可自行修改，不採用；後台使用者維持自由排程 |
+| Portal 郵件收件人 | Portal 使用者不能把其他聯絡人設為自己預定的關注者或收件人：`message_subscribe`／`message_post`／`message_notify` 只保留本人、預定相關人員與參加者網域內的對象；只能取消自己的關注 |
+| RPC 繞過防護 | `@api.constrains` 模型層驗證（過去時段、重疊、時長、參加者、時段網格）；Portal 無建立權限，也不能用 RPC 直接改預定欄位（保留寫入權限只為了 Portal 留言） |
 | Portal 記錄規則 | 3 條 `ir.rule` 限制 Portal 存取範圍 |
 | 異常洩漏防護 | Controller 層捕捉異常，返回通用錯誤碼 |
 | 刪除保護 | `ondelete='restrict'` 防止刪除關聯預定者 |
@@ -374,7 +379,9 @@ odoo -u odoo_booking_reservation -d your_database
 
 | 約束 | 說明 |
 |------|------|
-| `_check_no_overlap` | SQL FOR UPDATE 防止重複預定 |
+| `_check_no_overlap` | 依資源上鎖＋參數化重疊查詢，防止重複預定 |
+| `_check_portal_attendees` | Portal 使用者只能邀請內部使用者與自己公司的聯絡人 |
+| `_check_portal_slot_alignment` | Portal 預定必須符合可預定時段 |
 | `_check_duration_matches_slot` | 驗證預定時長與資源時段長度一致 |
 | `_check_not_in_past` | 阻擋過去時段的預定 |
 | `_check_capacity` | 資源容量至少為 1 |
@@ -433,6 +440,22 @@ resource.action_view_reservations()        # 開啟預定行事曆視圖
 
 ## 測試
 
+Odoo 單元測試（`tests/`，tag `booking_security`）：
+
+```bash
+odoo -d <db> -u odoo_booking_reservation --test-enable --test-tags /odoo_booking_reservation --stop-after-init
+```
+
+舊的端對端腳本（對執行中的伺服器打 XML-RPC／HTTP）在 `scripts/e2e_rpc/`；
+伺服器、資料庫與密碼都從環境變數讀取（`BOOKING_E2E_URL`、`BOOKING_E2E_DB`、
+`BOOKING_E2E_PASSWORD_<LOGIN>` 或 `BOOKING_E2E_PASSWORD`），不寫死任何帳密。
+
+### 多公司
+
+資源與預定沒有 `company_id`，本模組適用單一公司資料庫。多公司資料庫中，
+設為「所有 Portal 使用者」的資源對各公司的 Portal 使用者都可見，Booking User
+可讀取全部預定。
+
 本模組經過多階段完整測試：
 
 ### 功能測試結果
@@ -464,6 +487,14 @@ resource.action_view_reservations()        # 開啟預定行事曆視圖
 ---
 
 ## 變更紀錄
+
+### v18.0.1.0.3 (2026-11)
+
+- **安全性：** Portal 預定的參加者在 Portal 與模型層都用與參加者搜尋相同的網域驗證；搜尋不再回傳 email，只列內部使用者與預定者自己公司的聯絡人，且至少輸入 2 個字
+- **安全性：** 預定討論改為僅限成員的 `group` 對話；升級時遷移既有預定通道，並拆離其討論串
+- **安全性：** Portal 預定必須符合資源時段網格；被拒的預定不再被寫入；同資源同時段的並行預定依資源串行化
+- **安全性：** Portal 使用者移除預定的建立權限，也不能透過 RPC 修改預定欄位
+- **整理：** 端對端腳本移到 `scripts/e2e_rpc/`，帳密改由環境變數提供
 
 ### v1.0.0 (2026-04)
 

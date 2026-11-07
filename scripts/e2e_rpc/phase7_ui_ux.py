@@ -13,18 +13,17 @@ import re
 sys.path.insert(0, '.')
 
 import requests
-from tests.odoo_rpc import OdooRPC
+from odoo_rpc import OdooRPC, password_for, CONFIG_PATH, URL, DB
 
 # ============================================================
 # Configuration
 # ============================================================
-BASE_URL = "http://localhost:9071"
-DB = "odoocalendar"
+BASE_URL = URL
 
 ADMIN_LOGIN = "admin"
-ADMIN_PASSWORD = "admin"
+ADMIN_PASSWORD = password_for(ADMIN_LOGIN)
 PORTAL_LOGIN = "portal1"
-PORTAL_PASSWORD = "portal1"
+PORTAL_PASSWORD = password_for(PORTAL_LOGIN)
 
 # Track test results
 results = []
@@ -507,7 +506,7 @@ if __name__ == "__main__":
 
     # Verify connectivity first
     try:
-        rpc = OdooRPC("admin", "admin")
+        rpc = OdooRPC("admin")
         print(f"RPC connection OK (uid={rpc.uid})")
     except Exception as e:
         print(f"FATAL: Cannot connect to Odoo via RPC: {e}")

@@ -9,7 +9,7 @@ Tests cover:
   D. Privacy Tests (cross-user data isolation)
 
 Run from project root:
-    python3 tests/phase3_portal_tests.py
+    python3 scripts/e2e_rpc/phase3_portal_tests.py
 """
 import sys
 import time
@@ -18,7 +18,7 @@ import traceback
 from datetime import datetime, timedelta
 
 sys.path.insert(0, '.')
-from tests.odoo_rpc import OdooRPC
+from odoo_rpc import OdooRPC, password_for, CONFIG_PATH, URL, DB
 
 try:
     import requests
@@ -29,12 +29,12 @@ except ImportError:
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
-BASE_URL = "http://localhost:9071"
+BASE_URL = URL
 
 USERS = {
-    "portal1": {"login": "portal1", "password": "portal1", "id": 8, "partner_id": 9},
-    "portal2": {"login": "portal2", "password": "portal2", "id": 9, "partner_id": 10},
-    "portal3": {"login": "portal3", "password": "portal3", "id": 10, "partner_id": 11},
+    "portal1": {"login": "portal1", "password": password_for("portal1"), "id": 8, "partner_id": 9},
+    "portal2": {"login": "portal2", "password": password_for("portal2"), "id": 9, "partner_id": 10},
+    "portal3": {"login": "portal3", "password": password_for("portal3"), "id": 10, "partner_id": 11},
 }
 
 RESOURCES = {
@@ -108,7 +108,7 @@ def get_session(login, password):
         "login": login,
         "password": password,
         "redirect": "/my",
-        "db": "odoocalendar",
+        "db": DB,
     }
     if csrf:
         payload["csrf_token"] = csrf
@@ -119,7 +119,7 @@ def get_session(login, password):
 def admin_cleanup_reservations(ids_to_remove):
     """Use admin RPC to cancel/remove test reservations so they don't interfere."""
     try:
-        adm = OdooRPC("admin", "admin")
+        adm = OdooRPC("admin")
         if ids_to_remove:
             adm.write('booking.reservation', ids_to_remove, {'state': 'cancelled'})
     except Exception:
@@ -295,7 +295,7 @@ def section_b():
     cleanup_ids = []
 
     # B1. portal1 CAN book VIP Room C
-    rpc1, ok1, _ = make_rpc("portal1", "portal1")
+    rpc1, ok1, _ = make_rpc("portal1", password_for("portal1"))
     p1_partner = USERS["portal1"]["partner_id"]
     b1_start = f"{BOOKING_DATE_STR} 10:00:00"
     b1_end = f"{BOOKING_DATE_STR} 12:00:00"
@@ -325,7 +325,7 @@ def section_b():
             admin_cleanup_reservations([b1_id])
 
     # B2. portal2 CAN book VIP Room C
-    rpc2, ok2, _ = make_rpc("portal2", "portal2")
+    rpc2, ok2, _ = make_rpc("portal2", password_for("portal2"))
     p2_partner = USERS["portal2"]["partner_id"]
     b2_id = None
     if ok2:
@@ -353,7 +353,7 @@ def section_b():
             admin_cleanup_reservations([b2_id])
 
     # B3. portal3 CANNOT book VIP Room C (not in allowed_partner_ids)
-    rpc3, ok3, _ = make_rpc("portal3", "portal3")
+    rpc3, ok3, _ = make_rpc("portal3", password_for("portal3"))
     p3_partner = USERS["portal3"]["partner_id"]
     if ok3:
         denied = expect_error(
@@ -412,7 +412,7 @@ def section_c():
     print("=" * 70)
 
     # C1. Login to portal
-    session, login_resp = get_session("portal1", "portal1")
+    session, login_resp = get_session("portal1", password_for("portal1"))
     # After successful login, Odoo redirects to /my or /web.
     # A failed login stays on /web/login with an error.
     login_ok = login_resp.status_code == 200 and '/web/login' not in login_resp.url
@@ -495,7 +495,7 @@ def section_c():
         # If we could not extract the id from the URL, try to find it via RPC
         if not c5_booking_id and ok:
             try:
-                adm = OdooRPC("admin", "admin")
+                adm = OdooRPC("admin")
                 found = adm.search_read('booking.reservation', [
                     ('partner_id', '=', partner1),
                     ('start_datetime', '=', c5_start),
@@ -540,7 +540,7 @@ def section_c():
                                 data=cancel_data, timeout=15, allow_redirects=True)
             ok = resp.status_code == 200
             # Verify the state changed via RPC
-            adm = OdooRPC("admin", "admin")
+            adm = OdooRPC("admin")
             state_data = adm.read('booking.reservation', [c5_booking_id], fields=['state'])
             cancelled = state_data and state_data[0].get('state') == 'cancelled'
             record("C7", f"POST /my/bookings/{c5_booking_id}/cancel cancels booking",
@@ -564,7 +564,7 @@ def section_d():
     cleanup_ids = []
 
     # D1. portal1 creates a reservation
-    rpc1, ok1, _ = make_rpc("portal1", "portal1")
+    rpc1, ok1, _ = make_rpc("portal1", password_for("portal1"))
     p1_partner = USERS["portal1"]["partner_id"]
     d1_start = f"{BOOKING_DATE_STR} 15:00:00"
     d1_end = f"{BOOKING_DATE_STR} 16:00:00"
@@ -586,7 +586,7 @@ def section_d():
         record("D1", "portal1 creates reservation for privacy test", False, "login failed")
 
     # D2. portal2 creates a reservation on same resource (different time)
-    rpc2, ok2, _ = make_rpc("portal2", "portal2")
+    rpc2, ok2, _ = make_rpc("portal2", password_for("portal2"))
     p2_partner = USERS["portal2"]["partner_id"]
     d2_start = f"{BOOKING_DATE_STR} 16:00:00"
     d2_end = f"{BOOKING_DATE_STR} 17:00:00"
@@ -662,7 +662,7 @@ def section_d():
         detail_c = ""
         http_isolated = False
         try:
-            sess1, _ = get_session("portal1", "portal1")
+            sess1, _ = get_session("portal1", password_for("portal1"))
             resp = sess1.get(f"{BASE_URL}/my/bookings/{d2_id}", timeout=15, allow_redirects=True)
             # Controller raises MissingError for other user's bookings -> 403 or error page
             if resp.status_code in (403, 404, 500):

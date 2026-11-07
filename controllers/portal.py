@@ -2,10 +2,19 @@ from odoo import http, fields, _
 from odoo.http import request
 from odoo.addons.portal.controllers.portal import CustomerPortal, pager as portal_pager
 from odoo.exceptions import AccessError, MissingError, ValidationError
-from odoo.tools import html_sanitize
+from odoo.tools import escape_psql, html_sanitize
 from datetime import datetime, timedelta
 import json
-import pytz
+import psycopg2
+from psycopg2 import errorcodes
+
+ATTENDEE_SEARCH_MIN_LENGTH = 2
+# concurrency errors Odoo retries the whole request on (odoo.service.model)
+PG_CONCURRENCY_ERRORS_TO_RETRY = (
+    errorcodes.LOCK_NOT_AVAILABLE,
+    errorcodes.SERIALIZATION_FAILURE,
+    errorcodes.DEADLOCK_DETECTED,
+)
 
 
 class BookingPortal(CustomerPortal):
@@ -14,14 +23,13 @@ class BookingPortal(CustomerPortal):
     Does not depend on website module - uses portal.portal_layout template.
     """
 
-    def _get_local_now(self):
-        """Get current datetime in the user's timezone (naive, for comparison with slot times)."""
-        tz_name = request.env.user.tz or request.env.context.get('tz') or 'UTC'
-        try:
-            user_tz = pytz.timezone(tz_name)
-        except pytz.UnknownTimeZoneError:
-            user_tz = pytz.UTC
-        return datetime.now(pytz.UTC).astimezone(user_tz).replace(tzinfo=None)
+    def _get_local_now(self, resource):
+        """Current time in the resource timezone (naive, like the slots).
+
+        Slots are shown and booked in the resource timezone, never in the
+        user's own timezone: portal users can change res.users.tz themselves.
+        """
+        return resource._booking_local_now()
 
     def _prepare_home_portal_values(self, counters):
         """Add booking counts to portal home."""
@@ -49,28 +57,29 @@ class BookingPortal(CustomerPortal):
             return False
         return resource._check_partner_access(partner)
 
+    def _is_offered_slot(self, resource, start_local, end_local):
+        """Portal users can only book the slots the resource offers
+        (availability + slot interval, resource timezone). Internal users keep
+        free scheduling, as in the backend."""
+        Reservation = request.env['booking.reservation']
+        if not Reservation._is_portal_booker():
+            return True
+        return Reservation._is_portal_slot(resource, start_local, end_local)
+
     def _generate_slots_for_portal(self, resource, date_from, date_to, partner):
         """
         Generate available time slots for Portal display.
         Hides booking details from other users (privacy).
 
-        Slots are generated in the user's local timezone. Reservations in the DB
-        are stored in UTC. We convert between the two for correct overlap detection.
+        Slots are generated in the resource timezone (booking_tz). Reservations
+        in the DB are stored in UTC. We convert between the two for correct
+        overlap detection.
         """
         slots = resource._generate_slots(date_from, date_to)
 
-        # Determine user timezone for converting between local and UTC
-        tz_name = request.env.user.tz or request.env.context.get('tz') or 'UTC'
-        try:
-            user_tz = pytz.timezone(tz_name)
-        except pytz.UnknownTimeZoneError:
-            user_tz = pytz.UTC
-
-        # Convert date range boundaries from local time to UTC for DB query
-        window_start_local = datetime.combine(date_from, datetime.min.time())
-        window_end_local = datetime.combine(date_to, datetime.max.time())
-        window_start_utc = user_tz.localize(window_start_local).astimezone(pytz.UTC).replace(tzinfo=None)
-        window_end_utc = user_tz.localize(window_end_local).astimezone(pytz.UTC).replace(tzinfo=None)
+        # Convert date range boundaries from resource-local time to UTC for DB query
+        window_start_utc = resource._booking_local_to_utc(datetime.combine(date_from, datetime.min.time()))
+        window_end_utc = resource._booking_local_to_utc(datetime.combine(date_to, datetime.max.time()))
 
         # Use overlap query (not fully-contained) to catch boundary-straddling reservations
         reservations = request.env['booking.reservation'].sudo().search([
@@ -88,10 +97,8 @@ class BookingPortal(CustomerPortal):
 
             for res in reservations:
                 # Convert reservation UTC times to local for comparison with local slots
-                res_start_utc = fields.Datetime.to_datetime(res.start_datetime)
-                res_end_utc = fields.Datetime.to_datetime(res.end_datetime)
-                res_start_local = pytz.UTC.localize(res_start_utc).astimezone(user_tz).replace(tzinfo=None)
-                res_end_local = pytz.UTC.localize(res_end_utc).astimezone(user_tz).replace(tzinfo=None)
+                res_start_local = resource._booking_utc_to_local(res.start_datetime)
+                res_end_local = resource._booking_utc_to_local(res.end_datetime)
 
                 # Check overlap (both sides now in local time)
                 if slot['start'] < res_end_local and slot['end'] > res_start_local:
@@ -179,7 +186,7 @@ class BookingPortal(CustomerPortal):
             raise AccessError(_("You do not have permission to access this resource."))
 
         # Date range for slots (use local timezone so "today" matches user's wall clock)
-        local_now = self._get_local_now()
+        local_now = self._get_local_now(resource)
         today = local_now.date()
         max_date = today + timedelta(days=resource.advance_days)
 
@@ -226,6 +233,7 @@ class BookingPortal(CustomerPortal):
             'show_prev': date_from > today,
             'show_next': date_from + timedelta(days=7) < max_date,
             'page_name': 'booking_resource_detail',
+            'booking_tz': resource.booking_tz,
             'error': kw.get('error'),
         }
 
@@ -233,27 +241,20 @@ class BookingPortal(CustomerPortal):
 
     @http.route('/my/booking/attendees/search', type='json', auth='user')
     def portal_search_attendees(self, query='', **kw):
-        """API: Search same-company partners for attendee selection."""
+        """API: Search the contacts the user may invite (internal users and
+        contacts of the user's own company); names only, no e-mail."""
         partner = request.env.user.partner_id
-        company = request.env.user.company_id
-
-        if not company:
+        query = query.strip() if isinstance(query, str) else ''
+        if len(query) < ATTENDEE_SEARCH_MIN_LENGTH:
             return {'attendees': []}
 
-        domain = [
-            ('id', '!=', partner.id),
-            ('is_company', '=', False),
-            '|',
-            ('company_id', '=', company.id),
-            ('parent_id', '=', company.partner_id.id),
-        ]
-        if query:
-            domain = [('name', 'ilike', query)] + domain
-
+        # wildcards in the query are literal characters, not patterns
+        domain = [('name', 'ilike', escape_psql(query))] + \
+            request.env['booking.reservation']._get_portal_attendee_domain(partner)
         partners = request.env['res.partner'].sudo().search(domain, limit=20, order='name')
         return {
             'attendees': [
-                {'id': p.id, 'name': p.name, 'email': p.email or ''}
+                {'id': p.id, 'name': p.name}
                 for p in partners
             ]
         }
@@ -267,7 +268,7 @@ class BookingPortal(CustomerPortal):
         if not self._check_resource_access(resource, partner):
             return {'error': 'Unauthorized'}
 
-        local_now = self._get_local_now()
+        local_now = self._get_local_now(resource)
         today = local_now.date()
         max_date = today + timedelta(days=resource.advance_days)
 
@@ -300,7 +301,7 @@ class BookingPortal(CustomerPortal):
             slot['start'] = slot['start'].isoformat()
             slot['end'] = slot['end'].isoformat()
 
-        return {'slots': slots}
+        return {'slots': slots, 'tz': resource.booking_tz}
 
     # ============================================================
     # CREATE BOOKING
@@ -358,8 +359,8 @@ class BookingPortal(CustomerPortal):
         except (ValueError, TypeError):
             return request.redirect('/my/booking/resources/%s?error=invalid_datetime' % resource_id)
 
-        # Reject past bookings (compare in user's local timezone since slot times are local)
-        local_now = self._get_local_now()
+        # Reject past bookings (compare in the resource timezone: slot times are local to it)
+        local_now = self._get_local_now(resource)
         if start_dt < local_now:
             return request.redirect('/my/booking/resources/%s?error=past_slot' % resource_id)
 
@@ -367,6 +368,9 @@ class BookingPortal(CustomerPortal):
         max_date = local_now + timedelta(days=resource.advance_days)
         if start_dt > max_date:
             return request.redirect('/my/booking/resources/%s?error=too_far_ahead' % resource_id)
+
+        if not self._is_offered_slot(resource, start_dt, end_dt):
+            return request.redirect('/my/booking/resources/%s?error=invalid_slot' % resource_id)
 
         duration_hours = (end_dt - start_dt).total_seconds() / 3600
 
@@ -378,6 +382,7 @@ class BookingPortal(CustomerPortal):
             'end_dt': end_dt,
             'duration': duration_hours,
             'partner': partner,
+            'booking_tz': resource.booking_tz,
             'page_name': 'booking_confirm',
         }
         return request.render('odoo_booking_reservation.portal_booking_confirm', values)
@@ -406,10 +411,11 @@ class BookingPortal(CustomerPortal):
             if not self._check_resource_access(resource, partner):
                 return request.redirect('/my/bookings/new?error=unauthorized')
 
-            # Reject past or too-far-ahead bookings (use local timezone)
+            # Reject past or too-far-ahead bookings (resource timezone)
             try:
                 start_dt = datetime.strptime(start_datetime, '%Y-%m-%d %H:%M:%S')
-                local_now = self._get_local_now()
+                end_dt = datetime.strptime(end_datetime, '%Y-%m-%d %H:%M:%S')
+                local_now = self._get_local_now(resource)
                 if start_dt < local_now:
                     return request.redirect('/my/booking/resources/%s?error=past_slot' % resource_id)
                 max_date = local_now + timedelta(days=resource.advance_days)
@@ -418,16 +424,13 @@ class BookingPortal(CustomerPortal):
             except (ValueError, TypeError):
                 return request.redirect('/my/bookings/new?error=invalid_datetime')
 
-            # Convert local datetime strings to UTC for storage
-            tz_name = request.env.user.tz or request.env.context.get('tz') or 'UTC'
-            try:
-                user_tz = pytz.timezone(tz_name)
-            except pytz.UnknownTimeZoneError:
-                user_tz = pytz.UTC
-            start_dt_local = user_tz.localize(start_dt)
-            end_dt_local = user_tz.localize(datetime.strptime(end_datetime, '%Y-%m-%d %H:%M:%S'))
-            start_dt_utc = start_dt_local.astimezone(pytz.UTC).replace(tzinfo=None)
-            end_dt_utc = end_dt_local.astimezone(pytz.UTC).replace(tzinfo=None)
+            # Only the slots offered by the resource can be booked
+            if not self._is_offered_slot(resource, start_dt, end_dt):
+                return request.redirect('/my/booking/resources/%s?error=invalid_slot' % resource_id)
+
+            # Convert resource-local datetimes to UTC for storage
+            start_dt_utc = resource._booking_local_to_utc(start_dt)
+            end_dt_utc = resource._booking_local_to_utc(end_dt)
 
             # Build reservation vals (UTC datetimes for DB storage)
             vals = {
@@ -446,24 +449,36 @@ class BookingPortal(CustomerPortal):
             if enable_discussion and resource.enable_discussion:
                 vals['enable_discussion'] = True
 
-            # Process attendees
+            # Process attendees: keep only the contacts the attendee search
+            # offers (same domain), anything else is silently dropped
             attendee_ids_str = post.get('attendee_ids', '')
             if attendee_ids_str:
                 try:
                     att_ids = [int(x) for x in attendee_ids_str.split(',') if x.strip()]
-                    if att_ids:
-                        vals['attendee_ids'] = [(6, 0, att_ids)]
                 except (ValueError, TypeError):
-                    pass
+                    att_ids = []
+                # ids outside PostgreSQL's integer range would abort the query
+                att_ids = [att_id for att_id in att_ids if 0 < att_id < 2 ** 31]
+                attendees = request.env['booking.reservation']._filter_portal_attendees(partner, att_ids)
+                if attendees:
+                    vals['attendee_ids'] = [(6, 0, attendees.ids)]
 
-            # Create reservation
-            reservation = request.env['booking.reservation'].sudo().create(vals)
+            # Create reservation; a failed constraint must not leave the
+            # inserted row in the transaction that is committed afterwards
+            with request.env.cr.savepoint():
+                reservation = request.env['booking.reservation'].sudo().create(vals)
 
             return request.redirect(f'/my/bookings/{reservation.id}?success=created')
 
         except ValidationError:
             # Overlap or access constraint - redirect back to resource page
             return request.redirect(f'/my/booking/resources/{resource_id}?error=slot_taken')
+        except psycopg2.OperationalError as e:
+            if e.pgcode in PG_CONCURRENCY_ERRORS_TO_RETRY:
+                # concurrent booking of the same resource: let Odoo retry the
+                # request with a fresh snapshot (the overlap check then sees it)
+                raise
+            return request.redirect('/my/bookings/new?error=system_error')
         except Exception:
             return request.redirect('/my/bookings/new?error=system_error')
 

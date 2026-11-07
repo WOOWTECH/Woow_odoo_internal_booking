@@ -6,10 +6,10 @@ import xmlrpc.client
 import json
 import sys
 
-URL = "http://localhost:9071"
-DB = "odoocalendar"
+from odoo_rpc import URL, DB, password_for
+
 ADMIN_USER = "admin"
-ADMIN_PASS = "admin"
+ADMIN_PASS = password_for(ADMIN_USER)
 
 common = xmlrpc.client.ServerProxy(f"{URL}/xmlrpc/2/common")
 uid = common.authenticate(DB, ADMIN_USER, ADMIN_PASS, {})
@@ -106,7 +106,7 @@ test_users = {
     'test_manager': {
         'name': 'Test Manager',
         'login': 'test_manager',
-        'password': 'test_manager',
+        'password': password_for('test_manager'),
         'email': 'test_manager@test.com',
         'groups': booking_manager_group,
         'type': 'internal',
@@ -114,7 +114,7 @@ test_users = {
     'test_user': {
         'name': 'Test User',
         'login': 'test_user',
-        'password': 'test_user',
+        'password': password_for('test_user'),
         'email': 'test_user@test.com',
         'groups': booking_user_group,
         'type': 'internal',
@@ -122,7 +122,7 @@ test_users = {
     'portal_user1': {
         'name': 'Portal User 1',
         'login': 'portal1',
-        'password': 'portal1',
+        'password': password_for('portal1'),
         'email': 'portal1@test.com',
         'groups': portal_group,
         'type': 'portal',
@@ -130,7 +130,7 @@ test_users = {
     'portal_user2': {
         'name': 'Portal User 2',
         'login': 'portal2',
-        'password': 'portal2',
+        'password': password_for('portal2'),
         'email': 'portal2@test.com',
         'groups': portal_group,
         'type': 'portal',
