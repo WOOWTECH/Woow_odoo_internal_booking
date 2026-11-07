@@ -4,14 +4,14 @@ Phase 0: Verify installation and create test users/data.
 """
 import sys
 sys.path.insert(0, '.')
-from tests.odoo_rpc import OdooRPC
+from odoo_rpc import OdooRPC, password_for, CONFIG_PATH
 import json
 
 print("=" * 60)
 print("Phase 0: Setup & Verification")
 print("=" * 60)
 
-rpc = OdooRPC("admin", "admin")
+rpc = OdooRPC("admin")
 
 # 1. Add admin to Booking Manager group
 print("\n[1] Adding admin to Booking Manager group...")
@@ -41,7 +41,7 @@ if manager_groups:
     print("    Admin added to Booking Manager group.")
 
 # Re-authenticate
-rpc = OdooRPC("admin", "admin")
+rpc = OdooRPC("admin")
 
 # 2. Verify models work now
 print("\n[2] Verifying models...")
@@ -112,19 +112,19 @@ def ensure_user(name, login, password, group_ids, sel_groups=None):
         return uid
 
 # Internal manager user
-mgr_id = ensure_user('Test Manager', 'test_manager', 'test_manager',
+mgr_id = ensure_user('Test Manager', 'test_manager', password_for('test_manager'),
                       [booking_manager_id] if booking_manager_id else [])
 
 # Internal regular user
-usr_id = ensure_user('Test User', 'test_user', 'test_user',
+usr_id = ensure_user('Test User', 'test_user', password_for('test_user'),
                      [booking_user_id] if booking_user_id else [])
 
 # Portal users - use sel_groups to set portal
-portal1_id = ensure_user('Portal User 1', 'portal1', 'portal1', [],
+portal1_id = ensure_user('Portal User 1', 'portal1', password_for('portal1'), [],
                          sel_groups={'sel_groups_1_10_11': portal_id} if portal_id else None)
-portal2_id = ensure_user('Portal User 2', 'portal2', 'portal2', [],
+portal2_id = ensure_user('Portal User 2', 'portal2', password_for('portal2'), [],
                          sel_groups={'sel_groups_1_10_11': portal_id} if portal_id else None)
-portal3_id = ensure_user('Portal User 3 (Limited)', 'portal3', 'portal3', [],
+portal3_id = ensure_user('Portal User 3 (Limited)', 'portal3', password_for('portal3'), [],
                          sel_groups={'sel_groups_1_10_11': portal_id} if portal_id else None)
 
 # 5. Verify all users
@@ -271,6 +271,6 @@ results = {
 print(json.dumps(results, indent=2, ensure_ascii=False))
 
 # Save for other test scripts
-with open('tests/test_config.json', 'w') as f:
+with open(CONFIG_PATH, 'w') as f:
     json.dump(results, f, indent=2, ensure_ascii=False)
-print("\nConfig saved to tests/test_config.json")
+print(f"\nConfig saved to {CONFIG_PATH}")

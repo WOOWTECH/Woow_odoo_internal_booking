@@ -1,13 +1,42 @@
 """
-Odoo XML-RPC helper for testing.
+Odoo XML-RPC helper for the manual end-to-end scripts in this directory.
+
+These scripts are NOT Odoo unit tests (those live in ../../tests) and need a
+running Odoo server. Nothing secret is stored here: the server, the database
+and every password come from the environment:
+
+    BOOKING_E2E_URL                 default http://localhost:9071
+    BOOKING_E2E_DB                  default odoocalendar
+    BOOKING_E2E_PASSWORD_<LOGIN>    password of <LOGIN> (upper case, non
+                                    alphanumerics as _), e.g.
+                                    BOOKING_E2E_PASSWORD_ADMIN
+    BOOKING_E2E_PASSWORD            fallback password for every login
+
+Run them from the repository root, e.g.
+    BOOKING_E2E_PASSWORD_ADMIN=... python3 scripts/e2e_rpc/phase0_setup.py
 """
+import os
+import re
 import xmlrpc.client
 
-URL = "http://localhost:9071"
-DB = "odoocalendar"
+URL = os.environ.get("BOOKING_E2E_URL", "http://localhost:9071")
+DB = os.environ.get("BOOKING_E2E_DB", "odoocalendar")
+CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "test_config.json")
+
+
+def password_for(login):
+    """Password of `login` for the e2e scripts, read from the environment."""
+    key = "BOOKING_E2E_PASSWORD_" + re.sub(r"[^A-Za-z0-9]", "_", login).upper()
+    password = os.environ.get(key) or os.environ.get("BOOKING_E2E_PASSWORD")
+    if not password:
+        raise SystemExit(f"Set {key} (or BOOKING_E2E_PASSWORD) to run the e2e scripts as {login!r}")
+    return password
+
 
 class OdooRPC:
-    def __init__(self, login="admin", password="admin"):
+    def __init__(self, login="admin", password=None):
+        if password is None:
+            password = password_for(login)
         self.url = URL
         self.db = DB
         self.login = login

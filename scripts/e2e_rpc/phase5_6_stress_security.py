@@ -8,7 +8,7 @@ import time
 import traceback
 
 sys.path.insert(0, '.')
-from tests.odoo_rpc import OdooRPC
+from odoo_rpc import OdooRPC, password_for, CONFIG_PATH, URL
 
 # ---------------------------------------------------------------------------
 # Globals
@@ -52,9 +52,9 @@ def section(title):
 # RPC connections
 # ===================================================================
 print("Connecting to Odoo ...")
-admin = OdooRPC("admin", "admin")
-portal1 = OdooRPC("portal1", "portal1")
-portal2 = OdooRPC("portal2", "portal2")
+admin = OdooRPC("admin")
+portal1 = OdooRPC("portal1")
+portal2 = OdooRPC("portal2")
 
 # Resolve partner IDs dynamically in case they differ
 _p1_info = admin.search_read('res.users', [('login', '=', 'portal1')], fields=['partner_id'])
@@ -276,7 +276,7 @@ try:
     session = requests.Session()
 
     # Login as portal1 via /web/login
-    login_url = "http://localhost:9071/web/login"
+    login_url = URL + "/web/login"
     login_resp = session.get(login_url)
 
     # Extract CSRF token from the login page
@@ -286,7 +286,7 @@ try:
 
     login_data = {
         'login': 'portal1',
-        'password': 'portal1',
+        'password': password_for('portal1'),
         'csrf_token': csrf_token,
         'redirect': '',
     }
@@ -298,7 +298,7 @@ try:
     response_times = []
     status_codes = []
 
-    target_url = "http://localhost:9071/my/booking/resources"
+    target_url = URL + "/my/booking/resources"
 
     for i in range(20):
         t0 = time.time()
@@ -635,12 +635,12 @@ try:
 
     # 6.5a Access /my/bookings without login (fresh session)
     fresh_session = requests.Session()
-    resp = fresh_session.get("http://localhost:9071/my/bookings", allow_redirects=False)
+    resp = fresh_session.get(URL + "/my/bookings", allow_redirects=False)
     # Should redirect to /web/login (302 or 303)
     redirects_to_login = resp.status_code in (301, 302, 303) and 'login' in resp.headers.get('Location', '').lower()
     # Or could redirect with allow_redirects=True and end on login page
     if not redirects_to_login:
-        resp2 = fresh_session.get("http://localhost:9071/my/bookings", allow_redirects=True)
+        resp2 = fresh_session.get(URL + "/my/bookings", allow_redirects=True)
         redirects_to_login = 'login' in resp2.url.lower() or resp2.status_code in (401, 403)
     record("6.5a", "Unauthenticated access to /my/bookings redirects to login",
            redirects_to_login,
@@ -649,17 +649,17 @@ try:
     # 6.5b Access non-existent booking /my/bookings/99999
     # Login as portal1 first
     portal_session = requests.Session()
-    login_page = portal_session.get("http://localhost:9071/web/login")
+    login_page = portal_session.get(URL + "/web/login")
     csrf_match = re.search(r'name="csrf_token"\s+value="([^"]+)"', login_page.text)
     csrf_token = csrf_match.group(1) if csrf_match else ""
-    portal_session.post("http://localhost:9071/web/login", data={
+    portal_session.post(URL + "/web/login", data={
         'login': 'portal1',
-        'password': 'portal1',
+        'password': password_for('portal1'),
         'csrf_token': csrf_token,
         'redirect': '',
     }, allow_redirects=True)
 
-    resp_nonexist = portal_session.get("http://localhost:9071/my/bookings/99999", allow_redirects=True)
+    resp_nonexist = portal_session.get(URL + "/my/bookings/99999", allow_redirects=True)
     # Should return 404 or error page, not crash
     is_error_or_404 = resp_nonexist.status_code in (403, 404) or 'not found' in resp_nonexist.text.lower() or 'error' in resp_nonexist.text.lower() or resp_nonexist.status_code == 200
     record("6.5b", "Access non-existent booking /my/bookings/99999",
@@ -667,7 +667,7 @@ try:
            f"Status: {resp_nonexist.status_code}")
 
     # 6.5c POST to create with invalid resource_id
-    resp_invalid = portal_session.post("http://localhost:9071/my/bookings/create", data={
+    resp_invalid = portal_session.post(URL + "/my/bookings/create", data={
         'resource_id': '999999',
         'date': '2026-08-01',
         'slot': '09:00',
@@ -680,18 +680,18 @@ try:
     # 6.5d POST without CSRF token
     no_csrf_session = requests.Session()
     # Login first
-    login_page2 = no_csrf_session.get("http://localhost:9071/web/login")
+    login_page2 = no_csrf_session.get(URL + "/web/login")
     csrf_match2 = re.search(r'name="csrf_token"\s+value="([^"]+)"', login_page2.text)
     csrf_tok2 = csrf_match2.group(1) if csrf_match2 else ""
-    no_csrf_session.post("http://localhost:9071/web/login", data={
+    no_csrf_session.post(URL + "/web/login", data={
         'login': 'portal1',
-        'password': 'portal1',
+        'password': password_for('portal1'),
         'csrf_token': csrf_tok2,
         'redirect': '',
     }, allow_redirects=True)
 
     # Now POST without csrf_token
-    resp_no_csrf = no_csrf_session.post("http://localhost:9071/my/bookings/create", data={
+    resp_no_csrf = no_csrf_session.post(URL + "/my/bookings/create", data={
         'resource_id': str(CONF_ROOM_A_ID),
         'date': '2026-08-01',
         'slot': '09:00',
@@ -720,12 +720,12 @@ try:
 
     # Create an authenticated portal session
     portal_http = requests.Session()
-    login_pg = portal_http.get("http://localhost:9071/web/login")
+    login_pg = portal_http.get(URL + "/web/login")
     csrf_m = re.search(r'name="csrf_token"\s+value="([^"]+)"', login_pg.text)
     csrf_t = csrf_m.group(1) if csrf_m else ""
-    portal_http.post("http://localhost:9071/web/login", data={
+    portal_http.post(URL + "/web/login", data={
         'login': 'portal1',
-        'password': 'portal1',
+        'password': password_for('portal1'),
         'csrf_token': csrf_t,
         'redirect': '',
     }, allow_redirects=True)
@@ -738,7 +738,7 @@ try:
     ]
     for route in admin_routes:
         try:
-            resp = portal_http.get(f"http://localhost:9071{route}", allow_redirects=True)
+            resp = portal_http.get(f"{URL}{route}", allow_redirects=True)
             # Portal should not have access to admin pages
             # Either blocked, redirected, or shown minimal content
             is_blocked = (
@@ -789,7 +789,7 @@ try:
                 },
             }
             resp = portal_http.post(
-                "http://localhost:9071/web/dataset/call_kw",
+                URL + "/web/dataset/call_kw",
                 json=payload,
                 headers={'Content-Type': 'application/json'},
             )
