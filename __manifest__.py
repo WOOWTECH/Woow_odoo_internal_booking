@@ -1,6 +1,6 @@
 {
     'name': 'Resource Booking Management',
-    'version': '18.0.1.0.2',
+    'version': '18.0.1.0.3',
     'category': 'Calendar',
     'sequence': 10,
     'summary': 'Resource booking and management for Portal users',

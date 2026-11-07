@@ -5,7 +5,17 @@ from odoo.exceptions import AccessError, MissingError, ValidationError
 from odoo.tools import html_sanitize
 from datetime import datetime, timedelta
 import json
+import psycopg2
+from psycopg2 import errorcodes
 import pytz
+
+ATTENDEE_SEARCH_MIN_LENGTH = 2
+# concurrency errors Odoo retries the whole request on (odoo.service.model)
+PG_CONCURRENCY_ERRORS_TO_RETRY = (
+    errorcodes.LOCK_NOT_AVAILABLE,
+    errorcodes.SERIALIZATION_FAILURE,
+    errorcodes.DEADLOCK_DETECTED,
+)
 
 
 class BookingPortal(CustomerPortal):
@@ -48,6 +58,15 @@ class BookingPortal(CustomerPortal):
         if not resource or not resource.active:
             return False
         return resource._check_partner_access(partner)
+
+    def _is_offered_slot(self, resource, start_local, end_local):
+        """Portal users can only book the slots the resource offers
+        (availability + slot interval, user timezone). Internal users keep
+        free scheduling, as in the backend."""
+        Reservation = request.env['booking.reservation']
+        if not Reservation._is_portal_booker():
+            return True
+        return Reservation._is_portal_slot(resource, start_local, end_local)
 
     def _generate_slots_for_portal(self, resource, date_from, date_to, partner):
         """
@@ -233,27 +252,19 @@ class BookingPortal(CustomerPortal):
 
     @http.route('/my/booking/attendees/search', type='json', auth='user')
     def portal_search_attendees(self, query='', **kw):
-        """API: Search same-company partners for attendee selection."""
+        """API: Search the contacts the user may invite (internal users and
+        contacts of the user's own company); names only, no e-mail."""
         partner = request.env.user.partner_id
-        company = request.env.user.company_id
-
-        if not company:
+        query = query.strip() if isinstance(query, str) else ''
+        if len(query) < ATTENDEE_SEARCH_MIN_LENGTH:
             return {'attendees': []}
 
-        domain = [
-            ('id', '!=', partner.id),
-            ('is_company', '=', False),
-            '|',
-            ('company_id', '=', company.id),
-            ('parent_id', '=', company.partner_id.id),
-        ]
-        if query:
-            domain = [('name', 'ilike', query)] + domain
-
+        domain = [('name', 'ilike', query)] + \
+            request.env['booking.reservation']._get_portal_attendee_domain(partner)
         partners = request.env['res.partner'].sudo().search(domain, limit=20, order='name')
         return {
             'attendees': [
-                {'id': p.id, 'name': p.name, 'email': p.email or ''}
+                {'id': p.id, 'name': p.name}
                 for p in partners
             ]
         }
@@ -368,6 +379,9 @@ class BookingPortal(CustomerPortal):
         if start_dt > max_date:
             return request.redirect('/my/booking/resources/%s?error=too_far_ahead' % resource_id)
 
+        if not self._is_offered_slot(resource, start_dt, end_dt):
+            return request.redirect('/my/booking/resources/%s?error=invalid_slot' % resource_id)
+
         duration_hours = (end_dt - start_dt).total_seconds() / 3600
 
         values = {
@@ -409,6 +423,7 @@ class BookingPortal(CustomerPortal):
             # Reject past or too-far-ahead bookings (use local timezone)
             try:
                 start_dt = datetime.strptime(start_datetime, '%Y-%m-%d %H:%M:%S')
+                end_dt = datetime.strptime(end_datetime, '%Y-%m-%d %H:%M:%S')
                 local_now = self._get_local_now()
                 if start_dt < local_now:
                     return request.redirect('/my/booking/resources/%s?error=past_slot' % resource_id)
@@ -418,6 +433,10 @@ class BookingPortal(CustomerPortal):
             except (ValueError, TypeError):
                 return request.redirect('/my/bookings/new?error=invalid_datetime')
 
+            # Only the slots offered by the resource can be booked
+            if not self._is_offered_slot(resource, start_dt, end_dt):
+                return request.redirect('/my/booking/resources/%s?error=invalid_slot' % resource_id)
+
             # Convert local datetime strings to UTC for storage
             tz_name = request.env.user.tz or request.env.context.get('tz') or 'UTC'
             try:
@@ -425,7 +444,7 @@ class BookingPortal(CustomerPortal):
             except pytz.UnknownTimeZoneError:
                 user_tz = pytz.UTC
             start_dt_local = user_tz.localize(start_dt)
-            end_dt_local = user_tz.localize(datetime.strptime(end_datetime, '%Y-%m-%d %H:%M:%S'))
+            end_dt_local = user_tz.localize(end_dt)
             start_dt_utc = start_dt_local.astimezone(pytz.UTC).replace(tzinfo=None)
             end_dt_utc = end_dt_local.astimezone(pytz.UTC).replace(tzinfo=None)
 
@@ -446,24 +465,36 @@ class BookingPortal(CustomerPortal):
             if enable_discussion and resource.enable_discussion:
                 vals['enable_discussion'] = True
 
-            # Process attendees
+            # Process attendees: keep only the contacts the attendee search
+            # offers (same domain), anything else is silently dropped
             attendee_ids_str = post.get('attendee_ids', '')
             if attendee_ids_str:
                 try:
                     att_ids = [int(x) for x in attendee_ids_str.split(',') if x.strip()]
-                    if att_ids:
-                        vals['attendee_ids'] = [(6, 0, att_ids)]
                 except (ValueError, TypeError):
-                    pass
+                    att_ids = []
+                # ids outside PostgreSQL's integer range would abort the query
+                att_ids = [att_id for att_id in att_ids if 0 < att_id < 2 ** 31]
+                attendees = request.env['booking.reservation']._filter_portal_attendees(partner, att_ids)
+                if attendees:
+                    vals['attendee_ids'] = [(6, 0, attendees.ids)]
 
-            # Create reservation
-            reservation = request.env['booking.reservation'].sudo().create(vals)
+            # Create reservation; a failed constraint must not leave the
+            # inserted row in the transaction that is committed afterwards
+            with request.env.cr.savepoint():
+                reservation = request.env['booking.reservation'].sudo().create(vals)
 
             return request.redirect(f'/my/bookings/{reservation.id}?success=created')
 
         except ValidationError:
             # Overlap or access constraint - redirect back to resource page
             return request.redirect(f'/my/booking/resources/{resource_id}?error=slot_taken')
+        except psycopg2.OperationalError as e:
+            if e.pgcode in PG_CONCURRENCY_ERRORS_TO_RETRY:
+                # concurrent booking of the same resource: let Odoo retry the
+                # request with a fresh snapshot (the overlap check then sees it)
+                raise
+            return request.redirect('/my/bookings/new?error=system_error')
         except Exception:
             return request.redirect('/my/bookings/new?error=system_error')
 

@@ -1,8 +1,10 @@
 /**
  * Portal Attendee Tag Input Widget
- * Provides a Select2/tags-style multi-select for choosing same-company attendees.
+ * Provides a Select2/tags-style multi-select for choosing attendees
+ * (colleagues of the user's company and internal staff; names only).
  */
 function _initAttendeeWidget() {
+    const MIN_QUERY_LENGTH = 2; // the server ignores shorter queries
     const searchInput = document.getElementById('attendee_search');
     const dropdown = document.getElementById('attendee-dropdown');
     const tagsContainer = document.getElementById('attendee-tags');
@@ -10,7 +12,7 @@ function _initAttendeeWidget() {
 
     if (!searchInput || !dropdown || !tagsContainer || !hiddenInput) return;
 
-    const selected = new Map(); // id -> {id, name, email}
+    const selected = new Map(); // id -> {id, name}
     let debounceTimer = null;
 
     function updateHiddenInput() {
@@ -61,8 +63,7 @@ function _initAttendeeWidget() {
                 item.href = '#';
                 item.innerHTML =
                     '<i class="fa fa-user-o me-1"></i>' +
-                    escapeHtml(att.name) +
-                    (att.email ? ' <small class="text-muted">(' + escapeHtml(att.email) + ')</small>' : '');
+                    escapeHtml(att.name);
                 item.addEventListener('mousedown', function (e) {
                     e.preventDefault();
                     addTag(att);
@@ -100,7 +101,7 @@ function _initAttendeeWidget() {
     searchInput.addEventListener('input', function () {
         const q = searchInput.value.trim();
         clearTimeout(debounceTimer);
-        if (q.length < 1) {
+        if (q.length < MIN_QUERY_LENGTH) {
             dropdown.classList.remove('show');
             return;
         }
@@ -111,7 +112,7 @@ function _initAttendeeWidget() {
 
     searchInput.addEventListener('focus', function () {
         const q = searchInput.value.trim();
-        if (q.length >= 1) {
+        if (q.length >= MIN_QUERY_LENGTH) {
             doSearch(q);
         }
     });

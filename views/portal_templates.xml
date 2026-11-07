@@ -195,6 +195,11 @@
                     This slot exceeds the booking window.
                 </div>
             </t>
+            <t t-if="error == 'invalid_slot'">
+                <div class="alert alert-warning" role="alert">
+                    This time is not an available slot. Please select one of the slots below.
+                </div>
+            </t>
 
             <div class="row mt-3">
                 <!-- Resource Info Sidebar -->
@@ -723,7 +728,7 @@
                                         <div id="attendee-dropdown" class="dropdown-menu w-100" style="max-height:200px;overflow-y:auto;"/>
                                         <input type="hidden" name="attendee_ids" id="attendee_ids" value=""/>
                                     </div>
-                                    <div class="form-text">Add colleagues from your company as meeting attendees.</div>
+                                    <div class="form-text">Add colleagues from your company or our staff as attendees (type at least 2 characters).</div>
                                 </div>
 
                                 <!-- Discussion Channel Option -->

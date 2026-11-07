@@ -343,8 +343,8 @@ msgstr "新增說明..."
 
 #. module: odoo_booking_reservation
 #: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
-msgid "Add colleagues from your company as meeting attendees."
-msgstr "新增公司同事為會議參加者。"
+msgid "Add colleagues from your company or our staff as attendees (type at least 2 characters)."
+msgstr "可新增貴公司同事或本公司人員為參加者（至少輸入 2 個字）。"
 
 #. module: odoo_booking_reservation
 #: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__advance_days
@@ -1567,3 +1567,32 @@ msgstr "{{ object.name }} - 預定已取消"
 #: model:mail.template,subject:odoo_booking_reservation.mail_template_booking_confirmed
 msgid "{{ object.name }} - Booking Confirmed"
 msgstr "{{ object.name }} - 預定已確認"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_resource_detail
+msgid "This time is not an available slot. Please select one of the slots below."
+msgstr "此時間不是可預定的時段，請從下方時段中選擇。"
+
+#. module: odoo_booking_reservation
+#. odoo-python
+#: code:addons/odoo_booking_reservation/models/booking_reservation.py:0
+msgid "You can only invite your colleagues or internal users as attendees."
+msgstr "只能邀請貴公司同事或本公司內部人員為參加者。"
+
+#. module: odoo_booking_reservation
+#. odoo-python
+#: code:addons/odoo_booking_reservation/models/booking_reservation.py:0
+msgid "The selected time is not an available slot of resource \"%s\"."
+msgstr "所選時間不是資源「%s」的可預定時段。"
+
+#. module: odoo_booking_reservation
+#. odoo-python
+#: code:addons/odoo_booking_reservation/models/booking_reservation.py:0
+msgid "Portal users cannot modify reservations directly (%s)."
+msgstr "Portal 使用者不能直接修改預定（%s）。"
+
+#. module: odoo_booking_reservation
+#. odoo-python
+#: code:addons/odoo_booking_reservation/models/discuss_channel.py:0
+msgid "Threads are not available in booking discussions."
+msgstr "預定討論不提供討論串。"

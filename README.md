@@ -334,9 +334,12 @@ The module includes two email templates:
 | Feature | Implementation |
 |---------|---------------|
 | XSS Protection | `html_sanitize()` on user input, `t-out` replaces `t-raw` |
-| Race Condition Prevention | SQL `FOR UPDATE` row-level locking |
+| Race Condition Prevention | Bookings serialised per resource (row lock on the resource, retried on serialization failure) before the overlap check; a refused booking is rolled back (savepoint) |
 | IDOR Protection | Discussion channel access validation with booking ownership check |
-| RPC Bypass Prevention | `@api.constrains` model-level validation (past slots, overlap, duration) |
+| Members-only Discussions | Booking discussions are `group` conversations (no `group_public_id`): only members can open, read or join them through `/discuss/channel/*`; threads are disabled in them |
+| Attendee Validation | One shared domain for the attendee search and the validation: internal users plus contacts of the booker's own company (same commercial entity); search returns names only (no e-mail), needs 2+ characters; other partners are dropped by the portal and refused at model level |
+| Slot Grid Enforcement | Portal bookings must match a slot generated from the resource availability and slot interval (user timezone); backend users keep free scheduling |
+| RPC Bypass Prevention | `@api.constrains` model-level validation (past slots, overlap, duration, attendees, slot grid); portal users have no create right and cannot write reservation fields directly (write access is kept for the portal chatter only) |
 | Portal Record Rules | 3 `ir.rule` records restricting Portal access scope |
 | Exception Leak Prevention | Controller catches exceptions, returns generic error codes |
 | Deletion Protection | `ondelete='restrict'` prevents deleting associated bookers |
@@ -374,7 +377,9 @@ The module includes two email templates:
 
 | Constraint | Description |
 |------------|-------------|
-| `_check_no_overlap` | SQL FOR UPDATE prevents double-booking |
+| `_check_no_overlap` | Per-resource lock + parameterised overlap query prevents double-booking |
+| `_check_portal_attendees` | Portal users may only invite internal users and contacts of their own company |
+| `_check_portal_slot_alignment` | Portal bookings must match an offered slot |
 | `_check_duration_matches_slot` | Validates booking duration matches resource slot length |
 | `_check_not_in_past` | Blocks booking past time slots |
 | `_check_capacity` | Resource capacity must be >= 1 |
@@ -433,6 +438,24 @@ resource.action_view_reservations()        # Open reservations calendar view
 
 ## Testing
 
+Odoo unit tests (`tests/`, tag `booking_security`):
+
+```bash
+odoo -d <db> -u odoo_booking_reservation --test-enable --test-tags /odoo_booking_reservation --stop-after-init
+```
+
+The older end-to-end scripts (XML-RPC / HTTP against a running server) are in
+`scripts/e2e_rpc/`; they read the server, database and passwords from
+environment variables (`BOOKING_E2E_URL`, `BOOKING_E2E_DB`,
+`BOOKING_E2E_PASSWORD_<LOGIN>` or `BOOKING_E2E_PASSWORD`), nothing is hard-coded.
+
+### Multi-company
+
+Resources and reservations have no `company_id`: the module is meant for a
+single-company database. In a multi-company database every portal user of
+every company sees the resources shared with "All Portal Users", and Booking
+Users read all reservations.
+
 The module has been through comprehensive testing across multiple phases:
 
 ### Functional Test Results
@@ -464,6 +487,14 @@ All 23 findings identified and resolved before production release.
 ---
 
 ## Changelog
+
+### v18.0.1.0.3 (2026-11)
+
+- **Security:** attendees of portal bookings are validated (portal and model level) against the same domain as the attendee search; the search no longer returns e-mails, only internal users and contacts of the booker's own company, and needs at least 2 characters
+- **Security:** booking discussions are members-only `group` conversations; existing booking channels are converted on upgrade (migration), threads of them detached
+- **Security:** portal bookings must match a slot of the resource grid; refused bookings are no longer committed; concurrent bookings of the same slot are serialised per resource
+- **Security:** portal users lose the create right on reservations and cannot change reservation fields through RPC
+- **Chore:** end-to-end scripts moved to `scripts/e2e_rpc/` and read credentials from the environment
 
 ### v1.0.0 (2026-04)
 
