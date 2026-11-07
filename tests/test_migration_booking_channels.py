@@ -7,11 +7,13 @@ from odoo.modules.module import get_module_path
 from odoo.tests import TransactionCase, new_test_user, tagged
 
 MIGRATION = ('migrations', '18.0.1.0.3', 'post-migrate.py')
+PRE_MIGRATION = ('migrations', '18.0.1.0.3', 'pre-migrate.py')
 
 
-def load_migration():
-    path = os.path.join(get_module_path('odoo_booking_reservation'), *MIGRATION)
-    spec = importlib.util.spec_from_file_location('booking_post_migrate_18_0_1_0_3', path)
+def load_migration(parts=MIGRATION):
+    path = os.path.join(get_module_path('odoo_booking_reservation'), *parts)
+    spec = importlib.util.spec_from_file_location(
+        'booking_%s_18_0_1_0_3' % parts[-1].replace('-', '_')[:-3], path)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
@@ -71,3 +73,43 @@ class TestMigrationBookingChannels(TransactionCase):
         migration.migrate(self.env.cr, '18.0.1.0.2')
         self.env.invalidate_all()
         self.assertEqual(legacy.channel_type, 'group')
+
+
+@tagged('post_install', '-at_install', 'booking_security')
+class TestMigrationBookingTz(TransactionCase):
+    """5289ec44235d: existing resources get the timezone their bookers were
+    shown (the grid no longer follows the portal user's own timezone)."""
+
+    def test_pre_migration_fills_booking_tz(self):
+        Resource = self.env['booking.resource.type']
+        booked = Resource.create({'name': 'Room Tz Booked', 'share_type': 'all',
+                                  'slot_duration': 1.0, 'slot_interval': 1.0})
+        idle = Resource.create({'name': 'Room Tz Idle', 'share_type': 'all',
+                                'slot_duration': 1.0, 'slot_interval': 1.0})
+        kept = Resource.create({'name': 'Room Tz Kept', 'share_type': 'all', 'booking_tz': 'Europe/Paris',
+                                'slot_duration': 1.0, 'slot_interval': 1.0})
+        tokyo = self.env['res.partner'].create([{'name': 'Tokyo %s' % i, 'tz': 'Asia/Tokyo'} for i in range(2)])
+        lisbon = self.env['res.partner'].create({'name': 'Lisbon', 'tz': 'Europe/Lisbon'})
+        start = fields.Datetime.now().replace(minute=0, second=0, microsecond=0) + timedelta(days=5)
+        for offset, partner in enumerate(tokyo | lisbon):
+            self.env['booking.reservation'].create({
+                'resource_type_id': booked.id, 'partner_id': partner.id,
+                'start_datetime': start + timedelta(hours=offset),
+                'end_datetime': start + timedelta(hours=offset + 1)})
+        self.env.company.partner_id.tz = 'America/New_York'
+        self.env.flush_all()
+        # the state before the upgrade: no value (the ORM adds NOT NULL later)
+        self.env.cr.execute("ALTER TABLE booking_resource_type ALTER COLUMN booking_tz DROP NOT NULL")
+        self.env.cr.execute("UPDATE booking_resource_type SET booking_tz = NULL WHERE id IN %s",
+                            [(booked.id, idle.id)])
+
+        migration = load_migration(PRE_MIGRATION)
+        migration.migrate(self.env.cr, '18.0.1.0.2')
+        self.env.invalidate_all()
+        self.assertEqual(booked.booking_tz, 'Asia/Tokyo', 'most common timezone of its bookers')
+        self.assertEqual(idle.booking_tz, 'America/New_York', 'company timezone')
+        self.assertEqual(kept.booking_tz, 'Europe/Paris', 'existing values are kept')
+        # idempotent
+        self.assertEqual(migration.fill_booking_tz(self.env.cr)[0], 0)
+        self.env.cr.execute("SELECT count(*) FROM booking_resource_type WHERE booking_tz IS NULL")
+        self.assertEqual(self.env.cr.fetchone()[0], 0)

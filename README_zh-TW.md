@@ -308,6 +308,7 @@ odoo -u odoo_booking_reservation -d your_database
 | 時段長度 | 每個預定時段的長度（小時） |
 | 時段間隔 | 時段之間的間隔（最小 0.25 小時） |
 | 可預定天數 | 允許提前預定的天數 |
+| 時區 | 可用時段所用的時區。Portal 時段一律以此時區顯示、預定與檢查，與 Portal 使用者自選的時區無關（預設為公司時區） |
 
 ### 3. 設定可用時段
 
@@ -336,9 +337,10 @@ odoo -u odoo_booking_reservation -d your_database
 | XSS 防護 | `html_sanitize()` 處理使用者輸入，`t-out` 取代 `t-raw` |
 | 競態條件防護 | 重疊檢查前先依資源串行化（鎖資源列，序列化衝突時由 Odoo 重試）；被拒的預定以 savepoint 回滾，不會被寫入 |
 | IDOR 防護 | 討論通道存取驗證，檢查預定擁有權 |
-| 討論僅限成員 | 預定討論改為 `group` 對話（不設 `group_public_id`）：只有成員能透過 `/discuss/channel/*` 開啟、讀取、加入；不提供討論串 |
-| 參加者驗證 | 參加者搜尋與驗證共用同一網域：內部使用者＋預定者同一公司（同 commercial partner）的聯絡人；搜尋只回傳姓名（不含 email），至少 2 個字；其他對象在 Portal 被濾掉、在模型層被拒絕 |
-| 時段網格驗證 | Portal 預定必須符合資源可用時段＋時段間隔產生的時段（使用者時區）；後台使用者維持自由排程 |
+| 討論僅限成員 | 預定討論改為 `group` 對話（不設 `group_public_id`）：只有成員能透過 `/discuss/channel/*` 開啟、讀取、加入；Odoo 核心不允許在其中建立討論串 |
+| 參加者驗證 | 參加者搜尋與驗證共用同一網域：內部使用者＋預定者同一公司（同 commercial partner）的聯絡人；搜尋只回傳姓名（不含 email），至少 2 個字，LIKE 萬用字元視為一般字元；其他對象在 Portal 被濾掉、在模型層被拒絕 |
+| 時段網格驗證 | Portal 預定必須與資源可用時段＋時段間隔產生的時段完全相同（精確到秒），時段以資源時區（`booking_tz`）計算；使用者自己的時區可自行修改，不採用；後台使用者維持自由排程 |
+| Portal 郵件收件人 | Portal 使用者不能把其他聯絡人設為自己預定的關注者或收件人：`message_subscribe`／`message_post`／`message_notify` 只保留本人、預定相關人員與參加者網域內的對象；只能取消自己的關注 |
 | RPC 繞過防護 | `@api.constrains` 模型層驗證（過去時段、重疊、時長、參加者、時段網格）；Portal 無建立權限，也不能用 RPC 直接改預定欄位（保留寫入權限只為了 Portal 留言） |
 | Portal 記錄規則 | 3 條 `ir.rule` 限制 Portal 存取範圍 |
 | 異常洩漏防護 | Controller 層捕捉異常，返回通用錯誤碼 |

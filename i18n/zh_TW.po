@@ -1593,6 +1593,24 @@ msgstr "Portal 使用者不能直接修改預定（%s）。"
 
 #. module: odoo_booking_reservation
 #. odoo-python
-#: code:addons/odoo_booking_reservation/models/discuss_channel.py:0
-msgid "Threads are not available in booking discussions."
-msgstr "預定討論不提供討論串。"
+#: code:addons/odoo_booking_reservation/models/booking_reservation.py:0
+msgid "Portal users can only unfollow reservations themselves."
+msgstr "Portal 使用者只能自己取消關注預定。"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,field_description:odoo_booking_reservation.field_booking_resource_type__booking_tz
+msgid "Timezone"
+msgstr "時區"
+
+#. module: odoo_booking_reservation
+#: model:ir.model.fields,help:odoo_booking_reservation.field_booking_resource_type__booking_tz
+msgid ""
+"Timezone of the availability schedule. Portal slots are shown and checked in"
+" this timezone, whatever timezone the portal user chose."
+msgstr "可預定時段所用的時區。Portal 時段一律以此時區顯示與檢查，與 Portal 使用者自選的時區無關。"
+
+#. module: odoo_booking_reservation
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_confirm
+#: model_terms:ir.ui.view,arch_db:odoo_booking_reservation.portal_booking_detail
+msgid "Timezone:"
+msgstr "時區："

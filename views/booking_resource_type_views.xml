@@ -56,6 +56,7 @@
                             <field name="slot_duration" widget="float_time"/>
                             <field name="slot_interval" widget="float_time"/>
                             <field name="advance_days"/>
+                            <field name="booking_tz"/>
                         </group>
                     </group>
 

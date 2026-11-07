@@ -1,10 +1,12 @@
 import json
+from datetime import timedelta
 
 from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.http import Request
-from odoo.tests import HttpCase, tagged
+from odoo.tests import HttpCase, new_test_user, tagged
+from odoo.tools import mute_logger
 
-from .common import BookingSecurityFixture, local_slot
+from .common import PORTAL_TZ, BookingSecurityFixture, local_slot, to_utc
 
 
 @tagged('post_install', '-at_install', 'booking_security')
@@ -81,6 +83,9 @@ class TestBookingPortalSecurity(BookingSecurityFixture, HttpCase):
         self.assertEqual(self._search('Portal Paula'), [])
         self.assertEqual(self._search('S'), [])
         self.assertEqual(self._search(''), [])
+        # LIKE wildcards are literal characters: they cannot list everybody
+        for query in ('%%', '__', '%_', '_%', '\\\\'):
+            self.assertEqual(self._search(query), [], query)
 
     # ------------------------------------ f98eca12cddf: attendee injection
 
@@ -208,7 +213,9 @@ class TestBookingPortalSecurity(BookingSecurityFixture, HttpCase):
         channel = booking.channel_id
         self.assertEqual(channel.channel_type, 'group')
         channel._add_members(partners=self.staff.partner_id)
-        with self.assertRaises(UserError):
+        # core refuses sub-channels under a non-'channel' parent (a thread of a
+        # group would take the parent's empty group_public_id: public)
+        with self.assertRaises(UserError), mute_logger('odoo.sql_db'):
             channel.with_user(self.staff)._create_sub_channel(name='side thread')
         # other channels keep their threads
         other = self.env['discuss.channel'].create({'name': 'Plain', 'channel_type': 'channel'})
@@ -265,3 +272,182 @@ class TestBookingPortalSecurity(BookingSecurityFixture, HttpCase):
             ('resource_type_id', '=', self.resource.id), ('state', '=', 'confirmed')])
         self.assertEqual(confirmed.partner_id, self.portal.partner_id,
                          'the refused booking must not be committed with the request')
+
+    def _post_confirm(self, start_local, end_local):
+        return self.url_open(
+            '/my/bookings/confirm?resource_id=%s&start_datetime=%s&end_datetime=%s' % (
+                self.resource.id, start_local.strftime('%Y-%m-%d %H:%M:%S'),
+                end_local.strftime('%Y-%m-%d %H:%M:%S')),
+            allow_redirects=False)
+
+    def test_portal_slot_must_match_to_the_second(self):
+        """5289ec44235d: off-grid by seconds is off-grid (it would also block
+        the next slot)."""
+        start, end = local_slot(days=1, hour=10)
+        cases = (
+            (start, end + timedelta(seconds=59)),                          # 10:00:00 - 11:00:59
+            (start + timedelta(seconds=59), end + timedelta(seconds=59)),  # 10:00:59 - 11:00:59
+            (start + timedelta(seconds=1), end),                           # 10:00:01 - 11:00:00
+        )
+        self.authenticate('bkg_portal', 'bkg_portal')
+        for case_start, case_end in cases:
+            response = self._post_create(case_start, case_end)
+            self.assertIn('error=invalid_slot', response.headers.get('Location', ''), case_start)
+            response = self._post_confirm(case_start, case_end)
+            self.assertIn('error=invalid_slot', response.headers.get('Location', ''), case_start)
+        self.assertFalse(self._bookings(self.portal.partner_id))
+        # model level (portal env.user, sudo like the controllers)
+        Reservation = self.env['booking.reservation'].with_user(self.portal).sudo()
+        start2, end2 = local_slot(days=2, hour=10)
+        for case_start, case_end in (
+                (start2, end2 + timedelta(seconds=59)),
+                (start2 + timedelta(seconds=59), end2 + timedelta(seconds=59)),
+                (start2 + timedelta(minutes=13, seconds=59), end2 + timedelta(minutes=13, seconds=59)),
+                (start2, end2 + timedelta(microseconds=500000))):
+            with self.assertRaises(ValidationError, msg=str(case_start)):
+                Reservation.create(self._vals(self.portal.partner_id, case_start, case_end))
+        # the neighbouring slot stays bookable by somebody else
+        self.authenticate('bkg_other', 'bkg_other')
+        next_start, next_end = local_slot(days=1, hour=11)
+        self.assertIn('success=created', self._post_create(next_start, next_end).headers.get('Location', ''))
+
+    def test_portal_timezone_cannot_move_the_grid(self):
+        """5289ec44235d: res.users.tz is self-writeable; the grid is in the
+        resource timezone, so changing it neither opens the closed hours nor
+        shifts a slot across two real slots."""
+        self.authenticate('bkg_portal', 'bkg_portal')
+        _response, payload = self._jsonrpc('/web/dataset/call_kw', {
+            'model': 'res.users', 'method': 'write',
+            'args': [[self.portal.id], {'tz': 'Pacific/Kiritimati'}], 'kwargs': {}})
+        self.assertIn('result', payload, payload)
+        self.env.invalidate_all()
+        self.assertEqual(self.portal.tz, 'Pacific/Kiritimati')
+
+        # a posted 08:00 is 08:00 in the resource timezone (02:00 resource
+        # time if it were read in the user's Kiritimati timezone)
+        start, end = local_slot(days=1, hour=8)
+        self.assertIn('success=created', self._post_create(start, end).headers.get('Location', ''))
+        booking = self._bookings(self.portal.partner_id)
+        self.assertEqual(len(booking), 1)
+        self.assertEqual(booking.start_datetime, to_utc(start))
+        self.assertEqual(booking.end_datetime, to_utc(end))
+
+        # model level: 08:00 Kiritimati = 02:00 resource time (closed);
+        # 10:00 Kolkata = 12:30 resource time (across two slots)
+        Reservation = self.env['booking.reservation'].with_user(self.portal).sudo()
+        for user_tz, hour in (('Pacific/Kiritimati', 8), ('Asia/Kolkata', 10)):
+            self.portal.tz = user_tz
+            start2, end2 = local_slot(days=3, hour=hour, tz=user_tz)
+            with self.assertRaises(ValidationError, msg=user_tz):
+                Reservation.create({
+                    'resource_type_id': self.resource.id,
+                    'partner_id': self.portal.partner_id.id,
+                    'start_datetime': to_utc(start2, tz=user_tz),
+                    'end_datetime': to_utc(end2, tz=user_tz),
+                })
+
+        # the slot page and the slots API show the resource grid, whatever
+        # the user's timezone
+        self.portal.tz = 'Pacific/Kiritimati'
+        self.env.flush_all()
+        _response, payload = self._jsonrpc(
+            '/my/booking/resources/%s/slots' % self.resource.id, {})
+        result = payload['result']
+        self.assertEqual(result['tz'], PORTAL_TZ)
+        self.assertTrue(result['slots'])
+        self.assertEqual({slot['start'][11:16] for slot in result['slots']} - {
+            '%02d:00' % hour for hour in range(8, 20)}, set())
+        page = self.url_open('/my/booking/resources/%s' % self.resource.id)
+        self.assertIn(PORTAL_TZ, page.text)
+
+    # -------------------- f98eca12cddf: followers / recipients of portal mail
+
+    def _followers(self, booking):
+        self.env.invalidate_all()
+        return booking.sudo().message_follower_ids.partner_id
+
+    def _notified(self, message):
+        self.env.invalidate_all()
+        return self.env['mail.notification'].sudo().search(
+            [('mail_message_id', 'in', message.ids)]).res_partner_id | message.sudo().partner_ids
+
+    @mute_logger('odoo.addons.mail.models.mail_thread', 'odoo.addons.odoo_booking_reservation.models.booking_reservation')
+    def test_portal_cannot_make_foreign_partners_followers_or_recipients(self):
+        booking = self._create_as_portal(attendee_ids=[(6, 0, self.colleague.ids)])
+        intruders = self.foreign | self.work_contact | self.other_portal.partner_id
+        mine = self.env['booking.reservation'].with_user(self.portal).browse(booking.id)
+
+        # message_subscribe: foreign partners are dropped, allowed ones kept
+        mine.message_subscribe(partner_ids=intruders.ids)
+        self.assertFalse(self._followers(booking) & intruders)
+        mine.message_subscribe(partner_ids=(self.foreign | self.staff.partner_id).ids)
+        followers = self._followers(booking)
+        self.assertIn(self.staff.partner_id, followers)
+        self.assertNotIn(self.foreign, followers)
+
+        # message_post(partner_ids=...): foreign partners are not notified
+        message = mine.message_post(
+            body='hello', message_type='comment', subtype_xmlid='mail.mt_comment',
+            partner_ids=(self.foreign | self.colleague).ids)
+        notified = self._notified(message)
+        self.assertIn(self.colleague, notified)
+        self.assertFalse(notified & intruders)
+        # autofollow cannot be used to subscribe them either
+        mine.with_context(mail_post_autofollow=True).message_post(
+            body='again', message_type='comment', subtype_xmlid='mail.mt_comment',
+            partner_ids=self.foreign.ids)
+        self.assertNotIn(self.foreign, self._followers(booking))
+
+        # message_notify
+        notification = mine.message_notify(partner_ids=self.foreign.ids, body='psst')
+        self.assertFalse(self._notified(notification) & intruders)
+
+        # portal users cannot remove the staff follower, only themselves
+        with self.assertRaises(AccessError):
+            mine.message_unsubscribe(partner_ids=self.staff.partner_id.ids)
+        mine.message_unsubscribe(partner_ids=self.portal.partner_id.ids)
+        self.assertNotIn(self.portal.partner_id, self._followers(booking))
+        mine.message_subscribe(partner_ids=self.portal.partner_id.ids)
+        self.assertIn(self.portal.partner_id, self._followers(booking))
+
+        # followers cannot be written directly either
+        with self.assertRaises(AccessError):
+            mine.write({'message_follower_ids': [(0, 0, {
+                'res_model': booking._name, 'res_id': booking.id, 'partner_id': self.foreign.id})]})
+
+        # the same through JSON-RPC, then a portal chatter post: nobody foreign
+        # is a follower, so nobody foreign is notified
+        self.authenticate('bkg_portal', 'bkg_portal')
+        _response, payload = self._jsonrpc('/web/dataset/call_kw', {
+            'model': 'booking.reservation', 'method': 'message_subscribe',
+            'args': [[booking.id]], 'kwargs': {'partner_ids': intruders.ids}})
+        self.assertIn('result', payload, payload)
+        _response, payload = self._jsonrpc('/web/dataset/call_kw', {
+            'model': 'booking.reservation', 'method': 'message_post',
+            'args': [[booking.id]], 'kwargs': {
+                'body': 'rpc-marker', 'message_type': 'comment', 'subtype_xmlid': 'mail.mt_comment',
+                'partner_ids': intruders.ids}})
+        self.assertIn('result', payload, payload)
+        self.env.invalidate_all()
+        rpc_message = booking.sudo().message_ids.filtered(lambda m: 'rpc-marker' in (m.body or ''))
+        self.assertEqual(len(rpc_message), 1)
+        self.assertFalse(self._notified(rpc_message) & intruders)
+        _response, payload = self._jsonrpc('/mail/message/post', {
+            'thread_model': 'booking.reservation', 'thread_id': booking.id,
+            'post_data': {'body': 'Portal chatter', 'message_type': 'comment',
+                          'subtype_xmlid': 'mail.mt_comment',
+                          'partner_ids': (intruders | self.staff.partner_id).ids}})
+        self.assertIn('result', payload, payload)
+        self.assertFalse(self._followers(booking) & intruders)
+        chatter = booking.sudo().message_ids.filtered(lambda m: 'Portal chatter' in (m.body or ''))
+        self.assertEqual(len(chatter), 1)
+        notified = self._notified(chatter)
+        self.assertFalse(notified & intruders)
+        self.assertIn(self.staff.partner_id, notified, 'followers are still notified')
+
+        # internal users keep the full mail API
+        manager = new_test_user(
+            self.env, 'bkg_mail_manager',
+            groups='base.group_user,odoo_booking_reservation.group_booking_manager')
+        booking.with_user(manager).message_subscribe(partner_ids=self.foreign.ids)
+        self.assertIn(self.foreign, self._followers(booking))

@@ -1,7 +1,5 @@
 import logging
 
-import pytz
-
 from odoo import api, fields, models
 from odoo.exceptions import AccessError, ValidationError
 from odoo.tools.translate import _
@@ -19,6 +17,9 @@ PORTAL_PROTECTED_FIELDS = frozenset({
     'resource_properties', 'description', 'note', 'enable_discussion',
     'channel_id', 'reminder_type', 'reminder_time', 'calendar_event_id',
     'access_token',
+    # followers / messages go through the guarded mail.thread API only
+    'message_follower_ids', 'message_partner_ids', 'message_ids',
+    'website_message_ids',
 })
 
 
@@ -293,25 +294,21 @@ class BookingReservation(models.Model):
         return self.env['res.partner'].sudo().search(domain)
 
     @api.model
-    def _get_booking_tz(self):
-        """Timezone used for the portal slot grid (same rule as the portal)."""
-        tz_name = self.env.user.tz or self.env.context.get('tz') or 'UTC'
-        try:
-            return pytz.timezone(tz_name)
-        except pytz.UnknownTimeZoneError:
-            return pytz.UTC
-
-    @api.model
     def _is_portal_slot(self, resource, start_local, end_local):
-        """True when [start_local, end_local) (naive, booking timezone) is one
-        of the slots offered by ``resource._generate_slots``."""
+        """True when [start_local, end_local) (naive, resource timezone) is
+        exactly one of the slots offered by ``resource._generate_slots``.
+
+        The comparison is exact: a start or end that is off the grid by even
+        a second is refused (a booking ending at 11:00:59 would otherwise
+        also block the next slot). The slot values are compared at the
+        precision the portal posts them (whole seconds, see the slot links).
+        """
         if not resource or not start_local or not end_local:
             return False
-        start_local = start_local.replace(second=0, microsecond=0)
-        end_local = end_local.replace(second=0, microsecond=0)
         day = start_local.date()
         for slot in resource.sudo()._generate_slots(day, day):
-            if slot['start'] == start_local and slot['end'] == end_local:
+            if (slot['start'].replace(microsecond=0) == start_local
+                    and slot['end'].replace(microsecond=0) == end_local):
                 return True
         return False
 
@@ -335,22 +332,22 @@ class BookingReservation(models.Model):
     @api.constrains('resource_type_id', 'start_datetime', 'end_datetime')
     def _check_portal_slot_alignment(self):
         """Portal bookings must match a slot of the resource's availability
-        grid (availability_ids + slot_interval). Backend users keep free
-        scheduling."""
+        grid (availability_ids + slot_interval, resource timezone). Backend
+        users keep free scheduling."""
         if not self._is_portal_booker():
             return
-        user_tz = self._get_booking_tz()
         for record in self:
             if record.state == 'cancelled' or not record.start_datetime or not record.end_datetime:
                 continue
-            start_local = pytz.UTC.localize(
-                fields.Datetime.to_datetime(record.start_datetime)).astimezone(user_tz).replace(tzinfo=None)
-            end_local = pytz.UTC.localize(
-                fields.Datetime.to_datetime(record.end_datetime)).astimezone(user_tz).replace(tzinfo=None)
-            if not self._is_portal_slot(record.sudo().resource_type_id, start_local, end_local):
+            resource = record.sudo().resource_type_id
+            # the grid lives in the resource timezone, never in the portal
+            # user's own (self-writeable) timezone
+            start_local = resource._booking_utc_to_local(record.start_datetime)
+            end_local = resource._booking_utc_to_local(record.end_datetime)
+            if not self._is_portal_slot(resource, start_local, end_local):
                 raise ValidationError(
                     _('The selected time is not an available slot of resource "%s".')
-                    % (record.sudo().resource_type_id.name or '')
+                    % (resource.name or '')
                 )
 
     def _lock_resources_for_booking(self):
@@ -556,6 +553,73 @@ class BookingReservation(models.Model):
                 _('Portal users cannot modify reservations directly (%s).')
                 % ', '.join(sorted(forbidden))
             )
+
+    # ------------------------------------------------------------
+    # Mail recipients of portal users
+    # ------------------------------------------------------------
+    # Portal users keep the write ACL for the portal chatter, which is also
+    # what the public mail.thread API (message_subscribe, message_post,
+    # message_notify ... callable through /web/dataset/call_kw) checks. Without
+    # the guards below a portal booker could make any partner of the database
+    # a follower or a recipient of their reservation and have it e-mailed on
+    # every chatter post (the attendee check, by another field).
+
+    def _portal_mail_guard_active(self):
+        """Direct (non-sudo) mail.thread calls of a portal/share user."""
+        return not self.env.su and self._is_portal_booker()
+
+    def _get_portal_allowed_recipients(self, partner_ids):
+        """Subset of ``partner_ids`` a portal user may add as followers /
+        recipients of ``self``: themselves, the participants of the
+        reservations and the contacts of the shared attendee domain."""
+        requester = self.env.user.partner_id
+        wanted = {
+            pid for pid in partner_ids
+            if isinstance(pid, int) and not isinstance(pid, bool) and 0 < pid < 2 ** 31
+        }
+        allowed = requester
+        for record in self.sudo():
+            allowed |= record.partner_id | record.organizer_id | record.attendee_ids
+        candidates = list(wanted - set(allowed.ids))
+        if candidates:
+            allowed |= self.env['res.partner'].sudo().search(
+                [('id', 'in', candidates)] + self._get_portal_attendee_domain(requester))
+        return allowed.filtered(lambda p: p.id in wanted)
+
+    def _filter_portal_recipient_ids(self, partner_ids):
+        """Keep only the allowed partner ids (order kept)."""
+        if not partner_ids or not self._portal_mail_guard_active():
+            return partner_ids
+        allowed = set(self._get_portal_allowed_recipients(partner_ids).ids)
+        kept = [pid for pid in partner_ids if pid in allowed]
+        if len(kept) != len(partner_ids):
+            _logger.info(
+                'booking.reservation %s: portal user %s tried to add recipients %r; dropped',
+                self.ids, self.env.uid, [pid for pid in partner_ids if pid not in allowed])
+        return kept
+
+    def message_subscribe(self, partner_ids=None, subtype_ids=None):
+        if partner_ids and self._portal_mail_guard_active():
+            partner_ids = self._filter_portal_recipient_ids(list(partner_ids))
+            if not partner_ids:
+                return True
+        return super().message_subscribe(partner_ids=partner_ids, subtype_ids=subtype_ids)
+
+    def message_unsubscribe(self, partner_ids=None):
+        if (partner_ids and self._portal_mail_guard_active()
+                and set(partner_ids) != {self.env.user.partner_id.id}):
+            raise AccessError(_('Portal users can only unfollow reservations themselves.'))
+        return super().message_unsubscribe(partner_ids=partner_ids)
+
+    def message_post(self, *, partner_ids=None, **kwargs):
+        if partner_ids and self._portal_mail_guard_active():
+            partner_ids = self._filter_portal_recipient_ids(list(partner_ids))
+        return super().message_post(partner_ids=partner_ids, **kwargs)
+
+    def message_notify(self, *, partner_ids=False, **kwargs):
+        if partner_ids and self._portal_mail_guard_active():
+            partner_ids = self._filter_portal_recipient_ids(list(partner_ids))
+        return super().message_notify(partner_ids=partner_ids, **kwargs)
 
     @api.model_create_multi
     def create(self, vals_list):

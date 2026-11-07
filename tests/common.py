@@ -29,6 +29,7 @@ class BookingSecurityFixture:
         cls.resource = env['booking.resource.type'].create({
             'name': 'Room Sec',
             'share_type': 'all',
+            'booking_tz': PORTAL_TZ,
             'slot_duration': 1.0,
             'slot_interval': 1.0,
             'advance_days': 30,

@@ -308,6 +308,7 @@ Navigate to **Calendar > Configuration > Booking Resources**
 | Slot Duration | Length of each booking slot (hours) |
 | Slot Interval | Gap between slots (minimum 0.25 hours) |
 | Advance Days | How many days ahead users can book |
+| Timezone | Timezone of the availability schedule. Portal slots are shown, booked and checked in this timezone, whatever timezone the portal user picked (defaults to the company timezone) |
 
 ### 3. Set Availability Schedule
 
@@ -336,9 +337,10 @@ The module includes two email templates:
 | XSS Protection | `html_sanitize()` on user input, `t-out` replaces `t-raw` |
 | Race Condition Prevention | Bookings serialised per resource (row lock on the resource, retried on serialization failure) before the overlap check; a refused booking is rolled back (savepoint) |
 | IDOR Protection | Discussion channel access validation with booking ownership check |
-| Members-only Discussions | Booking discussions are `group` conversations (no `group_public_id`): only members can open, read or join them through `/discuss/channel/*`; threads are disabled in them |
-| Attendee Validation | One shared domain for the attendee search and the validation: internal users plus contacts of the booker's own company (same commercial entity); search returns names only (no e-mail), needs 2+ characters; other partners are dropped by the portal and refused at model level |
-| Slot Grid Enforcement | Portal bookings must match a slot generated from the resource availability and slot interval (user timezone); backend users keep free scheduling |
+| Members-only Discussions | Booking discussions are `group` conversations (no `group_public_id`): only members can open, read or join them through `/discuss/channel/*`; core Odoo allows no threads in them |
+| Attendee Validation | One shared domain for the attendee search and the validation: internal users plus contacts of the booker's own company (same commercial entity); search returns names only (no e-mail), needs 2+ characters, LIKE wildcards are literal; other partners are dropped by the portal and refused at model level |
+| Slot Grid Enforcement | Portal bookings must match, to the second, a slot generated from the resource availability and slot interval in the resource timezone (`booking_tz`; the user's own timezone is self-writeable and is not used); backend users keep free scheduling |
+| Portal Mail Recipients | Portal users cannot make other partners followers or recipients of their reservations: `message_subscribe` / `message_post` / `message_notify` keep only themselves, the participants and the attendee domain; they can only unfollow themselves |
 | RPC Bypass Prevention | `@api.constrains` model-level validation (past slots, overlap, duration, attendees, slot grid); portal users have no create right and cannot write reservation fields directly (write access is kept for the portal chatter only) |
 | Portal Record Rules | 3 `ir.rule` records restricting Portal access scope |
 | Exception Leak Prevention | Controller catches exceptions, returns generic error codes |

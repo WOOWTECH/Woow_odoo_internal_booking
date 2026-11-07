@@ -1,7 +1,11 @@
+from datetime import datetime, timedelta
+
+import pytz
+
 from odoo import api, fields, models
+from odoo.addons.base.models.res_partner import _tz_get
 from odoo.exceptions import ValidationError
 from odoo.tools.translate import _
-from datetime import datetime, timedelta
 
 
 class BookingResourceType(models.Model):
@@ -63,6 +67,14 @@ class BookingResourceType(models.Model):
         string='Advance Booking Days',
         default=30,
         help='How many days in advance users can book this resource',
+    )
+    booking_tz = fields.Selection(
+        _tz_get,
+        string='Timezone',
+        required=True,
+        default=lambda self: self._default_booking_tz(),
+        help='Timezone of the availability schedule. Portal slots are shown and '
+             'checked in this timezone, whatever timezone the portal user chose.',
     )
 
     # Availability (weekly recurring schedule)
@@ -143,6 +155,36 @@ class BookingResourceType(models.Model):
             counts[row[0].id] = row[1]
         for record in self:
             record.reservation_count = counts.get(record.id, 0)
+
+    @api.model
+    def _default_booking_tz(self):
+        return self.env.company.partner_id.tz or self.env.user.tz or 'UTC'
+
+    def _get_booking_tz(self):
+        """pytz timezone of the slot grid.
+
+        Set on the resource by its managers: a portal user's own timezone
+        (res.users.tz is self-writeable) must not move the grid, otherwise it
+        could shift a booking outside the availability or across two slots.
+        """
+        self.ensure_one()
+        try:
+            return pytz.timezone(self.booking_tz or 'UTC')
+        except pytz.UnknownTimeZoneError:
+            return pytz.UTC
+
+    def _booking_local_now(self):
+        """Current time in the resource timezone (naive, like the slots)."""
+        return datetime.now(pytz.UTC).astimezone(self._get_booking_tz()).replace(tzinfo=None)
+
+    def _booking_local_to_utc(self, local_dt):
+        """Naive resource-local datetime -> naive UTC datetime."""
+        return self._get_booking_tz().localize(local_dt).astimezone(pytz.UTC).replace(tzinfo=None)
+
+    def _booking_utc_to_local(self, utc_dt):
+        """Naive UTC datetime -> naive resource-local datetime."""
+        utc_dt = fields.Datetime.to_datetime(utc_dt)
+        return pytz.UTC.localize(utc_dt).astimezone(self._get_booking_tz()).replace(tzinfo=None)
 
     @api.constrains('slot_duration', 'slot_interval')
     def _check_slot_settings(self):
