@@ -488,6 +488,11 @@ odoo -d <db> -u odoo_booking_reservation --test-enable --test-tags /odoo_booking
 
 ## 變更紀錄
 
+### v18.0.1.0.4 (2026-11)
+
+- 日曆 registry key 與 XML `js_class` 同步改為 `odoo_booking_reservation.booking_calendar`，避免與 `reservation_module` 同時安裝時衝突。
+- 目標資料庫須升級 `odoo_booking_reservation` 並同步更新後台 assets，確保資料庫中的日曆 view 使用新 key。
+
 ### v18.0.1.0.3 (2026-11)
 
 - **安全性：** Portal 預定的參加者在 Portal 與模型層都用與參加者搜尋相同的網域驗證；搜尋不再回傳 email，只列內部使用者與預定者自己公司的聯絡人，且至少輸入 2 個字
