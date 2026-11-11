@@ -105,7 +105,7 @@
         <field name="model">booking.reservation</field>
         <field name="arch" type="xml">
             <calendar string="Resource Reservations"
-                      js_class="booking_calendar"
+                      js_class="odoo_booking_reservation.booking_calendar"
                       date_start="start_datetime"
                       date_stop="end_datetime"
                       color="resource_type_id"

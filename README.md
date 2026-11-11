@@ -490,6 +490,11 @@ All 23 findings identified and resolved before production release.
 
 ## Changelog
 
+### v18.0.1.0.4 (2026-11)
+
+- Namespace the calendar view registry key as `odoo_booking_reservation.booking_calendar` and update its XML `js_class` to allow coexistence with `reservation_module`.
+- Upgrade `odoo_booking_reservation` in the target database and refresh backend assets together; the stored calendar view must use the new key.
+
 ### v18.0.1.0.3 (2026-11)
 
 - **Security:** attendees of portal bookings are validated (portal and model level) against the same domain as the attendee search; the search no longer returns e-mails, only internal users and contacts of the booker's own company, and needs at least 2 characters

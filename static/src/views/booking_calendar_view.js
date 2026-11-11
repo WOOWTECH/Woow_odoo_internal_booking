@@ -9,4 +9,4 @@ export const bookingCalendarView = {
     Controller: BookingCalendarController,
 };
 
-registry.category("views").add("booking_calendar", bookingCalendarView);
+registry.category("views").add("odoo_booking_reservation.booking_calendar", bookingCalendarView);
